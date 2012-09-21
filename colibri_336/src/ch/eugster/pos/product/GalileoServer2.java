@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import ch.eugster.pos.Messages;
 import ch.eugster.pos.client.gui.UserPanel;
@@ -434,8 +434,7 @@ public class GalileoServer2 extends ProductServer
 			{
 				this.open();
 			}
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri").info("Aufruf von do_NSearch mit " + code + ".");
+			Logger.getLogger("colibri").info("Aufruf von do_NSearch mit " + code + ".");
 			// boolean o = this.open;
 			this.server.do_NSearch(code);
 			returnValue = this.found();
@@ -455,9 +454,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (ComException ce)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri")
-								.severe("do_NSearch hat ComException in getItem ausgelöst.");
+			Logger.getLogger("colibri").severe("do_NSearch hat ComException in getItem ausgelöst.");
 			this.catchComException(ce);
 		}
 		catch (IOException ioe)
@@ -852,17 +849,17 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (NumberFormatException e)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null) LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (IOException ioe)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null) LogManager.getLogManager().getLogger("colibri").severe(ioe.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger("colibri").severe(ioe.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ClassCastException e)
 		{
 			price = this.getPrice(price);
-			if (LogManager.getLogManager().getLogger("colibri") != null) LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (ComException e)
 		{
@@ -1025,7 +1022,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null) LogManager.getLogManager().getLogger("colibri").severe(ioe.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger("colibri").severe(ioe.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ComException e)
@@ -1049,7 +1046,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null) LogManager.getLogManager().getLogger("colibri").severe(ioe.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger("colibri").severe(ioe.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ComException e)
@@ -1097,7 +1094,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ComException e)
@@ -1127,7 +1124,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ComException e)
@@ -1157,7 +1154,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ComException e)
@@ -1182,7 +1179,7 @@ public class GalileoServer2 extends ProductServer
 			}
 			catch (IOException ioe)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 				this.catchComException(new ComException());
 			}
 			catch (ComException e)
@@ -1232,7 +1229,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ComException e)
@@ -1253,7 +1250,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ComException e)
@@ -1274,7 +1271,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ComException e)
@@ -1314,7 +1311,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			return err;
 		}
 		catch (ComException e)
@@ -1336,7 +1333,7 @@ public class GalileoServer2 extends ProductServer
 		}
 		catch (IOException ioe)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			this.catchComException(new ComException());
 		}
 		catch (ComException e)
@@ -1377,9 +1374,8 @@ public class GalileoServer2 extends ProductServer
 		boolean isTutorial = false;
 		if (Database.getCurrent().equals(Database.getTutorial()))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri")
-								.info("Datenbank ist 'Tutorial': So tun als ob erfolgreich verbucht!");
+			
+			Logger.getLogger("colibri").info("Datenbank ist 'Tutorial': So tun als ob erfolgreich verbucht!");
 			isTutorial = true;
 		}
 		return isTutorial;
@@ -1390,8 +1386,8 @@ public class GalileoServer2 extends ProductServer
 		boolean isTemporary = false;
 		if (Database.getCurrent().equals(Database.getTemporary()))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri").info("Datenbank ist 'Temporary': Nicht speichern!");
+			
+			Logger.getLogger("colibri").info("Datenbank ist 'Temporary': Nicht speichern!");
 			isTemporary = true;
 		}
 		return isTemporary;
@@ -1402,8 +1398,7 @@ public class GalileoServer2 extends ProductServer
 		boolean isActive = false;
 		if (!this.active)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri").info("Galileo läuft nicht!");
+			Logger.getLogger("colibri").info("Galileo läuft nicht!");
 			isActive = false;
 		}
 		return isActive;
@@ -1413,19 +1408,16 @@ public class GalileoServer2 extends ProductServer
 	{
 		boolean result = true;
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri").info("Entered: GalileoServer.store()");
+		Logger.getLogger("colibri").info("Entered: GalileoServer.store()");
 		
 		if (receiptState == Receipt.RECEIPT_STATE_SERIALIZED)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri").info("Verbuche Position");
+			Logger.getLogger("colibri").info("Verbuche Position");
 			result = this.update(position);
 		}
 		else if (receiptState == Receipt.RECEIPT_STATE_REVERSED)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri").info("storniere Position");
+			Logger.getLogger("colibri").info("storniere Position");
 			result = this.reverse(position);
 		}
 		
@@ -1465,16 +1457,10 @@ public class GalileoServer2 extends ProductServer
 		boolean result = true;
 		
 		// 10221
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri")
-							.info("         p.ordered == " + Boolean.toString(position.ordered));
-			LogManager.getLogManager().getLogger("colibri").info("         p.type == " + position.type);
-			LogManager.getLogManager().getLogger("colibri")
-							.info("         productGroup.galileoId == " + position.getProductGroup().galileoId);
-			LogManager.getLogManager().getLogger("colibri")
-							.info("         productGroup.type == " + position.getProductGroup().type);
-		}
+		Logger.getLogger("colibri").info("         p.ordered == " + Boolean.toString(position.ordered));
+		Logger.getLogger("colibri").info("         p.type == " + position.type);
+		Logger.getLogger("colibri").info("         productGroup.galileoId == " + position.getProductGroup().galileoId);
+		Logger.getLogger("colibri").info("         productGroup.type == " + position.getProductGroup().type);
 		if (position.isPayedInvoice())
 		{
 			// 10221
@@ -1537,16 +1523,10 @@ public class GalileoServer2 extends ProductServer
 		boolean result = true;
 		
 		// 10221
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri")
-							.info("         p.ordered == " + Boolean.toString(position.ordered));
-			LogManager.getLogManager().getLogger("colibri").info("         p.type == " + position.type);
-			LogManager.getLogManager().getLogger("colibri")
-							.info("         productGroup.galileoId == " + position.getProductGroup().galileoId);
-			LogManager.getLogManager().getLogger("colibri")
-							.info("         productGroup.type == " + position.getProductGroup().type);
-		}
+		Logger.getLogger("colibri").info("         p.ordered == " + Boolean.toString(position.ordered));
+		Logger.getLogger("colibri").info("         p.type == " + position.type);
+		Logger.getLogger("colibri").info("         productGroup.galileoId == " + position.getProductGroup().galileoId);
+		Logger.getLogger("colibri").info("         productGroup.type == " + position.getProductGroup().type);
 		if (!position.isPayedInvoice())
 		{
 			if (position.ordered)
@@ -1594,8 +1574,7 @@ public class GalileoServer2 extends ProductServer
 	
 	private void checkProductGroup(Position position)
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri").info("         p.productId == " + position.productId);
+		Logger.getLogger("colibri").info("         p.productId == " + position.productId);
 		if (position.productId.length() > 0 && !position.productId.equals("0"))
 		{
 			if (position.getProductGroup() == null || position.getProductGroup().getId().equals(Table.ZERO_VALUE))
@@ -1841,9 +1820,7 @@ public class GalileoServer2 extends ProductServer
 			this.server.setVWGRUPPE(position.getProductGroupId().toString());
 			this.server.setVWGNAME(position.getProductGroup().name);
 			done = this.server.do_wgverkauf();
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager()
-								.getLogger("colibri").info("do_wgverkauf aufrufen..." + (done ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger("colibri").info("do_wgverkauf aufrufen..." + (done ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		catch (IOException e)
 		{
@@ -1858,9 +1835,7 @@ public class GalileoServer2 extends ProductServer
 		try
 		{
 			done = this.server.do_verkauf(position.productId);
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager()
-								.getLogger("colibri").info("do_verkauf aufrufen..." + (done ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger("colibri").info("do_verkauf aufrufen..." + (done ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		catch (IOException e)
 		{
@@ -1877,9 +1852,7 @@ public class GalileoServer2 extends ProductServer
 			this.server.setVWGRUPPE(position.getProductGroupId().toString());
 			this.server.setVWGNAME(position.getProductGroup().name);
 			done = this.server.do_wgstorno();
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager()
-								.getLogger("colibri").info("do_wgverkauf aufrufen..." + (done ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger("colibri").info("do_wgverkauf aufrufen..." + (done ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		catch (IOException e)
 		{
@@ -1894,9 +1867,7 @@ public class GalileoServer2 extends ProductServer
 		try
 		{
 			done = this.server.do_storno(position.productId);
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager()
-								.getLogger("colibri").info("do_verkauf aufrufen..." + (done ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger("colibri").info("do_verkauf aufrufen..." + (done ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		catch (IOException e)
 		{
@@ -1930,9 +1901,7 @@ public class GalileoServer2 extends ProductServer
 				// stockUpdated = server.do_delabholfach(position.orderId);
 				updated = this.server.do_delabholfach(position.orderId, menge);
 				// 10224
-				if (LogManager.getLogManager().getLogger("colibri") != null)
-					LogManager.getLogManager()
-									.getLogger("colibri").info("do_delabholfach aufrufen..." + (updated ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+				Logger.getLogger("colibri").info("do_delabholfach aufrufen..." + (updated ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			catch (IOException e)
 			{
@@ -1961,8 +1930,7 @@ public class GalileoServer2 extends ProductServer
 	
 	private boolean doPayInvoice(Position position)
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri").info("Entered: GalileoServer.doUpdatePayedInvoice()");
+		Logger.getLogger("colibri").info("Entered: GalileoServer.doUpdatePayedInvoice()");
 		boolean booked = false;
 		try
 		{
@@ -1989,12 +1957,10 @@ public class GalileoServer2 extends ProductServer
 		return booked;
 	}
 	
-	private void catchComException(ComException e) throws ComException
+	public void catchComException(Exception e) throws ComException
 	{
 		this.setActive(false);
 		
-		// if (this.update > 0 &&
-		// Database.getCurrent().equals(Database.getStandard()))
 		if (Database.getCurrent().equals(Database.getStandard()))
 		{
 			if (Database.isSwitchable())
@@ -2011,9 +1977,7 @@ public class GalileoServer2 extends ProductServer
 								MessageDialog.TYPE_INFORMATION));
 			}
 		}
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage());
-		throw e;
+		Logger.getLogger("colibri").severe(e.getLocalizedMessage());
 	}
 	
 	public boolean update(int receiptState, Position position)

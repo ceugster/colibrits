@@ -512,10 +512,8 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 					}
 					else if (control instanceof BookkeepingTransferComposite)
 					{
-						this
-										.run(new BookkeepingTransfer(this.salespointComposite, this.dateRangeGroup,
-														this.printDestinationGroup, Main.properties,
-														this.bookkeepingTransferComposite));
+						this.run(new BookkeepingTransfer(this.salespointComposite, this.dateRangeGroup,
+										this.printDestinationGroup, Main.properties, this.bookkeepingTransferComposite));
 					}
 				}
 				else if (e.widget.equals(this.receiptListButton))
@@ -564,7 +562,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 				this.printButton.setEnabled(this.settlementComposite.isValid());
 				if (this.settlementComposite.getCurrentControl() instanceof SettlementNumberComposite)
 					this.receiptButton
-									.setEnabled((SettlementNumberComposite.getInstance().getSelectedSettlement() != null));
+									.setEnabled(SettlementNumberComposite.getInstance().getSelectedSettlement() != null);
 				else
 					this.receiptButton.setEnabled(false);
 			}
@@ -573,7 +571,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 				this.printButton.setEnabled(this.settlementComposite.isValid());
 				if (this.settlementComposite.getCurrentControl() instanceof SettlementNumberComposite)
 					this.receiptButton
-									.setEnabled((SettlementNumberComposite.getInstance().getSelectedSettlement() != null));
+									.setEnabled(SettlementNumberComposite.getInstance().getSelectedSettlement() != null);
 				else
 					this.receiptButton.setEnabled(false);
 			}
@@ -597,7 +595,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 				this.printButton.setEnabled(this.settlementComposite.isValid());
 				if (this.settlementComposite.getCurrentControl() instanceof SettlementNumberComposite)
 					this.receiptButton
-									.setEnabled((SettlementNumberComposite.getInstance().getSelectedSettlement() != null));
+									.setEnabled(SettlementNumberComposite.getInstance().getSelectedSettlement() != null);
 				else
 					this.receiptButton.setEnabled(false);
 			}
@@ -716,23 +714,13 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 				{
 					if (!file.mkdirs())
 					{
-						if (LogManager.getLogManager().getLogger("colibri") != null)
-						{
-							LogManager
-											.getLogManager()
-											.getLogger("colibri").log(Level.INFO, Messages.getString("App.Das_Unterverzeichnis__54") + file.getName() + Messages.getString("App._fehlt._55")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						}
+						Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Das_Unterverzeichnis__54") + file.getName() + Messages.getString("App._fehlt._55")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						exists = false;
 					}
 				}
 				else
 				{
-					if (LogManager.getLogManager().getLogger("colibri") != null)
-					{
-						LogManager
-										.getLogManager()
-										.getLogger("colibri").log(Level.INFO, Messages.getString("App.Das_Unterverzeichnis__57") + file.getName() + Messages.getString("App._fehlt._58")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					}
+					Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Das_Unterverzeichnis__57") + file.getName() + Messages.getString("App._fehlt._58")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					exists = false;
 				}
 			}
@@ -751,19 +739,13 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 		{
 			logFile.delete();
 		}
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().addLogger(Logger.getLogger("colibri")); //$NON-NLS-1$
-		}
+		LogManager.getLogManager().addLogger(Logger.getLogger("colibri")); //$NON-NLS-1$
 		try
 		{
 			FileHandler fh = new FileHandler(logFile.getAbsolutePath(), true);
 			fh.setFormatter(new SimpleFormatter());
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager.getLogManager().getLogger("colibri").addHandler(fh); //$NON-NLS-1$
-				LogManager.getLogManager().getLogger("colibri").setLevel(Level.parse(Messages.getString("App.ALL_63"))); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+			Logger.getLogger("colibri").addHandler(fh); //$NON-NLS-1$
+			Logger.getLogger("colibri").setLevel(Level.parse(Messages.getString("App.ALL_63"))); //$NON-NLS-1$ //$NON-NLS-2$
 			return true;
 		}
 		catch (IOException e)
@@ -819,15 +801,11 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 			org.eclipse.jface.dialogs.MessageDialog
 							.openError(shell,
 											Messages.getString("Main.Databankfehler_17"), //$NON-NLS-1$
-											Messages
-															.getString("Main.Die_Datenbankverbindung_konnte_nicht_hergestellt_werden._Das_Programm_wird_verlassen._18") //$NON-NLS-1$
+											Messages.getString("Main.Die_Datenbankverbindung_konnte_nicht_hergestellt_werden._Das_Programm_wird_verlassen._18") //$NON-NLS-1$
 							);
 			System.exit(-1);
 		}
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").info("Verbindungsmethode wird verlassen..."); //$NON-NLS-1$ //$NON-NLS-2$ 
-		}
+		Logger.getLogger("colibri").info("Verbindungsmethode wird verlassen..."); //$NON-NLS-1$ //$NON-NLS-2$ 
 	}
 	
 	/**
@@ -837,10 +815,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	private static void setLocale(String language, String country)
 	{
 		Locale.setDefault(new Locale(language, country));
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Main.Locale_ist_gesetzt_20")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger("colibri").info(Messages.getString("Main.Locale_ist_gesetzt_20")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/**
@@ -903,17 +878,11 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	{
 		if (Main.me == null)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").info(Messages.getString("Main.Hauptfenster_wird_instantiiert..._22")); //$NON-NLS-1$ //$NON-NLS-2$
-			} // OleEnvironment.Initialize();
+			Logger.getLogger("colibri").info(Messages.getString("Main.Hauptfenster_wird_instantiiert..._22")); //$NON-NLS-1$ //$NON-NLS-2$
 			Main.me = new Main(null);
 			Main.me.create();
 			Main.me.setBlockOnOpen(true);
 			Main.me.open();
-			// OleEnvironment.UnInitialize();
 		}
 		return Main.me;
 	}
@@ -957,20 +926,12 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	
 	public static boolean verifyUser()
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").log(Level.INFO, "Applikation wird instantiiert."); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger("colibri").log(Level.INFO, "Applikation wird instantiiert."); //$NON-NLS-1$ //$NON-NLS-2$
 		Display display = new Display();
 		Shell shell = new Shell(display);
 		UserVerificationInputValidator validator = new UserVerificationInputValidator(new Integer[]
 		{ new Integer(0), new Integer(1) });
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager
-							.getLogManager()
-							.getLogger("colibri").log(Level.INFO, Messages.getString("App.Start_Benutzerauthentifizierung..._4")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Start_Benutzerauthentifizierung..._4")); //$NON-NLS-1$ //$NON-NLS-2$
 		UserVerificationDialog getUser = new UserVerificationDialog(shell, Messages.getString("App.Benutzername_5"), //$NON-NLS-1$
 						Messages.getString("App.Geben_Sie_Benutzername_und_Passwort_ein__6"), //$NON-NLS-1$
 						Messages.getString("App._7"), //$NON-NLS-1$
@@ -981,15 +942,8 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 		{
 			if (User.getCurrentUser() != null)
 			{
-				if (LogManager.getLogManager().getLogger("colibri") != null)
-				{
-					LogManager
-									.getLogManager()
-									.getLogger("colibri").log(Level.INFO, Messages.getString("App.Benutzerauthentifizierung_erfolgreich._9")); //$NON-NLS-1$ //$NON-NLS-2$
-					LogManager
-									.getLogManager()
-									.getLogger("colibri").log(Level.INFO, Messages.getString("App.Hauptfenster_wird_geladen..._11")); //$NON-NLS-1$ //$NON-NLS-2$
-				}
+				Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Benutzerauthentifizierung_erfolgreich._9")); //$NON-NLS-1$ //$NON-NLS-2$
+				Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Hauptfenster_wird_geladen..._11")); //$NON-NLS-1$ //$NON-NLS-2$
 				return true;
 			}
 		}
@@ -999,8 +953,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	public boolean close()
 	{
 		if (org.eclipse.jface.dialogs.MessageDialog
-						.openQuestion(
-										this.getShell(),
+						.openQuestion(this.getShell(),
 										Messages.getString("Main.Beenden_23"), Messages.getString("Main.Wollen_Sie_das_Programm_beenden__24")) == false) { //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
@@ -1063,33 +1016,26 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 		 * Hilfetexte für die einzelnen Tabs
 		 */
 		defaultProperties
-						.setProperty(
-										"settlement.help",
+						.setProperty("settlement.help",
 										"Durchführung einer Auswertung\n\n- Wählen Sie die Kasse(n), die in der Auswertung berücksichtigt werden soll(en).\n\n- Wählen Sie den gewünschten Datumsbereich aus\n\n- Wählen Sie die gewünschte Art der Auswertung (selektieren Sie den entsprechenden Tab)\n\n- Wählen Sie die gewünschten Optionen\n\nStarten Sie die Auswertung\n\n\n\n- Einzelne Abschlüsse\n\nWählen Sie aus der Dropdownliste den gewünschten Abschluss aus.\n\n- Datumsbereich\n\nMit aktivierter Checkbox \"Inklusive &Liste der stornierten Belege\" werden die stornierten Belege berücksichtigt.\n\n- Abschlüsse über Periode\n\nWählen Sie gewünschte Auswertung:\n\n- Kassenabschluss gewählte Periode\nKumuliert die Abschlüsse des gewählten Datumsbereichs. Mit aktivierter Checkbox werden sämtliche verfügbaren Informationen der Abschlüsse berücksichtigt.\n\n- Differenzliste\nDie Differenzliste weist Differenzen der Abschlüsse über die gewählte Periode aus. Diese Auswertung eignet sich nur für Perioden, für die gespeicherte Abschlüsse vorhanden sind.\n\n- Rabattliste\nDiese Auswertung zeigt eine Statistik der Rabatte im angegebenen Zeitraum. Mit aktivierter Checkbox \"Nur Positionen mit Rabatt berücksichtigen\" werden nur Positionen berücksichtigt, welche einen Rabatt haben.");
 		defaultProperties
-						.setProperty(
-										"product.group.help",
+						.setProperty("product.group.help",
 										"So f\u00FChren Sie eine Warengruppenauswertung durch:\n\n- W\u00E4hlen Sie die Kassen, deren Belege in der Auswertung ber\u00FCcksichtigt werden sollen\n- geben Sie den Zeitraum an, f\u00FCr den die Auswertung gelten soll\n- W\u00E4hlen Sie Optionen nach Ihrem Wunsch:\n-- Auswertung bezogen auf Gesamtumsatz: Prozentzahlen beziehen sich auf die Gesamtumsatzzahlen\n-- Auswertung bezogen auf Warengruppenumerationsatz: die Prozentzahlen beziehen sich auf die jeweilige Warengruppe\n\nDie \u00FCbrigen Optionen sind selbsterkl\u00E4rend.");
 		defaultProperties
-						.setProperty(
-										"receipt.statistics.help",
+						.setProperty("receipt.statistics.help",
 										"So f\u00FChren Sie eine Belegstatistik durch:\n\n- W\u00E4hlen Sie die Kassen, deren Belege in der Auswertung ber\u00FCcksichtigt werden sollen\n- geben Sie den Zeitraum an, f\u00FCr den die Auswertung gelten soll.\n\n- Eine Belegstatistik gruppiert nach Jahren verdichtet die Werte f\u00FCr jede Kasse innerhalb eines Jahres und liefert Informationen \u00FCber die Entwicklung \u00FCber die Jahre.\n- Eine Belegstatistik gruppiert nach Kassen verdichtet die Werte jeden Jahres einer Kasse und liefert Informationen \u00FCber die Entwicklung der einzelnen Kassen.");
 		defaultProperties
-						.setProperty(
-										"day.hour.help",
+						.setProperty("day.hour.help",
 										"Die Tagesauswertung liefert Informationen \u00FCber die Ums\u00E4tze im Tagesverlauf einer oder mehrerer Kassen \u00FCber einen frei gew\u00E4hlten Zeitraum hinweg.\n\nSo f\u00FChren Sie eine Tagesauswertung durch:\n\n- W\u00E4hlen Sie die Kassen, deren Belege in der Auswertung ber\u00FCcksichtigt werden sollen\n- geben Sie den Zeitraum an, f\u00FCr den die Auswertung gelten soll.");
 		defaultProperties
-						.setProperty(
-										"tax.account.help",
+						.setProperty("tax.account.help",
 										"Die Mehrwertsteuer wird eher selten für die Mehrwertsteuerkontrolle benötigt.\n\n- W\u00E4hlen Sie die Kassen, deren Belege in der Auswertung ber\u00FCcksichtigt werden sollen\n- geben Sie den Zeitraum an, f\u00FCr den die Auswertung gelten soll.\n\nStarten Sie anschliessend den Druck.");
 		defaultProperties.setProperty("receipt.list.help", "");
 		defaultProperties
-						.setProperty(
-										"bookkeeping.transfer.help",
+						.setProperty("bookkeeping.transfer.help",
 										"Um Belege in die Finanzbuchhaltung zu transferieren gehen Sie wie folgt vor: \n\nW\u00E4hlen Sie in der Liste links die Kassen, deren Belege transferiert werden sollen\nLegen Sie den Zeitraum (von Datum bis und mit Datum) fest, f\u00FCr den die Belege transferiert werden sollen.\n\nDie vom System vorgeschlagene Transaktionsnummer k\u00F6nnen akzeptieren (empfohlen) oder selber setzen. Achten Sie im zweiten Falle darauf, dass diese in der Finanzbuchhaltung nicht bereits vergeben ist. \nDie Buchungsnummer wird innerhalb einer Transaktion verwendet und identifiziert die Positionen innerhalb der Transaktion.\n\nVergewissern Sie sich, dass das Exportverzeichnis existiert und starten Sie den Datenexport anschliessend.");
 		defaultProperties
-						.setProperty(
-										"transfer.help",
+						.setProperty("transfer.help",
 										"Den Belegtransfer ben\u00F6tigen Sie, um beispielsweise Belege aus einer Filiale zu exportieren und sie im Hauptgesch\u00E4ft einzulesen.\n\nSo f\u00FChren Sie einen Belegtransfer durch:\n\nExport:\n- W\u00E4hlen Sie in der Liste links die Kassen, deren Belege transferiert werden sollen\n- Legen Sie den Zeitraum (von Datum bis und mit Datum) fest, f\u00FCr den die Belege transferiert werden sollen\n- Stellen Sie sicher, dass Sie ein g\u00FCltiges Exportverzeichnis ausgew\u00E4hlt haben.\n\nImport\nW\u00E4hlen Sie importieren und geben Sie den Importpfad an. Sollen Belege aus der alten Colibri-Kasse importiert werden, so aktivieren Sie die Checkbox \"Importdateien altes Format (alte Colibri-Version)\".");
 		/*
 		 * Dann die aktuellen aus der Datei statistics.ini...
@@ -1101,10 +1047,9 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 		{
 			FileInputStream in = new FileInputStream(file);
 			Main.properties.load(in);
-			Main.properties
-							.setProperty(
-											"settlement.help",
-											"- Wählen Sie die Kasse(n), die in der Auswertung berücksichtigt werden soll(en).\n- Wählen Sie den gewünschten Datumsbereich aus\n- Wählen Sie die gewünschte Art der Auswertung (selektieren Sie den entsprechenden Tab)\n- Wählen Sie die gewünschten Optionen\n\n\n- Einzelne Abschlüsse\nWählen Sie aus der Dropdownliste den gewünschten Abschluss aus.\n\n- Datumsbereich\nMit aktivierter Checkbox \"Inklusive &Liste der stornierten Belege\" werden die stornierten Belege berücksichtigt.\n\n- Abschlüsse über Periode\nBitte beachten Sie: Diese Auswertung kumuliert die Abschlüsse des fraglichen Zeitraums. Diese Auswertung muss nicht zwingend mit der entsprechenden Auswertung \"Datumsbereich\" übereinstimmen. Als Stichdatum wird hier das Datum der Abschlüsse verwendet, nicht der Belege.\n\nWählen Sie gewünschte Auswertung:\n\n-- Kassenabschluss gewählte Periode\nKumuliert die Abschlüsse des gewählten Datumsbereichs. Mit aktivierter Checkbox werden sämtliche verfügbaren Informationen der Abschlüsse berücksichtigt.\n-- Differenzliste\nDie Differenzliste weist Differenzen der Abschlüsse über die gewählte Periode aus. Diese Auswertung eignet sich nur für Perioden, für die gespeicherte Abschlüsse vorhanden sind.\n-- Rabattliste\nDiese Auswertung zeigt eine Statistik der Rabatte im angegebenen Zeitraum. Mit aktivierter Checkbox \"Nur Positionen mit Rabatt berücksichtigen\" werden nur Positionen berücksichtigt, welche einen Rabatt haben.");
+			Main.properties.setProperty(
+							"settlement.help",
+							"- Wählen Sie die Kasse(n), die in der Auswertung berücksichtigt werden soll(en).\n- Wählen Sie den gewünschten Datumsbereich aus\n- Wählen Sie die gewünschte Art der Auswertung (selektieren Sie den entsprechenden Tab)\n- Wählen Sie die gewünschten Optionen\n\n\n- Einzelne Abschlüsse\nWählen Sie aus der Dropdownliste den gewünschten Abschluss aus.\n\n- Datumsbereich\nMit aktivierter Checkbox \"Inklusive &Liste der stornierten Belege\" werden die stornierten Belege berücksichtigt.\n\n- Abschlüsse über Periode\nBitte beachten Sie: Diese Auswertung kumuliert die Abschlüsse des fraglichen Zeitraums. Diese Auswertung muss nicht zwingend mit der entsprechenden Auswertung \"Datumsbereich\" übereinstimmen. Als Stichdatum wird hier das Datum der Abschlüsse verwendet, nicht der Belege.\n\nWählen Sie gewünschte Auswertung:\n\n-- Kassenabschluss gewählte Periode\nKumuliert die Abschlüsse des gewählten Datumsbereichs. Mit aktivierter Checkbox werden sämtliche verfügbaren Informationen der Abschlüsse berücksichtigt.\n-- Differenzliste\nDie Differenzliste weist Differenzen der Abschlüsse über die gewählte Periode aus. Diese Auswertung eignet sich nur für Perioden, für die gespeicherte Abschlüsse vorhanden sind.\n-- Rabattliste\nDiese Auswertung zeigt eine Statistik der Rabatte im angegebenen Zeitraum. Mit aktivierter Checkbox \"Nur Positionen mit Rabatt berücksichtigen\" werden nur Positionen berücksichtigt, welche einen Rabatt haben.");
 			
 		}
 		catch (FileNotFoundException e)
@@ -1115,8 +1060,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 			org.eclipse.jface.dialogs.MessageDialog
 							.openError(null,
 											Messages.getString("Main.Dateizugrifffehler_56"), //$NON-NLS-1$
-											Messages
-															.getString("Main.Die_Datei___statistics.properties___im_Verzeichnis__57") + Path.getInstance().DIR_CFG + Messages.getString("Main._konnte_nicht_gelesen_werden._Das_Programm_wird_beendet._58")); //$NON-NLS-1$ //$NON-NLS-2$
+											Messages.getString("Main.Die_Datei___statistics.properties___im_Verzeichnis__57") + Path.getInstance().DIR_CFG + Messages.getString("Main._konnte_nicht_gelesen_werden._Das_Programm_wird_beendet._58")); //$NON-NLS-1$ //$NON-NLS-2$
 			throw e;
 		}
 		
@@ -1136,9 +1080,8 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 		 */
 		Main.properties.setProperty(
 						"consolidated", String.valueOf(this.salespointComposite.areAllSalespointsSelected())); //$NON-NLS-1$
-		Main.properties
-						.setProperty(
-										"salespoints", this.salespointComposite.getSalespointPropertyFromList(this.salespointComposite.getSelectedSalespoints())); //$NON-NLS-1$
+		Main.properties.setProperty(
+						"salespoints", this.salespointComposite.getSalespointPropertyFromList(this.salespointComposite.getSelectedSalespoints())); //$NON-NLS-1$
 		/*
 		 * Daterange properties
 		 */
@@ -1158,15 +1101,15 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 		 * settlements
 		 */
 		Main.properties.setProperty("settlement-type", Integer.toString(this.settlementComposite.getSettlementType())); //$NON-NLS-1$
-		Main.properties.setProperty("date.report.selection", Integer.toString(this.settlementComposite
-						.getSelectedDateReport()));
-		Main.properties.setProperty("date.report.full-selection", Boolean.toString(this.settlementComposite
-						.getDateComposite().getFullSelection()));
-		Main.properties.setProperty("discount-list.only-with-discounts", Boolean.toString(this.settlementComposite
-						.getOnlyWithDiscounts()));
+		Main.properties.setProperty("date.report.selection",
+						Integer.toString(this.settlementComposite.getSelectedDateReport()));
+		Main.properties.setProperty("date.report.full-selection",
+						Boolean.toString(this.settlementComposite.getDateComposite().getFullSelection()));
+		Main.properties.setProperty("discount-list.only-with-discounts",
+						Boolean.toString(this.settlementComposite.getOnlyWithDiscounts()));
 		
-		Main.properties.setProperty("receipt.report.full-selection", Boolean.toString(this.settlementComposite
-						.getReceiptComposite().getFullSelection()));
+		Main.properties.setProperty("receipt.report.full-selection",
+						Boolean.toString(this.settlementComposite.getReceiptComposite().getFullSelection()));
 		/*
 		 * Import/Export properties
 		 */
@@ -1205,8 +1148,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 			org.eclipse.jface.dialogs.MessageDialog
 							.openError(null,
 											Messages.getString("Main.Dateizugriffsfehler_81"), //$NON-NLS-1$
-											Messages
-															.getString("Main.Die_Eigenschaftendatei___statistics.ini___im_Verzeichnis__82") + Path.getInstance().DIR_CFG + Messages.getString("Main._konnte_nicht_aktualisiert_werden._83") //$NON-NLS-1$ //$NON-NLS-2$
+											Messages.getString("Main.Die_Eigenschaftendatei___statistics.ini___im_Verzeichnis__82") + Path.getInstance().DIR_CFG + Messages.getString("Main._konnte_nicht_aktualisiert_werden._83") //$NON-NLS-1$ //$NON-NLS-2$
 							);
 		}
 	}

@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
@@ -104,10 +104,7 @@ public class Day14HourStatistics extends Statistics
 		 */
 		while (iterator.hasNext())
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager.getLogManager().getLogger("colibri").info("Daten konvertieren");
-			}
+			Logger.getLogger("colibri").info("Daten konvertieren");
 			Object[] results = this.convertResults((Object[]) iterator.next());
 			// Erste und letzte Tagesstunde für Output speichern...
 			int hour = ((Integer) results[1]).intValue();
@@ -120,35 +117,23 @@ public class Day14HourStatistics extends Statistics
 				/*
 				 * Record initialisieren...
 				 */
-				if (LogManager.getLogManager().getLogger("colibri") != null)
-				{
-					LogManager.getLogManager().getLogger("colibri").info("SortMap initialisieren");
-				}
+				Logger.getLogger("colibri").info("SortMap initialisieren");
 				map = this.initRecord(results);
 			}
 			else
 			{
-				if (LogManager.getLogManager().getLogger("colibri") != null)
-				{
-					LogManager.getLogManager().getLogger("colibri").info("Numerische Daten übertragen");
-				}
+				Logger.getLogger("colibri").info("Numerische Daten übertragen");
 				map = this.initNumericValue(results, map);
 			}
 			
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager.getLogManager().getLogger("colibri").info("SortMap In Liste übertragen");
-			}
+			Logger.getLogger("colibri").info("SortMap In Liste übertragen");
 			records.put(results[0], map);
 		}
 		
 		/*
 		 * Nun die Daten aus der Hashtable in eine Liste umladen...
 		 */
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").info("In Sortierliste übertragen");
-		}
+		Logger.getLogger("colibri").info("In Sortierliste übertragen");
 		ArrayList list = new ArrayList();
 		Enumeration enumerationeration = records.elements();
 		while (enumerationeration.hasMoreElements())
@@ -156,10 +141,7 @@ public class Day14HourStatistics extends Statistics
 			list.add(enumerationeration.nextElement());
 		}
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").info("Daten sortieren");
-		}
+		Logger.getLogger("colibri").info("Daten sortieren");
 		Object[] array = list.toArray(new Object[0]);
 		Arrays.sort(array);
 		

@@ -8,7 +8,7 @@ package ch.eugster.pos.events;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
@@ -76,17 +76,11 @@ public class EnterAction extends ModeChangeAction implements ReceiptChildChangeL
 	 */
 	public void actionPerformed(ActionEvent e)
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").info("Enter pressed...");
-			LogManager.getLogManager().getLogger("colibri").info("Position mode " + this.context.getMode());
-		}
+		Logger.getLogger("colibri").info("Enter pressed...");
+		Logger.getLogger("colibri").info("Position mode " + this.context.getMode());
 		if (this.context.getMode().equals(UserPanel.CONTEXT_MODE_POS))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager.getLogManager().getLogger("colibri").info("Position mode...");
-			}
+			Logger.getLogger("colibri").info("Position mode...");
 			this.positionAction(e);
 		}
 		else if (this.context.getMode().equals(UserPanel.CONTEXT_MODE_PAY))
@@ -99,10 +93,7 @@ public class EnterAction extends ModeChangeAction implements ReceiptChildChangeL
 	private void positionAction(ActionEvent e)
 	{
 		String value = this.context.getNumericBlock().readValue();
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").info("Entered value: " + (value == null ? "Null" : value));
-		}
+		Logger.getLogger("colibri").info("Entered value: " + (value == null ? "Null" : value));
 		PositionModel pm = this.context.getReceiptModel().getPositionModel();
 		if (value.trim().length() == 0 && pm.isFresh())
 		{
@@ -115,10 +106,10 @@ public class EnterAction extends ModeChangeAction implements ReceiptChildChangeL
 		{
 			// if (value.length() > 6)
 			// {
-			this.context.getChildrenBlock().getPositionBlock().setValues(
-							this.context.getReceiptModel().getPositionModel());
-			this.context.getChildrenBlock().getPositionBlock().display(
-							this.context.getReceiptModel().getPositionModel());
+			this.context.getChildrenBlock().getPositionBlock()
+							.setValues(this.context.getReceiptModel().getPositionModel());
+			this.context.getChildrenBlock().getPositionBlock()
+							.display(this.context.getReceiptModel().getPositionModel());
 			// }
 			// else
 			// {

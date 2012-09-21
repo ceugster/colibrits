@@ -257,11 +257,11 @@ public class SettlementPrinter2 implements PosEventListener, Runnable
 		}
 		catch (FileNotFoundException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (IOException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		return this.properties;
 	}
@@ -1692,18 +1692,18 @@ public class SettlementPrinter2 implements PosEventListener, Runnable
 			if (this.generalCutType.equals("partial"))
 			{ //$NON-NLS-1$
 				this.printer.partialCut(this.generalLfBeforeCut);
-				// LogManager.getLogManager().getLogger("colibri").info("      Beleg geschnitten.");
+				// Logger.getLogger("colibri").info("      Beleg geschnitten.");
 			}
 			else if (this.generalCutType.equals("full"))
 			{ //$NON-NLS-1$
 				this.printer.fullCut(this.generalLfBeforeCut);
-				// LogManager.getLogManager().getLogger("colibri").info("      Beleg geschnitten.");
+				// Logger.getLogger("colibri").info("      Beleg geschnitten.");
 			}
 		}
 		
-		// LogManager.getLogManager().getLogger("colibri").info("      Schublade öffnen...");
+		// Logger.getLogger("colibri").info("      Schublade öffnen...");
 		this.printer.kickOutDrawer(drawer);
-		// LogManager.getLogManager().getLogger("colibri").info("      Schublade geöffnet.");
+		// Logger.getLogger("colibri").info("      Schublade geöffnet.");
 	}
 	
 	private void putPaymentTypes(Payment payment, Hashtable paymentData)
@@ -1748,12 +1748,12 @@ public class SettlementPrinter2 implements PosEventListener, Runnable
 		Element root = new Element("transfer"); //$NON-NLS-1$
 		if (export)
 		{
-			// LogManager.getLogManager().getLogger("colibri").info(
+			// Logger.getLogger("colibri").info(
 			// "      Export vorbereiten...");
 			root.setAttribute("salespoint", Salespoint.getCurrent().getId().toString()); //$NON-NLS-1$
 			root.setAttribute("date", settlement.toString()); //$NON-NLS-1$
 			root.setAttribute("count", new Integer(this.receiptCount).toString()); //$NON-NLS-1$
-			// LogManager.getLogManager().getLogger("colibri").info(
+			// Logger.getLogger("colibri").info(
 			// "      Export vorbereitet.");
 		}
 		return root;
@@ -1786,11 +1786,11 @@ public class SettlementPrinter2 implements PosEventListener, Runnable
 				}
 				catch (FileNotFoundException e)
 				{
-					//					LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+					//					Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 				}
 				catch (IOException e)
 				{
-					//					LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+					//					Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 				}
 			}
 		}

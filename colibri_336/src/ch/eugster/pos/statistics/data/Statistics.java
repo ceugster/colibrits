@@ -208,7 +208,7 @@ public abstract class Statistics extends Runner implements IRunnableWithProgress
 		monitor.worked(1);
 		if (this.report == null)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").info("Report == null"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			//			Logger.getLogger("colibri").info("Report == null"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			org.eclipse.jface.dialogs.MessageDialog
 							.openWarning(
 											this.pdg.getShell(),
@@ -230,18 +230,18 @@ public abstract class Statistics extends Runner implements IRunnableWithProgress
 		JasperPrint jp = null;
 		try
 		{
-			// LogManager.getLogManager().getLogger("colibri").info("Report wird gefüllt...");
+			// Logger.getLogger("colibri").info("Report wird gefüllt...");
 			jp = JasperFillManager.fillReport(this.report, ht, source);
 			monitor.worked(1);
 			
 			if (this.pdg.getDestination() == PrintDestinationGroup.SCREEN)
 			{
-				// LogManager.getLogManager().getLogger("colibri").info("Report wird angezeigt...");
+				// Logger.getLogger("colibri").info("Report wird angezeigt...");
 				JasperViewer.viewReport(jp, false);
 			}
 			else if (this.pdg.getDestination() == PrintDestinationGroup.PRINTER)
 			{
-				// LogManager.getLogManager().getLogger("colibri").info("Report wird gedruckt...");
+				// Logger.getLogger("colibri").info("Report wird gedruckt...");
 				result = JasperPrintManager.printReport(jp, true);
 			}
 			else if (this.pdg.getDestination() == PrintDestinationGroup.FILE)
@@ -252,9 +252,9 @@ public abstract class Statistics extends Runner implements IRunnableWithProgress
 					switch (type)
 					{
 						case PrintDestinationGroup.FILE_PDF:
-							// LogManager.getLogManager().getLogger("colibri").info("Report wird als PDF exportiert...");
+							// Logger.getLogger("colibri").info("Report wird als PDF exportiert...");
 							JasperExportManager.exportReportToPdfFile(jp, path);
-							// LogManager.getLogManager().getLogger("colibri").info("Report wurde als PDF exportiert.");
+							// Logger.getLogger("colibri").info("Report wurde als PDF exportiert.");
 							break;
 						case PrintDestinationGroup.FILE_EXCEL:
 							result = this.printFile(jp, path);
@@ -276,7 +276,7 @@ public abstract class Statistics extends Runner implements IRunnableWithProgress
 		}
 		catch (JRException e)
 		{
-			// LogManager.getLogManager().getLogger("colibri").info("Exception ausgelöst. "
+			// Logger.getLogger("colibri").info("Exception ausgelöst. "
 			// + e.getLocalizedMessage());
 			e.printStackTrace();
 		}
@@ -374,8 +374,8 @@ public abstract class Statistics extends Runner implements IRunnableWithProgress
 		File designFile = new File(designPath);
 		File reportFile = new File(reportPath);
 		
-		//			LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Statistics.Die_Vorlage_wird_im_Pfad__30") + designPath + Messages.getString("Statistics._gesucht..._31")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		//			LogManager.getLogManager().getLogger(Messages.getString("Statistics.colibri_32")).info(Messages.getString("Statistics.Der_kompilierte_Bericht_wird_im_Pfad__33") + reportPath + Messages.getString("Statistics._gesucht..._34")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//			Logger.getLogger("colibri").info(Messages.getString("Statistics.Die_Vorlage_wird_im_Pfad__30") + designPath + Messages.getString("Statistics._gesucht..._31")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//			Logger.getLogger(Messages.getString("Statistics.colibri_32")).info(Messages.getString("Statistics.Der_kompilierte_Bericht_wird_im_Pfad__33") + reportPath + Messages.getString("Statistics._gesucht..._34")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		if (!designFile.exists())
 		{
@@ -384,7 +384,7 @@ public abstract class Statistics extends Runner implements IRunnableWithProgress
 		
 		if (designFile.exists())
 		{
-			//				LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Statistics.Die_Vorlage_existiert._36")); //$NON-NLS-1$ //$NON-NLS-2$
+			//				Logger.getLogger("colibri").info(Messages.getString("Statistics.Die_Vorlage_existiert._36")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (reportFile.exists())
 			{
 				if (designFile.lastModified() > reportFile.lastModified())
@@ -409,7 +409,7 @@ public abstract class Statistics extends Runner implements IRunnableWithProgress
 		
 		if (reportFile.exists())
 		{
-			//				LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Statistics.Der_Bericht_existiert._46")); //$NON-NLS-1$ //$NON-NLS-2$
+			//				Logger.getLogger("colibri").info(Messages.getString("Statistics.Der_Bericht_existiert._46")); //$NON-NLS-1$ //$NON-NLS-2$
 			try
 			{
 				report = (JasperReport) JRLoader.loadObject(reportFile.getAbsolutePath());

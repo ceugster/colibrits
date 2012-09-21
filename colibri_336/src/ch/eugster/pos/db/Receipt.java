@@ -19,7 +19,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
@@ -946,8 +946,7 @@ public class Receipt extends Table
 	
 	public DBResult store(boolean updateNumber, boolean updateTimestamp)
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri").info("Entered: Receipt.store()");
+		Logger.getLogger("colibri").info("Entered: Receipt.store()");
 		this.setNumber(this.extractNumber(updateNumber));
 		
 		// 10205
@@ -1225,27 +1224,20 @@ public class Receipt extends Table
 			statusCriteria.addOrCriteria(reversedCriteria);
 		}
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri")
-							.info("Statuskriterium als Kriterium in Abfrage einfügen...");
+		Logger.getLogger("colibri").info("Statuskriterium als Kriterium in Abfrage einfügen...");
 		criteria.addAndCriteria(statusCriteria);
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri").info("Abfrage wird aufgebaut...");
+		Logger.getLogger("colibri").info("Abfrage wird aufgebaut...");
 		ReportQueryByCriteria query = new ReportQueryByCriteria(Receipt.class, fields, criteria);
 		
 		long items = 0;
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri").info("Ergebnismenge wird in der Datenbank abgefragt...");
+		Logger.getLogger("colibri").info("Ergebnismenge wird in der Datenbank abgefragt...");
 		Iterator iter = Database.getCurrent().getBroker().getReportQueryIteratorByQuery(query);
 		if (iter != null && iter.hasNext())
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri").info("Das Resultat wird umgewandelt...");
+			Logger.getLogger("colibri").info("Das Resultat wird umgewandelt...");
 			Object[] count = (Object[]) iter.next();
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri")
-								.info("Datentyp der Variablen ist " + count[0].getClass().getName());
+			Logger.getLogger("colibri").info("Datentyp der Variablen ist " + count[0].getClass().getName());
 			// 10088
 			if (count[0] instanceof Long)
 			{
@@ -1257,9 +1249,7 @@ public class Receipt extends Table
 			}
 			// 10088
 		}
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri")
-							.info("Rückgabewert an aufrufende Methode zurückgeben und Methode verlassen...");
+		Logger.getLogger("colibri").info("Rückgabewert an aufrufende Methode zurückgeben und Methode verlassen...");
 		return items;
 	}
 	
@@ -1283,9 +1273,7 @@ public class Receipt extends Table
 			statusCriteria.addOrCriteria(reversedCriteria);
 		}
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri")
-							.info("Statuskriterium als Kriterium in Abfrage einfügen...");
+		Logger.getLogger("colibri").info("Statuskriterium als Kriterium in Abfrage einfügen...");
 		criteria.addAndCriteria(statusCriteria);
 		
 		QueryByCriteria query = new QueryByCriteria(Receipt.class, criteria);
@@ -1313,9 +1301,7 @@ public class Receipt extends Table
 			statusCriteria.addOrCriteria(reversedCriteria);
 		}
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri")
-							.info("Statuskriterium als Kriterium in Abfrage einfügen...");
+		Logger.getLogger("colibri").info("Statuskriterium als Kriterium in Abfrage einfügen...");
 		criteria.addAndCriteria(statusCriteria);
 		
 		QueryByCriteria query = new QueryByCriteria(Receipt.class, criteria);
@@ -1348,9 +1334,7 @@ public class Receipt extends Table
 			statusCriteria.addOrCriteria(reversedCriteria);
 		}
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri")
-							.info("Statuskriterium als Kriterium in Abfrage einfügen...");
+		Logger.getLogger("colibri").info("Statuskriterium als Kriterium in Abfrage einfügen...");
 		criteria.addAndCriteria(statusCriteria);
 		
 		QueryByCriteria query = new QueryByCriteria(Receipt.class, criteria);
@@ -1398,7 +1382,7 @@ public class Receipt extends Table
 	/*
 	 * 10435
 	 */
-
+	
 	/**
 	 * 
 	 * @return Receipt[] Rueckgabe eines Arrays vom Typ Receipt
@@ -2841,40 +2825,32 @@ public class Receipt extends Table
 	
 	public void bookGalileo(boolean ignoreIsBooked)
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri").info("Entered: Receipt.bookGalileo()");
+		Logger.getLogger("colibri").info("Entered: Receipt.bookGalileo()");
 		boolean isOpen = false;
 		/*
 		 * Die Positionen, die aus Galileo geholt wurden werden in Galileo
 		 * verbucht. Wenn Galileo ohne Warenbewirtschaftung ist, geschieht hier
 		 * nichts...
 		 */
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-			LogManager.getLogManager().getLogger("colibri")
-							.info("Auf aktuelle Datenbank testen (muss Standard sein)...");
+		Logger.getLogger("colibri").info("Auf aktuelle Datenbank testen (muss Standard sein)...");
 		
 		if (Database.getCurrent().equals(Database.getStandard()))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-				LogManager.getLogManager().getLogger("colibri").info("Prüfen, ob Galileo angeschlossen ist...");
+			Logger.getLogger("colibri").info("Prüfen, ob Galileo angeschlossen ist...");
 			
 			if (ProductServer.isUsed() && ProductServer.getInstance() != null)
 			{
-				if (LogManager.getLogManager().getLogger("colibri") != null)
-					LogManager.getLogManager().getLogger("colibri").info("Galileo läuft...");
+				Logger.getLogger("colibri").info("Galileo läuft...");
 				
 				if (ProductServer.getInstance() instanceof GalileoServer)
 				{
 					if (ProductServer.getInstance().isActive())
 					{
-						if (LogManager.getLogManager().getLogger("colibri") != null)
-							LogManager.getLogManager().getLogger("colibri").info("...und ist aktiv...");
+						Logger.getLogger("colibri").info("...und ist aktiv...");
 						
 						boolean galileoBooked = true;
 						Position[] positions = this.getPositionsAsArray();
-						if (LogManager.getLogManager().getLogger("colibri") != null)
-							LogManager.getLogManager().getLogger("colibri")
-											.info("Positionen des Belegs extrahieren...");
+						Logger.getLogger("colibri").info("Positionen des Belegs extrahieren...");
 						
 						try
 						{
@@ -2883,15 +2859,12 @@ public class Receipt extends Table
 							{
 								ProductServer.getInstance().open();
 							}
-							if (LogManager.getLogManager().getLogger("colibri") != null)
-								LogManager.getLogManager().getLogger("colibri")
-												.info("Verbindung zu Galileo öffnen und die Positionen verbuchen...");
+							Logger.getLogger("colibri").info(
+											"Verbindung zu Galileo öffnen und die Positionen verbuchen...");
 							
 							for (int i = 0; i < positions.length; i++)
 							{
-								if (LogManager.getLogManager().getLogger("colibri") != null)
-									LogManager.getLogManager().getLogger("colibri")
-													.info("Prüfen, ob Position zu verbuchen ist...");
+								Logger.getLogger("colibri").info("Prüfen, ob Position zu verbuchen ist...");
 								
 								if (positions[i].galileoBook)
 								{
@@ -2916,27 +2889,20 @@ public class Receipt extends Table
 										// positions[i].galileoBooked = false;
 										// 10428
 										
-										if (LogManager.getLogManager().getLogger("colibri") != null)
-											LogManager.getLogManager().getLogger("colibri")
-															.info("Start: Verbuchung Position in Galileo...");
+										Logger.getLogger("colibri").info("Start: Verbuchung Position in Galileo...");
 										
 										galileoBooked = ProductServer.getInstance().update(this.status, positions[i]);
 										
-										if (LogManager.getLogManager().getLogger("colibri") != null)
-											LogManager.getLogManager().getLogger("colibri")
-															.info("Ende: Verbuchung Position in Galileo...");
+										Logger.getLogger("colibri").info("Ende: Verbuchung Position in Galileo...");
 										
 										positions[i].galileoBooked = this.status == Receipt.RECEIPT_STATE_SERIALIZED ? galileoBooked
 														: false;
 										
 										this.setPosition(i, positions[i]);
-										if (LogManager.getLogManager().getLogger("colibri") != null)
-											LogManager.getLogManager()
-															.getLogger("colibri")
-															.info("Verbuchung war "
-																			+ (positions[i].galileoBooked ? ""
-																							: "nicht ")
-																			+ "erfolgreich!");
+										Logger.getLogger("colibri").info(
+														"Verbuchung war "
+																		+ (positions[i].galileoBooked ? "" : "nicht ")
+																		+ "erfolgreich!");
 										
 									}
 								}
@@ -2957,7 +2923,7 @@ public class Receipt extends Table
 						}
 						catch (ComException ce)
 						{
-							Table.switchDatabase();
+							ProductServer.getInstance().catchComException(ce);
 						}
 						finally
 						{

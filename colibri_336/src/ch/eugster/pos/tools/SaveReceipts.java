@@ -17,10 +17,11 @@
 package ch.eugster.pos.tools;
 
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.GregorianCalendar;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -29,7 +30,9 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
+import ch.eugster.pos.client.model.PositionModel;
 import ch.eugster.pos.db.Connection;
+import ch.eugster.pos.db.Customer;
 import ch.eugster.pos.db.Database;
 import ch.eugster.pos.db.ForeignCurrency;
 import ch.eugster.pos.db.Payment;
@@ -39,19 +42,20 @@ import ch.eugster.pos.db.Receipt;
 import ch.eugster.pos.db.Salespoint;
 import ch.eugster.pos.db.User;
 import ch.eugster.pos.events.InitializationListener;
+import ch.eugster.pos.product.Code128;
 import ch.eugster.pos.product.ProductServer;
 import ch.eugster.pos.util.Path;
 
 public class SaveReceipts implements InitializationListener
 {
 	
-	private String version = "0.2";
+	private String version = "0.3";
 	private CommandLine commandLine = null;
-	private NumberFormat nf = null;
 	private Receipt receipt;
 	private int count = 100;
 	private int interval = 5;
-	private String code;
+	private String articleCode;
+	private String customerCode;
 	private int counter;
 	private boolean canceled = false;
 	private ProductServer productServer;
@@ -76,7 +80,7 @@ public class SaveReceipts implements InitializationListener
 	
 	private void doWork(Options options)
 	{
-		String helpText = "import [ -h | -v |[-c<integer>] [-i<integer>] [-a<string>]]";
+		String helpText = "import [ -h | -v |[-n<integer>] [-i<integer>] [-a<string>] [-c<string>]]";
 		if (this.commandLine.hasOption("h"))
 		{
 			HelpFormatter hf = new HelpFormatter();
@@ -88,11 +92,19 @@ public class SaveReceipts implements InitializationListener
 		}
 		else
 		{
-			this.connect();
-			if (this.commandLine.hasOption('a')) this.openGalileo();
-			if (this.select()) this.store();
-			if (this.commandLine.hasOption('a')) this.closeGalileo();
-			this.disconnect();
+			Logger.getLogger("SaveReceipts").setLevel(Level.INFO);
+			if (this.commandLine.hasOption('a') || this.commandLine.hasOption('c'))
+			{
+				Logger.getLogger("SaveReceipts").info("Datenbankverbindung wird hergestellt.");
+				this.connect();
+				if (this.openGalileo())
+				{
+					if (this.select()) this.store();
+					this.closeGalileo();
+				}
+				Logger.getLogger("SaveReceipts").info("Datenbankverbindung wird geschlossen.");
+				this.disconnect();
+			}
 		}
 	}
 	
@@ -101,7 +113,9 @@ public class SaveReceipts implements InitializationListener
 		Options options = new Options();
 		options.addOption(this.createOption("a", "article", true,
 						"Aktualisiert den Artikel mit dem angegebenen Artikelcode in Galileo.", false, null));
-		options.addOption(this.createOption("c", "count", true,
+		options.addOption(this.createOption("c", "customer", true,
+						"Benutzt den Kunden mit der angegebenen Kundennummer.", false, null));
+		options.addOption(this.createOption("n", "number", true,
 						"Anzahl Belege, die in die Datenbank geschrieben werden sollen (Vorschlagswert: 100).", false,
 						null));
 		options.addOption(this.createOption("i", "interval", true,
@@ -138,13 +152,24 @@ public class SaveReceipts implements InitializationListener
 	
 	private void verifyCommandLine()
 	{
-		if (this.commandLine.getOptionValue('c') != null)
-			this.count = new Integer(this.commandLine.getOptionValue('c')).intValue();
+		if (this.commandLine.getOptionValue('n') != null)
+		{
+			try
+			{
+				this.count = Integer.valueOf(this.commandLine.getOptionValue('n')).intValue();
+			}
+			catch (NumberFormatException e)
+			{
+				this.count = 100;
+			}
+		}
 		
 		if (this.commandLine.getOptionValue('i') != null)
 			this.interval = new Integer(this.commandLine.getOptionValue('i')).intValue();
 		
-		if (this.commandLine.getOptionValue('a') != null) this.code = this.commandLine.getOptionValue('a');
+		if (this.commandLine.getOptionValue('a') != null) this.articleCode = this.commandLine.getOptionValue('a');
+		
+		if (this.commandLine.getOptionValue('c') != null) this.customerCode = this.commandLine.getOptionValue('c');
 	}
 	
 	/**
@@ -187,21 +212,33 @@ public class SaveReceipts implements InitializationListener
 		System.out.println("Ok!");
 	}
 	
-	private void openGalileo()
+	private boolean openGalileo()
 	{
+		boolean connected = false;
+		Logger.getLogger("SaveReceipts").info("Verbindung zu Galileo wird hergestellt.");
 		this.productServer = ProductServer.getInstance();
-		if (this.productServer instanceof ProductServer) System.out.println("Galileo aktiviert.");
+		if (this.productServer instanceof ProductServer)
+		{
+			Logger.getLogger("SaveReceipts").info("Verbindung zu Galileo wurde hergestellt.");
+			connected = this.getGalileoData(this.articleCode);
+		}
+		else
+		{
+			Logger.getLogger("SaveReceipts").info(
+							"Verbindung zu Galileo konnte nicht hergestellt werden, Programm wird beendet.");
+		}
+		return connected;
 	}
 	
 	private void closeGalileo()
 	{
+		Logger.getLogger("SaveReceipts").info("Verbindung zu Galileo wird geschlossen.");
 		if (this.productServer instanceof ProductServer) this.productServer.close();
 	}
 	
 	private boolean select()
 	{
-		System.out.print("Beleg wird generiert...");
-		
+		Logger.getLogger("SaveReceipts").info("Beleg wird generiert.");
 		Object object = Receipt.select();
 		if (object != null && object instanceof Object[])
 		{
@@ -216,11 +253,60 @@ public class SaveReceipts implements InitializationListener
 					this.receipt.getPayments().clear();
 					this.receipt.getPositions().clear();
 				}
-				System.out.println("Ok!");
 				return true;
 			}
 		}
-		System.out.println("fehlgeschlagen!");
+		return false;
+	}
+	
+	private Customer getCustomer(String code)
+	{
+		Logger.getLogger("SaveReceipts").info("Kunde " + code + " wird gesucht.");
+		Customer customer = null;
+		String customerCode = code;
+		if (code.length() == 13)
+		{
+			customerCode = code.substring(3, 12);
+			Logger.getLogger("SaveReceipts").info(
+							"Kundennummer wird aus " + code + " extrahiert: " + customerCode + ".");
+		}
+		try
+		{
+			Long.valueOf(customerCode == null ? "" : customerCode);
+		}
+		catch (NumberFormatException e)
+		{
+			customerCode = "0";
+		}
+		if (this.productServer.getCustomer(Integer.valueOf(customerCode)))
+		{
+			Logger.getLogger("SaveReceipts").info("Kunde " + customerCode + " gefunden.");
+			customer = this.productServer.getCustomerObject();
+		}
+		else
+		{
+			Logger.getLogger("SaveReceipts").info("Kunde " + customerCode + " nicht gefunden.");
+		}
+		return customer;
+	}
+	
+	private boolean getGalileoData(String code)
+	{
+		String articleCode = code;
+		Code128 code128 = Code128.getCode128(code);
+		if (code128 != null)
+		{
+			articleCode = code128.getArticleCode(code);
+			Logger.getLogger("SaveReceipts").info(
+							code + " ist ein Code 128, Artikelnummer wird extrahiert: " + articleCode + ".");
+		}
+		Logger.getLogger("SaveReceipts").info("Artikel " + code + " wird gesucht.");
+		boolean found = this.productServer.getItem(articleCode);
+		if (found)
+		{
+			Logger.getLogger("SaveReceipts").info("Artikel " + code + " gefunden.");
+			return true;
+		}
 		return false;
 	}
 	
@@ -243,15 +329,17 @@ public class SaveReceipts implements InitializationListener
 				System.out.print(SaveReceipts.this.counter + ". Beleg speichern...");
 				
 				Receipt receipt = SaveReceipts.this.receipt.clone(false);
-				
-				if (SaveReceipts.this.productServer instanceof ProductServer && SaveReceipts.this.code != null)
+				receipt.setCustomer(SaveReceipts.this.getCustomer(SaveReceipts.this.customerCode));
+				if (SaveReceipts.this.productServer instanceof ProductServer && SaveReceipts.this.articleCode != null)
 				{
-					if (SaveReceipts.this.productServer.getItem(SaveReceipts.this.code))
+					Position position = Position.getInstance(receipt);
+					if (SaveReceipts.this.getGalileoData(SaveReceipts.this.articleCode))
 					{
-						Position position = Position.getInstance(receipt);
-						position.productId = SaveReceipts.this.code;
+						position.productId = SaveReceipts.this.articleCode;
 						position.galileoBook = true;
+						position.productNumber = SaveReceipts.this.articleCode;
 						SaveReceipts.this.productServer.setData(position);
+						PositionModel.setText(position);
 						receipt.addPosition(position);
 						receipt.setSettlement(SaveReceipts.this.settlement);
 						Payment payment = Payment.getInstance(receipt);
@@ -260,11 +348,10 @@ public class SaveReceipts implements InitializationListener
 						payment.setPaymentType(PaymentType.getPaymentTypeCash());
 						payment.setAmount(position.getAmount());
 						receipt.addPayment(payment);
+						receipt.store(true, true);
 					}
 				}
-				receipt.store(true, true);
-				System.out.println("Ok!");
-				System.out.println("Zum Beenden beliebige Taste drücken...");
+				Logger.getLogger("SaveReceipts").info("Zum Beenden beliebige Taste drücken...");
 			}
 			
 			public long scheduledExecutionTime()

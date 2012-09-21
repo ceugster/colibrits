@@ -242,4 +242,6 @@ public interface IProductServer
 	 *         <code>false</code>
 	 */
 	public abstract boolean isOrderValid(String code);
+	
+	public void catchComException(Exception e);
 }

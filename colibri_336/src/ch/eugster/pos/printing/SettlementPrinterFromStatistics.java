@@ -24,7 +24,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import ch.eugster.pos.Messages;
 import ch.eugster.pos.client.gui.UserPanel;
@@ -196,11 +196,11 @@ public class SettlementPrinterFromStatistics
 		}
 		catch (FileNotFoundException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (IOException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		return this.properties;
 	}
@@ -448,14 +448,10 @@ public class SettlementPrinterFromStatistics
 				
 				String s = this.format(settlements[i].getShortText(), this.productGroupColumnWidth[0], 0);
 				s = s.concat(this.format("" + settlements[i].getQuantity(), this.productGroupColumnWidth[1], 2)); //$NON-NLS-1$
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount1(), 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount2(), 2, 2, true), this.productGroupColumnWidth[3], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(settlements[i].getAmount1(), 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(settlements[i].getAmount2(), 2, 2, true), this.productGroupColumnWidth[3], 2)); //$NON-NLS-1$
 				this.print(s);
 			}
 			
@@ -468,9 +464,8 @@ public class SettlementPrinterFromStatistics
 		/*
 		 * Total drucken
 		 */
-		String s = this
-						.format(
-										Messages.getString("SettlementPrinter.Total_Warengruppen_105"), this.productGroupColumnWidth[0], 0); //$NON-NLS-1$
+		String s = this.format(
+						Messages.getString("SettlementPrinter.Total_Warengruppen_105"), this.productGroupColumnWidth[0], 0); //$NON-NLS-1$
 		s = s.concat(this.format("" + items, this.productGroupColumnWidth[1], 2)); //$NON-NLS-1$
 		s = s.concat(this.format(
 						"" + NumberUtility.formatDouble(this.amount, 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
@@ -517,14 +512,10 @@ public class SettlementPrinterFromStatistics
 				
 				String s = this.format(settlements[i].getShortText(), this.productGroupColumnWidth[0], 0);
 				s = s.concat(this.format("" + settlements[i].getQuantity(), this.productGroupColumnWidth[1], 2)); //$NON-NLS-1$
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount1(), 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount2(), 2, 2, true), this.productGroupColumnWidth[3], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(settlements[i].getAmount1(), 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(settlements[i].getAmount2(), 2, 2, true), this.productGroupColumnWidth[3], 2)); //$NON-NLS-1$
 				this.print(s);
 			}
 			
@@ -534,9 +525,8 @@ public class SettlementPrinterFromStatistics
 			}
 			
 		}
-		String s = this
-						.format(
-										Messages.getString("SettlementPrinter.Total_Sonstiges_105"), this.productGroupColumnWidth[0], 0); //$NON-NLS-1$
+		String s = this.format(
+						Messages.getString("SettlementPrinter.Total_Sonstiges_105"), this.productGroupColumnWidth[0], 0); //$NON-NLS-1$
 		s = s.concat(this.format("" + items, this.productGroupColumnWidth[1], 2)); //$NON-NLS-1$
 		s = s.concat(this.format(
 						"" + NumberUtility.formatDouble(this.amount, 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
@@ -582,14 +572,10 @@ public class SettlementPrinterFromStatistics
 				tax += settlements[i].getAmount2();
 				String s = this.format(settlements[i].getShortText(), this.productGroupColumnWidth[0], 0);
 				s = s.concat(this.format("" + settlements[i].getQuantity(), this.productGroupColumnWidth[1], 2)); //$NON-NLS-1$
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount1(), 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount2(), 2, 2, true), this.productGroupColumnWidth[3], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(settlements[i].getAmount1(), 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(settlements[i].getAmount2(), 2, 2, true), this.productGroupColumnWidth[3], 2)); //$NON-NLS-1$
 				this.print(s);
 			}
 			if (settlements.length > 0)
@@ -624,18 +610,12 @@ public class SettlementPrinterFromStatistics
 		this.setCharacterSettings(this.paymentFont, this.paymentEmphasized, this.paymentPrintmode, this.paymentJustify);
 		
 		String s = this.format("Total Bewegungen", this.productGroupColumnWidth[0], 0); //$NON-NLS-1$
-		s = s
-						.concat(this
-										.format(
-														"" + NumberUtility.formatInteger(this.positionCount, true), this.productGroupColumnWidth[1], 2)); //$NON-NLS-1$
-		s = s
-						.concat(this
-										.format(
-														""				+ NumberUtility	.formatDouble(	this.positionAmount, 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
-		s = s
-						.concat(this
-										.format(
-														"" + NumberUtility.formatDouble(this.positionTax, 2, 2, true), this.productGroupColumnWidth[3], 2)); //$NON-NLS-1$
+		s = s.concat(this.format(
+						"" + NumberUtility.formatInteger(this.positionCount, true), this.productGroupColumnWidth[1], 2)); //$NON-NLS-1$
+		s = s.concat(this
+						.format("" + NumberUtility.formatDouble(this.positionAmount, 2, 2, true), this.productGroupColumnWidth[2], 2)); //$NON-NLS-1$
+		s = s.concat(this
+						.format("" + NumberUtility.formatDouble(this.positionTax, 2, 2, true), this.productGroupColumnWidth[3], 2)); //$NON-NLS-1$
 		this.print(s);
 		
 		if (this.paymentDelimit)
@@ -656,13 +636,11 @@ public class SettlementPrinterFromStatistics
 		
 		if (printQuantity)
 		{
-			this
-							.print(Messages.getString("SettlementPrinter.Zahlungsarten_109") + "            " + Messages.getString("SettlementPrinter.Zahlungsarten_1092")); //$NON-NLS-1$
+			this.print(Messages.getString("SettlementPrinter.Zahlungsarten_109") + "            " + Messages.getString("SettlementPrinter.Zahlungsarten_1092")); //$NON-NLS-1$
 		}
 		else
 		{
-			this
-							.print(Messages.getString("SettlementPrinter.Zahlungsarten_109") + "            " + Messages.getString("SettlementPrinter.Zahlungsarten_1091")); //$NON-NLS-1$
+			this.print(Messages.getString("SettlementPrinter.Zahlungsarten_109") + "            " + Messages.getString("SettlementPrinter.Zahlungsarten_1091")); //$NON-NLS-1$
 		}
 		
 		Enumeration data = this.payments.elements();
@@ -693,26 +671,20 @@ public class SettlementPrinterFromStatistics
 				}
 				else
 				{
-					s = s
-									.concat(this
-													.format(
-																	""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount1(), 2, 2, true), this.paymentColumnWidth[1], 2)); //$NON-NLS-1$
+					s = s.concat(this
+									.format("" + NumberUtility.formatDouble(settlements[i].getAmount1(), 2, 2, true), this.paymentColumnWidth[1], 2)); //$NON-NLS-1$
 				}
 				if (printQuantity)
 				{
-					s = s
-									.concat(this
-													.format(
-																	""				+ NumberUtility	.formatInteger(	settlements[i]	.getQuantity(), true), this.paymentColumnWidth[2], 2)); //$NON-NLS-1$
+					s = s.concat(this
+									.format("" + NumberUtility.formatInteger(settlements[i].getQuantity(), true), this.paymentColumnWidth[2], 2)); //$NON-NLS-1$
 				}
 				else
 				{
 					s = s.concat(this.format("", this.paymentColumnWidth[2], 2)); //$NON-NLS-1$
 				}
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount2(), 2, 2, true), this.paymentColumnWidth[3], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(settlements[i].getAmount2(), 2, 2, true), this.paymentColumnWidth[3], 2)); //$NON-NLS-1$
 				this.print(s);
 				
 			}
@@ -720,9 +692,8 @@ public class SettlementPrinterFromStatistics
 			if (this.paymentDelimit) this.print(this.format(this.generalDelimiter, this.paymentCols));
 		}
 		
-		String s = this
-						.format(
-										Messages.getString("SettlementPrinter.Total_Zahlungsarten_115"), this.paymentColumnWidth[0] + this.paymentColumnWidth[1], 0); //$NON-NLS-1$
+		String s = this.format(
+						Messages.getString("SettlementPrinter.Total_Zahlungsarten_115"), this.paymentColumnWidth[0] + this.paymentColumnWidth[1], 0); //$NON-NLS-1$
 		
 		if (printQuantity)
 		{
@@ -775,14 +746,10 @@ public class SettlementPrinterFromStatistics
 				{
 					String s = this.format(this.settlements[i].getShortText(), this.paymentColumnWidth[0]
 									+ this.paymentColumnWidth[1], 0);
-					s = s
-									.concat(this
-													.format(
-																	""				+ NumberUtility	.formatInteger(	this.settlements[i].getQuantity(), true), this.paymentColumnWidth[2], 2)); //$NON-NLS-1$
-					s = s
-									.concat(this
-													.format(
-																	""				+ NumberUtility	.formatDouble(	this.settlements[i].getAmount1(), 2, 2, true), this.paymentColumnWidth[3], 2)); //$NON-NLS-1$
+					s = s.concat(this
+									.format("" + NumberUtility.formatInteger(this.settlements[i].getQuantity(), true), this.paymentColumnWidth[2], 2)); //$NON-NLS-1$
+					s = s.concat(this
+									.format(""		+ NumberUtility.formatDouble(this.settlements[i].getAmount1(), 2, 2, true), this.paymentColumnWidth[3], 2)); //$NON-NLS-1$
 					this.print(s);
 				}
 			}
@@ -823,14 +790,10 @@ public class SettlementPrinterFromStatistics
 				
 				String s = this.format(settlements[i].getShortText(), this.taxColumnWidth[0], 0);
 				s = s.concat(this.format("" + settlements[i].getQuantity(), this.taxColumnWidth[1], 2)); //$NON-NLS-1$
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount1(), 2, 2, true), this.taxColumnWidth[2], 2)); //$NON-NLS-1$
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	settlements[i]	.getAmount2(), 2, 2, true), this.taxColumnWidth[3], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(settlements[i].getAmount1(), 2, 2, true), this.taxColumnWidth[2], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(settlements[i].getAmount2(), 2, 2, true), this.taxColumnWidth[3], 2)); //$NON-NLS-1$
 				this.print(s);
 			}
 			if (settlements.length > 0)
@@ -878,10 +841,8 @@ public class SettlementPrinterFromStatistics
 				
 				String s = this.format(this.settlements[i].getShortText(), this.reversedColumnWidth[0]
 								+ this.reversedColumnWidth[1] + this.reversedColumnWidth[2], 0);
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	this.settlements[i].getAmount1(), 2, 2, true), this.reversedColumnWidth[3], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(this.settlements[i].getAmount1(), 2, 2, true), this.reversedColumnWidth[3], 2)); //$NON-NLS-1$
 				this.print(s);
 				
 				if (isTakeBacksPrinted)
@@ -918,10 +879,8 @@ public class SettlementPrinterFromStatistics
 				
 				String s = this.format(this.settlements[i].getShortText(), this.reversedColumnWidth[0]
 								+ this.reversedColumnWidth[1] + this.reversedColumnWidth[2], 0);
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	this.settlements[i].getAmount1(), 2, 2, true), this.reversedColumnWidth[3], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(this.settlements[i].getAmount1(), 2, 2, true), this.reversedColumnWidth[3], 2)); //$NON-NLS-1$
 				this.print(s);
 				
 				if (isPayedInvoicesPrinted)
@@ -964,10 +923,8 @@ public class SettlementPrinterFromStatistics
 				s = s.concat(this.format(t, this.reversedColumnWidth[1], 2));
 				t = splitted.length > 2 ? splitted[2] : "";
 				s = s.concat(this.format(t, this.reversedColumnWidth[2], 2));
-				s = s
-								.concat(this
-												.format(
-																""				+ NumberUtility	.formatDouble(	this.settlements[i].getAmount1(), 2, 2, true), this.reversedColumnWidth[3], 2)); //$NON-NLS-1$
+				s = s.concat(this
+								.format("" + NumberUtility.formatDouble(this.settlements[i].getAmount1(), 2, 2, true), this.reversedColumnWidth[3], 2)); //$NON-NLS-1$
 				this.print(s);
 				
 				if (isReversedHeaderPrinted)
@@ -1025,9 +982,8 @@ public class SettlementPrinterFromStatistics
 			}
 			else if (sets.length > 1)
 			{
-				this
-								.print(sets[0].getCode()
-												+ " " + Messages.getString("SettlementPrinter.Kassastock_127") + " " + sets[0].getCode()); //$NON-NLS-1$
+				this.print(sets[0].getCode()
+								+ " " + Messages.getString("SettlementPrinter.Kassastock_127") + " " + sets[0].getCode()); //$NON-NLS-1$
 				
 				for (int k = 0; k < sets.length; k++)
 				{
@@ -1038,9 +994,8 @@ public class SettlementPrinterFromStatistics
 							amount = Math.abs(sets[k].getAmount1());
 						else
 							amount = sets[k].getAmount1();
-						String s = this
-										.format(
-														sets[k].getCode() + " " + sets[k].getShortText(), this.stockColumnWidth[0] + this.stockColumnWidth[1], 0); //$NON-NLS-1$
+						String s = this.format(
+										sets[k].getCode() + " " + sets[k].getShortText(), this.stockColumnWidth[0] + this.stockColumnWidth[1], 0); //$NON-NLS-1$
 						s = s.concat(this.format(NumberUtility.formatDouble(amount, 2, 2, true),
 										this.stockColumnWidth[2], 2));
 						this.print(s);
@@ -1075,10 +1030,7 @@ public class SettlementPrinterFromStatistics
 				s = s.concat(this.format("", this.stockColumnWidth[2], 0, '-'));
 				this.print(s);
 				
-				s = this
-								.format(
-												sets[0].getCode()
-																+ " " + Messages.getString("SettlementPrinter.Total_Kassensturz"), this.stockColumnWidth[0], 0); //$NON-NLS-1$
+				s = this.format(sets[0].getCode() + " " + Messages.getString("SettlementPrinter.Total_Kassensturz"), this.stockColumnWidth[0], 0); //$NON-NLS-1$
 				s = s.concat(this.format("", this.stockColumnWidth[1], 2));
 				s = s.concat(this.format(NumberUtility.formatDouble(amount, fractionDigits, fractionDigits, true),
 								this.stockColumnWidth[2], 2)); // 10183
@@ -1106,18 +1058,12 @@ public class SettlementPrinterFromStatistics
 			if (this.generalCutType.equals("partial"))
 			{
 				this.printer.partialCut(this.generalLfBeforeCut);
-				if (LogManager.getLogManager().getLogger("colibri") != null)
-				{
-					LogManager.getLogManager().getLogger("colibri").info("      Beleg geschnitten.");
-				}
+				Logger.getLogger("colibri").info("      Beleg geschnitten.");
 			}
 			else if (this.generalCutType.equals("full"))
 			{
 				this.printer.fullCut(this.generalLfBeforeCut);
-				if (LogManager.getLogManager().getLogger("colibri") != null)
-				{
-					LogManager.getLogManager().getLogger("colibri").info("      Beleg geschnitten.");
-				}
+				Logger.getLogger("colibri").info("      Beleg geschnitten.");
 			}
 		}
 	}

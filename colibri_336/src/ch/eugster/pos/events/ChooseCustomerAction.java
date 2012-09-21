@@ -8,7 +8,7 @@ package ch.eugster.pos.events;
 
 import java.awt.event.ActionEvent;
 import java.util.Date;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
@@ -103,45 +103,26 @@ public class ChooseCustomerAction extends ModeDependendAction implements IFailOv
 				{
 					try
 					{
-						if (LogManager.getLogManager().getLogger("colibri") != null)
-						{
-							LogManager.getLogManager().getLogger("colibri").info("Kundenserver wird instantiiert.");
-						} // OleEnvironment.Initialize(); //10086
+						Logger.getLogger("colibri").info("Kundenserver wird instantiiert.");
+						// OleEnvironment.Initialize(); //10086
 						kundenserver ks = new kundenserver();
-						if (LogManager.getLogManager().getLogger("colibri") != null)
-						{
-							LogManager.getLogManager().getLogger("colibri").info(
-											"Kundenserver versucht, Verbindung zur Datenbank herzustellen...");
-						}
+						Logger.getLogger("colibri").info(
+										"Kundenserver versucht, Verbindung zur Datenbank herzustellen...");
 						if (ks.db_open(Config.getInstance().getGalileoPath()))
 						{
-							if (LogManager.getLogManager().getLogger("colibri") != null)
-							{
-								LogManager.getLogManager().getLogger("colibri").info(
-												"Verbindung zur Datenbank hergestellt.");
-							}
+							Logger.getLogger("colibri").info("Verbindung zur Datenbank hergestellt.");
 							Customer customer = new Customer();
-							if (LogManager.getLogManager().getLogger("colibri") != null)
-							{
-								LogManager.getLogManager().getLogger("colibri").info("Kundenfenster wird geöffnet.");
-							}
+							Logger.getLogger("colibri").info("Kundenfenster wird geöffnet.");
 							int i = ks.getkundennr();
 							System.out.println(i);
 							if (i == 0)
 							{
-								if (LogManager.getLogManager().getLogger("colibri") != null)
-								{
-									LogManager.getLogManager().getLogger("colibri").info(
-													"Es wurde keine Auswahl getroffen.");
-								}
+								Logger.getLogger("colibri").info("Es wurde keine Auswahl getroffen.");
 							}
 							else
 							{
-								if (LogManager.getLogManager().getLogger("colibri") != null)
-								{
-									LogManager.getLogManager().getLogger("colibri").info(
-													"Kunde wurde ausgewählt, die Kundendaten werden gesetzt.");
-								}
+								Logger.getLogger("colibri").info(
+												"Kunde wurde ausgewählt, die Kundendaten werden gesetzt.");
 								customer.setId(new Integer(i).toString());
 								String vname = (String) ks.getCVORNAME();
 								String nname = (String) ks.getCNAME1();
@@ -153,31 +134,18 @@ public class ChooseCustomerAction extends ModeDependendAction implements IFailOv
 								Boolean paid = (Boolean) ks.getLRGGEWAEHLT();
 								if (paid.booleanValue())
 								{
-									if (LogManager.getLogManager().getLogger("colibri") != null)
-									{
-										LogManager.getLogManager().getLogger("colibri").info(
-														"Offene Rechnung für Bezahlung ausgewählt.");
-									}
+									Logger.getLogger("colibri").info("Offene Rechnung für Bezahlung ausgewählt.");
 									if (ProductGroup.getPaidInvoiceGroup() == null)
 									{
-										MessageDialog
-														.showInformation(
-																		Frame.getMainFrame(),
-																		"Fehler",
-																		"Es ist keine Warengruppe für bezahlte Rechnungen festgelegt worden.\nBevor Rechnungen bar bezahlt werden können, muss eine Warengruppe definiert sein.",
-																		MessageDialog.TYPE_ERROR);
+										MessageDialog.showInformation(
+														Frame.getMainFrame(),
+														"Fehler",
+														"Es ist keine Warengruppe für bezahlte Rechnungen festgelegt worden.\nBevor Rechnungen bar bezahlt werden können, muss eine Warengruppe definiert sein.",
+														MessageDialog.TYPE_ERROR);
 										ks.db_close();
-										if (LogManager.getLogManager().getLogger("colibri") != null)
-										{
-											LogManager.getLogManager().getLogger("colibri").info(
-															"Verbindung zur Datenbank wird geschlossen.");
-										}
+										Logger.getLogger("colibri").info("Verbindung zur Datenbank wird geschlossen.");
 										ks.release();
-										if (LogManager.getLogManager().getLogger("colibri") != null)
-										{
-											LogManager.getLogManager().getLogger("colibri").info(
-															"Kundenserverinstanz wird zerstört.");
-										}
+										Logger.getLogger("colibri").info("Kundenserverinstanz wird zerstört.");
 										return;
 									}
 									Double amount = (Double) ks.getNRGBETRAG();
@@ -185,12 +153,13 @@ public class ChooseCustomerAction extends ModeDependendAction implements IFailOv
 									Date date = (Date) ks.getCRGDATUM();
 									if (paid.booleanValue())
 									{
-										this.context.getReceiptModel().getPositionModel().addInvoicePosition(paid,
-														amount.doubleValue(), invoice, date);
+										this.context.getReceiptModel().getPositionModel()
+														.addInvoicePosition(paid, amount.doubleValue(), invoice, date);
 										if (this.context.getReceiptModel().getPositionModel().isComplete())
 										{
-											this.context.getReceiptModel().getPositionTableModel().store(
-															this.context.getReceiptModel().getPositionModel()
+											this.context.getReceiptModel()
+															.getPositionTableModel()
+															.store(this.context.getReceiptModel().getPositionModel()
 																			.getPosition());
 										}
 									}
@@ -198,17 +167,10 @@ public class ChooseCustomerAction extends ModeDependendAction implements IFailOv
 								// 10215
 							}
 							UserPanel.getCurrent().getReceiptModel().updateCustomer(customer);
-							if (LogManager.getLogManager().getLogger("colibri") != null)
-							{
-								LogManager.getLogManager().getLogger("colibri").info(
-												"Verbindung zur Datenbank wird geschlossen.");
-							}
+							Logger.getLogger("colibri").info("Verbindung zur Datenbank wird geschlossen.");
 							ks.db_close();
 						}
-						if (LogManager.getLogManager().getLogger("colibri") != null)
-						{
-							LogManager.getLogManager().getLogger("colibri").info("Kundenserverinstanz wird zerstört.");
-						}
+						Logger.getLogger("colibri").info("Kundenserverinstanz wird zerstört.");
 						ks.release();
 						// OleEnvironment.UnInitialize(); //10086
 						

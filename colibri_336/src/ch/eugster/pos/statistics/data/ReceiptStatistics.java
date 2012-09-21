@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
@@ -92,8 +92,8 @@ public class ReceiptStatistics extends Statistics
 		{
 			salespoints = this.sc.getSelectedSalespoints();
 		}
-		return Position.selectReceiptStatistics(salespoints, this.from, this.to, this.receiptStatisticsComposite
-						.getGroupSelection());
+		return Position.selectReceiptStatistics(salespoints, this.from, this.to,
+						this.receiptStatisticsComposite.getGroupSelection());
 	}
 	
 	/*
@@ -118,11 +118,8 @@ public class ReceiptStatistics extends Statistics
 			
 			this.addItem(item);
 			
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager.getLogManager().getLogger("colibri").info("Daten einfügen");
-				LogManager.getLogManager().getLogger("colibri").info("Daten in Liste übertragen");
-			}
+			Logger.getLogger("colibri").info("Daten einfügen");
+			Logger.getLogger("colibri").info("Daten in Liste übertragen");
 		}
 		
 		if (this.receiptStatisticsComposite.getGroupSelection() == 0)
@@ -256,10 +253,10 @@ public class ReceiptStatistics extends Statistics
 		public int compareTo(Object other)
 		{
 			Row row = (Row) other;
-			int result = ((String) this.get("salespoint")).compareTo(((String) row.get("salespoint"))); //$NON-NLS-1$ //$NON-NLS-2$
+			int result = ((String) this.get("salespoint")).compareTo((String) row.get("salespoint")); //$NON-NLS-1$ //$NON-NLS-2$
 			if (result == 0)
 			{
-				return ((Integer) this.get("year")).compareTo(((Integer) row.get("year"))); //$NON-NLS-1$ //$NON-NLS-2$
+				return ((Integer) this.get("year")).compareTo((Integer) row.get("year")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			else
 			{
@@ -270,7 +267,7 @@ public class ReceiptStatistics extends Statistics
 	
 	private ReceiptStatisticsComposite receiptStatisticsComposite;
 	// private int weekday = -1;
-	//	
+	//
 	// private long startHour = 24;
 	// private long endHour = 0;
 	// private int start = 84;

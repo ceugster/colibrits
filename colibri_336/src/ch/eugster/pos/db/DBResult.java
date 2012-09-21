@@ -6,8 +6,6 @@
  */
 package ch.eugster.pos.db;
 
-//import java.util.logging.LogManager;
-
 import org.eclipse.swt.widgets.Shell;
 
 import ch.eugster.pos.Messages;
@@ -112,8 +110,8 @@ public class DBResult
 	
 	public void log()
 	{
-		//		if (getErrorCode() != 0) LogManager.getLogManager().getLogger("colibri").severe(getErrorCode() + ": " + getErrorText()); //$NON-NLS-1$ //$NON-NLS-2$
-		//		if (!getExternalErrorCode().equals("")) LogManager.getLogManager().getLogger("colibri").severe(getExternalErrorCode() + ": " + getExternalErrorText()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//		if (getErrorCode() != 0) Logger.getLogger("colibri").severe(getErrorCode() + ": " + getErrorText()); //$NON-NLS-1$ //$NON-NLS-2$
+		//		if (!getExternalErrorCode().equals("")) Logger.getLogger("colibri").severe(getExternalErrorCode() + ": " + getExternalErrorText()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	public int showMessage()

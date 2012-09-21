@@ -96,27 +96,27 @@ public class ReceiptPrinter
 		catch (ClassNotFoundException e)
 		{
 			e.printStackTrace();
-			//			LogManager.getLogManager().getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Klasse__16") + el.getAttributeValue("class") + Messages.getString("ReceiptPrinter._nicht_gefunden.__18") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			//			Logger.getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Klasse__16") + el.getAttributeValue("class") + Messages.getString("ReceiptPrinter._nicht_gefunden.__18") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			System.exit(-22);
 		}
 		catch (NoSuchMethodException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Kein_entsprechender_Konstruktor_fuer_Klasse__20") + el.getAttributeValue("class") + ". " + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			//			Logger.getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Kein_entsprechender_Konstruktor_fuer_Klasse__20") + el.getAttributeValue("class") + ". " + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			System.exit(-22);
 		}
 		catch (IllegalAccessException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-22);
 		}
 		catch (InvocationTargetException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Kein_entsprechender_Konstruktor_fuer_Klasse__25") + el.getAttributeValue("class") + ". " + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			//			Logger.getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Kein_entsprechender_Konstruktor_fuer_Klasse__25") + el.getAttributeValue("class") + ". " + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			System.exit(-22);
 		}
 		catch (InstantiationException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen___29") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+			//			Logger.getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen___29") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 			System.exit(-22);
 		}
 		return pos;

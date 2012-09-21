@@ -72,7 +72,7 @@ public abstract class Table
 	
 	protected DBResult describeError(Exception e)
 	{
-		//		LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+		//		Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		DBResult result = new DBResult();
 		if (e.getCause() instanceof SQLException)
 		{
@@ -402,7 +402,7 @@ public abstract class Table
 								.getTemporary(), title, text));
 				if (Table.switchDatabase())
 				{
-					//											LogManager.getLogManager().getLogger("colibri").severe(Messages.getString("Table.Datenbank_wurde_erfolgreich_gewechselt._48")); //$NON-NLS-1$ //$NON-NLS-2$
+					//											Logger.getLogger("colibri").severe(Messages.getString("Table.Datenbank_wurde_erfolgreich_gewechselt._48")); //$NON-NLS-1$ //$NON-NLS-2$
 					result = Table.select(query);
 					
 					title = Messages.getString("Table.Datenbank_gewechselt_49"); //$NON-NLS-1$
@@ -448,7 +448,7 @@ public abstract class Table
 		}
 		catch (PersistenceBrokerException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			Iterator iterator = new ArrayList().iterator();
 			String title = null;
 			String text = null;
@@ -479,7 +479,7 @@ public abstract class Table
 												.getStandard(), Database.getTemporary(), title, text));
 								if (Table.switchDatabase())
 								{
-									//									LogManager.getLogManager().getLogger("colibri").severe(Messages.getString("Table.Datenbank_wurde_erfolgreich_gewechselt._48")); //$NON-NLS-1$ //$NON-NLS-2$
+									//									Logger.getLogger("colibri").severe(Messages.getString("Table.Datenbank_wurde_erfolgreich_gewechselt._48")); //$NON-NLS-1$ //$NON-NLS-2$
 									iterator = Table.selectToIterator(query);
 									
 									title = Messages.getString("Table.Datenbank_gewechselt_49"); //$NON-NLS-1$
@@ -543,22 +543,22 @@ public abstract class Table
 		}
 		catch (NoSuchMethodException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-1);
 		}
 		catch (InstantiationException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-1);
 		}
 		catch (IllegalAccessException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-1);
 		}
 		catch (InvocationTargetException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-1);
 		}
 		
@@ -596,22 +596,22 @@ public abstract class Table
 		}
 		catch (NoSuchMethodException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-1);
 		}
 		catch (InstantiationException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-1);
 		}
 		catch (IllegalAccessException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-1);
 		}
 		catch (InvocationTargetException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-1);
 		}
 		
@@ -680,12 +680,12 @@ public abstract class Table
 	{
 		if (result.getErrorCode() != 0)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").info("Problem occured while updating table '" + table + "' in temporary database."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			//			LogManager.getLogManager().getLogger("colibri").info(result.getErrorText()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").info("Problem occured while updating table '" + table + "' in temporary database."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			//			Logger.getLogger("colibri").info(result.getErrorText()); //$NON-NLS-1$
 			if (result.getExternalErrorCode() != null && result.getExternalErrorCode().length() > 0)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").info(result.getExternalErrorCode()); //$NON-NLS-1$
-				//				LogManager.getLogManager().getLogger("colibri").info(result.getExternalErrorText()); //$NON-NLS-1$
+				//				Logger.getLogger("colibri").info(result.getExternalErrorCode()); //$NON-NLS-1$
+				//				Logger.getLogger("colibri").info(result.getExternalErrorText()); //$NON-NLS-1$
 			}
 		}
 	}

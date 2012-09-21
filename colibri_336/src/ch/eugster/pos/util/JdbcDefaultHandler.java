@@ -49,12 +49,12 @@ public class JdbcDefaultHandler
 		}
 		catch (JDOMException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-18);
 		}
 		catch (IOException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-18);
 		}
 	}
@@ -63,9 +63,9 @@ public class JdbcDefaultHandler
 	{
 		if (JdbcDefaultHandler.jdbcDefaultHandler == null)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").info("Looking for path of " + Path.getInstance().jcdFile + "..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger("colibri").info("Looking for path of " + Path.getInstance().jcdFile + "..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			JdbcDefaultHandler.jdbcDefaults = new File(Path.getInstance().jcdFile);
-			//			LogManager.getLogManager().getLogger("colibri").info("Loading file " + Path.getInstance().jcdFile + "..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger("colibri").info("Loading file " + Path.getInstance().jcdFile + "..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			JdbcDefaultHandler.jdbcDefaultHandler = JdbcDefaultHandler
 							.loadJdbcDefaultHandler(JdbcDefaultHandler.jdbcDefaults);
 		}
@@ -76,10 +76,10 @@ public class JdbcDefaultHandler
 	{
 		JdbcDefaultHandler c = null;
 		File file = new File(fileName);
-		//		LogManager.getLogManager().getLogger("colibri").info("Testing if file " + file.getName() + " exists..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//		Logger.getLogger("colibri").info("Testing if file " + file.getName() + " exists..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (file.exists())
 		{
-			//			LogManager.getLogManager().getLogger("colibri").info(file.getName() + " exists."); //$NON-NLS-1$ //$NON-NLS-2$
+			//			Logger.getLogger("colibri").info(file.getName() + " exists."); //$NON-NLS-1$ //$NON-NLS-2$
 			c = JdbcDefaultHandler.loadJdbcDefaultHandler(file);
 		}
 		return c;
@@ -87,7 +87,7 @@ public class JdbcDefaultHandler
 	
 	protected static JdbcDefaultHandler loadJdbcDefaultHandler(File file)
 	{
-		//		LogManager.getLogManager().getLogger("colibri").info("Loading file " + file.getAbsolutePath() + "..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//		Logger.getLogger("colibri").info("Loading file " + file.getAbsolutePath() + "..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return new JdbcDefaultHandler(file);
 	}
 	

@@ -6,8 +6,6 @@
  */
 package ch.eugster.pos.db;
 
-//import java.util.logging.LogManager;
-
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.PreparedStatement;
@@ -80,7 +78,7 @@ public abstract class Connection
 		JdbcConnectionDescriptor jcd = new JdbcConnectionDescriptor();
 		this.setConnection(jcd, db);
 		cr.addDescriptor(jcd);
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Connection.Broker_f_u00FCr_4") + " " + getName() + " " + Messages.getString("Connection.initialisieren..._7")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		//		Logger.getLogger("colibri").info(Messages.getString("Connection.Broker_f_u00FCr_4") + " " + getName() + " " + Messages.getString("Connection.initialisieren..._7")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		try
 		{
 			this.broker = PersistenceBrokerFactory.createPersistenceBroker(key);
@@ -98,11 +96,11 @@ public abstract class Connection
 		}
 		catch (PBFactoryException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(Messages.getString("Connection.Broker_f_u00FCr_38") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__41")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger("colibri").severe(Messages.getString("Connection.Broker_f_u00FCr_38") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__41")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			String[] msg = e.getMessages();
 			for (int i = 0; i < msg.length; i++)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").severe(msg[i]); //$NON-NLS-1$
+				//				Logger.getLogger("colibri").severe(msg[i]); //$NON-NLS-1$
 			}
 			this.setConnected(false);
 			// setActive(false);
@@ -110,11 +108,11 @@ public abstract class Connection
 		catch (PersistenceBrokerException e)
 		{
 			if (this.broker.isInTransaction()) this.broker.abortTransaction();
-			//			LogManager.getLogManager().getLogger("colibri").severe(Messages.getString("Connection.Broker_f_u00FCr_44") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__47")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger("colibri").severe(Messages.getString("Connection.Broker_f_u00FCr_44") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__47")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			String[] msg = e.getMessages();
 			for (int i = 0; i < msg.length; i++)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").severe(msg[i]); //$NON-NLS-1$
+				//				Logger.getLogger("colibri").severe(msg[i]); //$NON-NLS-1$
 			}
 			this.setConnected(false);
 			// setActive(false);
@@ -126,7 +124,7 @@ public abstract class Connection
 			 */
 			this.updateDB();
 			
-			//			LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Connection.Datenbankversion_von_28") + " " + getName() + " " + Messages.getString("Connection.abrufen..._31")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger("colibri").info(Messages.getString("Connection.Datenbankversion_von_28") + " " + getName() + " " + Messages.getString("Connection.abrufen..._31")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			try
 			{
 				this.broker.beginTransaction();
@@ -140,7 +138,7 @@ public abstract class Connection
 			finally
 			{
 			}
-			//			LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Connection.Verbindung_zu_33") + " " + getName() + " " + Messages.getString("Connection.erfolgreich_hergestellt..._36")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger("colibri").info(Messages.getString("Connection.Verbindung_zu_33") + " " + getName() + " " + Messages.getString("Connection.erfolgreich_hergestellt..._36")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		}
 		return this.isConnected();
 	}
