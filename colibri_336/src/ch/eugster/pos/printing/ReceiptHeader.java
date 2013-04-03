@@ -8,6 +8,7 @@ package ch.eugster.pos.printing;
 
 import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import org.jdom.Element;
 
@@ -53,18 +54,22 @@ public class ReceiptHeader extends ReceiptSection
 		}
 	}
 	
+	@Override
 	public void print(POSPrinter printer, Receipt receipt)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Header wird gedruckt...");
 		this.print(printer, receipt, this.printLogo, this.logo, this.logoMode);
 		
 	}
 	
 	public void print(POSPrinter printer, Receipt receipt, boolean printLogo, int logo, int logomode)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Druckvorgang läuft...");
 		this.setCharacterSettings(printer);
 		
 		if (printLogo)
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Logo drucken...");
 			printer.printLogo(logo, this.logoMode);
 			printer.print(System.getProperty("line.separator")); //$NON-NLS-1$
 		}
@@ -76,9 +81,9 @@ public class ReceiptHeader extends ReceiptSection
 			printer.println("******************************************");
 		}
 		
-		for (int i = 0; i < this.rows.length; i++)
+		for (ReceiptRow row : this.rows)
 		{
-			ReceiptRow row = this.rows[i];
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Headerzeilen drucken...");
 			ReceiptColumn[] columns = row.getColumns();
 			String[] values = new String[columns.length];
 			for (int j = 0; j < columns.length; j++)
@@ -107,17 +112,17 @@ public class ReceiptHeader extends ReceiptSection
 				}
 			}
 			if (values[0].equals("receipt.header.text")) { //$NON-NLS-1$
-				for (int k = 0; k < this.text.length; k++)
+				for (String element : this.text)
 				{
-					this.rows[i].print(printer, this.text[k]);
+					row.print(printer, element);
 				}
 			}
 			else if (values[0].equals("receipt.header.salespoint")) { //$NON-NLS-1$
-				this.rows[i].print(printer, receipt.getSalespoint().name);
+				row.print(printer, receipt.getSalespoint().name);
 			}
 			else
 			{
-				this.rows[i].print(printer, values);
+				row.print(printer, values);
 			}
 		}
 	}
@@ -125,9 +130,8 @@ public class ReceiptHeader extends ReceiptSection
 	public String getText(Receipt receipt)
 	{
 		StringBuffer printOut = new StringBuffer();
-		for (int i = 0; i < this.rows.length; i++)
+		for (ReceiptRow row : this.rows)
 		{
-			ReceiptRow row = this.rows[i];
 			ReceiptColumn[] columns = row.getColumns();
 			String[] values = new String[columns.length];
 			for (int j = 0; j < columns.length; j++)
@@ -156,17 +160,17 @@ public class ReceiptHeader extends ReceiptSection
 				}
 			}
 			if (values[0].equals("receipt.header.text")) { //$NON-NLS-1$
-				for (int k = 0; k < this.text.length; k++)
+				for (String element : this.text)
 				{
-					printOut = printOut.append(this.rows[i].getText(this.text[k]));
+					printOut = printOut.append(row.getText(element));
 				}
 			}
 			else if (values[0].equals("receipt.header.salespoint")) { //$NON-NLS-1$
-				printOut = printOut.append(this.rows[i].getText(receipt.getSalespoint().name));
+				printOut = printOut.append(row.getText(receipt.getSalespoint().name));
 			}
 			else
 			{
-				printOut = printOut.append(this.rows[i].getText(values));
+				printOut = printOut.append(row.getText(values));
 			}
 		}
 		return printOut.toString();

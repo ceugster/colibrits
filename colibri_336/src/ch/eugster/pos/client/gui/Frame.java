@@ -89,16 +89,16 @@ public class Frame extends JFrame implements ModeChangeListener, CustomerChangeL
 	{
 		Frame.main = this;
 		
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Frame.TabPanel_wird_initialisiert._2")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Frame.TabPanel_wird_initialisiert._2")); //$NON-NLS-1$ //$NON-NLS-2$
 		this.tabPanel = new TabPanel();
 		this.tabPanel.setFocusable(false);
 		this.tabPanel.addModeChangeListener(this);
 		
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Frame.TabPanel_ist_initialisiert._4")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Frame.TabPanel_ist_initialisiert._4")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().add(this.tabPanel, BorderLayout.CENTER);
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Frame.TabPanel_eingefuegt._6")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Frame.TabPanel_eingefuegt._6")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		this.lockFile = new File(
 						Path.getInstance().lockDir.concat(File.separator.concat(Path.getInstance().FILE_COLIBRI_LOCK)));
@@ -107,17 +107,17 @@ public class Frame extends JFrame implements ModeChangeListener, CustomerChangeL
 			this.lockFile.createNewFile();
 			this.bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.lockFile.getAbsolutePath(),
 							true), "UTF-8"));//$NON-NLS-1$
-			//			LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Frame.lockfile_erstellt._8")); //$NON-NLS-1$ //$NON-NLS-2$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Frame.lockfile_erstellt._8")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		catch (IOException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		
 		// Table.addDatabaseErrorListener(this) ;
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Frame.Frame_wird_DatabaseErrorListener_von_Table._11")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Frame.Frame_wird_DatabaseErrorListener_von_Table._11")); //$NON-NLS-1$ //$NON-NLS-2$
 		this.addShutdownListener(Database.getTemporary());
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Frame.Tempor_u00E4re_Datenbank_wird_ShutdownListener_von_Frame._13")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Frame.Tempor_u00E4re_Datenbank_wird_ShutdownListener_von_Frame._13")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		this.addComponentListener(new ComponentAdapter()
 		{
@@ -144,9 +144,9 @@ public class Frame extends JFrame implements ModeChangeListener, CustomerChangeL
 	{
 		Table.addDatabaseErrorListener(this);
 		
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Frame.Kundendisplay_wird_geschlossen..._15")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Frame.Kundendisplay_wird_geschlossen..._15")); //$NON-NLS-1$ //$NON-NLS-2$
 		this.tabPanel.getCustomerDisplay().closeAll();
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("Frame.Bondrucker_wird_geschlossen..._17")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Frame.Bondrucker_wird_geschlossen..._17")); //$NON-NLS-1$ //$NON-NLS-2$
 		this.tabPanel.getReceiptPrinter().cleanup();
 		
 		try

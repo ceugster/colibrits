@@ -45,7 +45,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -87,7 +87,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -113,7 +113,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -134,7 +134,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -156,7 +156,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -181,7 +181,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -207,7 +207,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -259,7 +259,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -282,7 +282,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -305,7 +305,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -323,7 +323,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -350,7 +350,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -369,7 +369,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -388,7 +388,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -415,7 +415,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -470,7 +470,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -507,7 +507,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -530,7 +530,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -548,7 +548,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -582,7 +582,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -608,7 +608,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -627,7 +627,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -648,7 +648,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -671,7 +671,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -689,7 +689,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -711,7 +711,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -736,7 +736,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -770,7 +770,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -794,7 +794,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -814,7 +814,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -832,7 +832,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -853,7 +853,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -871,7 +871,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -889,7 +889,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -907,7 +907,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -926,7 +926,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -945,7 +945,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}
@@ -989,7 +989,7 @@ public class POSPrinterEpsonTMT88II extends POSPrinter
 			}
 			catch (IOException e)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			}
 		}
 	}

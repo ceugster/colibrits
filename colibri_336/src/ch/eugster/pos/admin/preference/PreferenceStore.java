@@ -348,6 +348,23 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		this.properties.list(out);
 	}
 	
+	private int getHeartbeat(Element connection)
+	{
+		String heartbeat = connection.getAttributeValue("heartbeat");
+		if (heartbeat == null)
+		{
+			return 0;
+		}
+		try
+		{
+			return Integer.valueOf(heartbeat).intValue();
+		}
+		catch (NumberFormatException e)
+		{
+			return 0;
+		}
+	}
+	
 	/**
 	 * Loads this preference store from the file established in the constructor
 	 * <code>PreferenceStore(java.lang.String)</code> (or by
@@ -375,147 +392,60 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		RGB rgb = cfg.getTabPanelRGBBackground();
 		this.setDefault("database.standard.name", cfg.getDatabaseStandardName()); //$NON-NLS-1$
 		this.setDefault("database.standard.active", cfg.getDatabaseStandardActive()); //$NON-NLS-1$
-		this
-						.setDefault(
-										"database.standard.connection.jcd-alias", cfg.getDatabaseStandardConnection().getAttributeValue("jcd-alias")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.default-connection", cfg.getDatabaseStandardConnection().getAttributeValue("default-connection")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.platform", cfg.getDatabaseStandardConnection().getAttributeValue("platform")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.jdbc-level", cfg.getDatabaseStandardConnection().getAttributeValue("jdbc-level")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.driver", cfg.getDatabaseStandardConnection().getAttributeValue("driver")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.protocol", cfg.getDatabaseStandardConnection().getAttributeValue("protocol")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.subprotocol", cfg.getDatabaseStandardConnection().getAttributeValue("subprotocol")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.host", cfg.getDatabaseStandardConnection().getAttributeValue("host")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.port", cfg.getDatabaseStandardConnection().getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.database", cfg.getDatabaseStandardConnection().getAttributeValue("database")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.options", cfg.getDatabaseStandardConnection().getAttributeValue("options")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.username", cfg.getDatabaseStandardConnection().getAttributeValue("username")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.password", cfg.getDatabaseStandardConnection().getAttributeValue("password")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.batch-mode", cfg.getDatabaseStandardConnection().getAttributeValue("batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.standard.connection.use-auto-commit", cfg.getDatabaseStandardConnection().getAttributeValue("use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.jcd-alias", cfg.getDatabaseStandardConnection().getAttributeValue("jcd-alias")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.default-connection", cfg.getDatabaseStandardConnection().getAttributeValue("default-connection")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.platform", cfg.getDatabaseStandardConnection().getAttributeValue("platform")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.jdbc-level", cfg.getDatabaseStandardConnection().getAttributeValue("jdbc-level")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.driver", cfg.getDatabaseStandardConnection().getAttributeValue("driver")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.protocol", cfg.getDatabaseStandardConnection().getAttributeValue("protocol")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.subprotocol", cfg.getDatabaseStandardConnection().getAttributeValue("subprotocol")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.host", cfg.getDatabaseStandardConnection().getAttributeValue("host")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.port", cfg.getDatabaseStandardConnection().getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.database", cfg.getDatabaseStandardConnection().getAttributeValue("database")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.options", cfg.getDatabaseStandardConnection().getAttributeValue("options")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.username", cfg.getDatabaseStandardConnection().getAttributeValue("username")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.password", cfg.getDatabaseStandardConnection().getAttributeValue("password")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.batch-mode", cfg.getDatabaseStandardConnection().getAttributeValue("batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.use-auto-commit", cfg.getDatabaseStandardConnection().getAttributeValue("use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.standard.connection.heartbeat", this.getHeartbeat(cfg.getDatabaseStandardConnection())); //$NON-NLS-1$ 
 		
 		this.setDefault("database.temporary.name", cfg.getDatabaseTemporaryName()); //$NON-NLS-1$
 		this.setDefault("database.temporary.active", cfg.getDatabaseTemporaryActive()); //$NON-NLS-1$
-		this
-						.setDefault(
-										"database.temporary.connection.jcd-alias", cfg.getDatabaseTemporaryConnection().getAttributeValue("jcd-alias")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.default-connection", cfg.getDatabaseTemporaryConnection().getAttributeValue("default-connection")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.platform", cfg.getDatabaseTemporaryConnection().getAttributeValue("platform")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.jdbc-level", cfg.getDatabaseTemporaryConnection().getAttributeValue("jdbc-level")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.driver", cfg.getDatabaseTemporaryConnection().getAttributeValue("driver")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.protocol", cfg.getDatabaseTemporaryConnection().getAttributeValue("protocol")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.subprotocol", cfg.getDatabaseTemporaryConnection().getAttributeValue("subprotocol")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.host", cfg.getDatabaseTemporaryConnection().getAttributeValue("host")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.port", cfg.getDatabaseTemporaryConnection().getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.database", cfg.getDatabaseTemporaryConnection().getAttributeValue("database")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.options", cfg.getDatabaseTemporaryConnection().getAttributeValue("options")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.username", cfg.getDatabaseTemporaryConnection().getAttributeValue("username")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.password", cfg.getDatabaseTemporaryConnection().getAttributeValue("password")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.batch-mode", cfg.getDatabaseTemporaryConnection().getAttributeValue("batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.temporary.connection.use-auto-commit", cfg.getDatabaseTemporaryConnection().getAttributeValue("use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.jcd-alias", cfg.getDatabaseTemporaryConnection().getAttributeValue("jcd-alias")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.default-connection", cfg.getDatabaseTemporaryConnection().getAttributeValue("default-connection")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.platform", cfg.getDatabaseTemporaryConnection().getAttributeValue("platform")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.jdbc-level", cfg.getDatabaseTemporaryConnection().getAttributeValue("jdbc-level")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.driver", cfg.getDatabaseTemporaryConnection().getAttributeValue("driver")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.protocol", cfg.getDatabaseTemporaryConnection().getAttributeValue("protocol")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.subprotocol", cfg.getDatabaseTemporaryConnection().getAttributeValue("subprotocol")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.host", cfg.getDatabaseTemporaryConnection().getAttributeValue("host")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.port", cfg.getDatabaseTemporaryConnection().getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.database", cfg.getDatabaseTemporaryConnection().getAttributeValue("database")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.options", cfg.getDatabaseTemporaryConnection().getAttributeValue("options")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.username", cfg.getDatabaseTemporaryConnection().getAttributeValue("username")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.password", cfg.getDatabaseTemporaryConnection().getAttributeValue("password")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.batch-mode", cfg.getDatabaseTemporaryConnection().getAttributeValue("batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.use-auto-commit", cfg.getDatabaseTemporaryConnection().getAttributeValue("use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.temporary.connection.heartbeat", this.getHeartbeat(cfg.getDatabaseTemporaryConnection())); //$NON-NLS-1$ 
 		
 		this.setDefault("database.tutorial.name", cfg.getDatabaseTutorialName()); //$NON-NLS-1$
 		this.setDefault("database.tutorial.active", cfg.getDatabaseTutorialActive()); //$NON-NLS-1$
-		this
-						.setDefault(
-										"database.tutorial.connection.jcd-alias", cfg.getDatabaseTutorialConnection().getAttributeValue("jcd-alias")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.default-connection", cfg.getDatabaseTutorialConnection().getAttributeValue("default-connection")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.platform", cfg.getDatabaseTutorialConnection().getAttributeValue("platform")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.jdbc-level", cfg.getDatabaseTutorialConnection().getAttributeValue("jdbc-level")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.driver", cfg.getDatabaseTutorialConnection().getAttributeValue("driver")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.protocol", cfg.getDatabaseTutorialConnection().getAttributeValue("protocol")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.subprotocol", cfg.getDatabaseTutorialConnection().getAttributeValue("subprotocol")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.host", cfg.getDatabaseTutorialConnection().getAttributeValue("host")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.port", cfg.getDatabaseTutorialConnection().getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.database", cfg.getDatabaseTutorialConnection().getAttributeValue("database")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.options", cfg.getDatabaseTutorialConnection().getAttributeValue("options")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.username", cfg.getDatabaseTutorialConnection().getAttributeValue("username")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.password", cfg.getDatabaseTutorialConnection().getAttributeValue("password")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.batch-mode", cfg.getDatabaseTutorialConnection().getAttributeValue("batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"database.tutorial.connection.use-auto-commit", cfg.getDatabaseTutorialConnection().getAttributeValue("use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.jcd-alias", cfg.getDatabaseTutorialConnection().getAttributeValue("jcd-alias")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.default-connection", cfg.getDatabaseTutorialConnection().getAttributeValue("default-connection")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.platform", cfg.getDatabaseTutorialConnection().getAttributeValue("platform")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.jdbc-level", cfg.getDatabaseTutorialConnection().getAttributeValue("jdbc-level")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.driver", cfg.getDatabaseTutorialConnection().getAttributeValue("driver")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.protocol", cfg.getDatabaseTutorialConnection().getAttributeValue("protocol")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.subprotocol", cfg.getDatabaseTutorialConnection().getAttributeValue("subprotocol")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.host", cfg.getDatabaseTutorialConnection().getAttributeValue("host")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.port", cfg.getDatabaseTutorialConnection().getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.database", cfg.getDatabaseTutorialConnection().getAttributeValue("database")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.options", cfg.getDatabaseTutorialConnection().getAttributeValue("options")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.username", cfg.getDatabaseTutorialConnection().getAttributeValue("username")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.password", cfg.getDatabaseTutorialConnection().getAttributeValue("password")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.batch-mode", cfg.getDatabaseTutorialConnection().getAttributeValue("batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.use-auto-commit", cfg.getDatabaseTutorialConnection().getAttributeValue("use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("database.tutorial.connection.heartbeat", this.getHeartbeat(cfg.getDatabaseTutorialConnection())); //$NON-NLS-1$ 
 		
 		this.setDefault("salespoint.id", cfg.getSalespointId()); //$NON-NLS-1$
 		this.setDefault("salespoint.force-settlement", cfg.getSalespointForceSettlement()); //$NON-NLS-1$
@@ -634,9 +564,7 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		
 		this.setDefault("receipt.automatic-print", cfg.getReceipt().getAttributeValue("automatic-print")); //$NON-NLS-1$
 		this.setDefault("receipt.take-back-print-twice", cfg.getReceipt().getAttributeValue("take-back-print-twice")); //$NON-NLS-1$
-		this
-						.setDefault(
-										"receipt.take-back-print-signature", cfg.getReceipt().getAttributeValue("take-back-print-signature")); //$NON-NLS-1$
+		this.setDefault("receipt.take-back-print-signature", cfg.getReceipt().getAttributeValue("take-back-print-signature")); //$NON-NLS-1$
 		this.setDefault("receipt.header.text", cfg.getReceiptHeaderText()); //$NON-NLS-1$
 		this.setDefault("receipt.header.number.length", cfg.getReceiptHeaderNumberLength()); //$NON-NLS-1$
 		this.setDefault("receipt.header.row.col.align", cfg.getReceiptHeaderTextAlign()); //$NON-NLS-1$
@@ -667,113 +595,53 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		
 		Element printer = cfg.getPosPrinter();
 		String id = printer.getAttributeValue("id"); //$NON-NLS-1$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + ".use", new Boolean(printer.getAttributeValue("use")).booleanValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		this.setDefault("periphery.pos-printer." + id + ".use", new Boolean(printer.getAttributeValue("use")).booleanValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		this.setDefault("periphery.pos-printer." + id + ".name", printer.getAttributeValue("name")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		this.setDefault("periphery.pos-printer." + id + ".class", printer.getAttributeValue("class")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		Element device = printer.getChild("device"); //$NON-NLS-1$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + ".port", device.getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + ".alias", device.getAttributeValue("alias")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + ".charset", device.getAttributeValue("charset")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + ".characterset", Integer.valueOf(device.getAttributeValue("charactertable")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + ".port", device.getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + ".alias", device.getAttributeValue("alias")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + ".charset", device.getAttributeValue("charset")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + ".characterset", Integer.valueOf(device.getAttributeValue("charactertable")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		Element serial = device.getChild("serial"); //$NON-NLS-1$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".baudrate", Integer.valueOf(serial.getAttributeValue("baudrate")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolin", Integer.valueOf(serial.getAttributeValue("flowcontrolin")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolout", Integer.valueOf(serial.getAttributeValue("flowcontrolout")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".databits", Integer.valueOf(serial.getAttributeValue("databits")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".stopbits", Integer.valueOf(serial.getAttributeValue("stopbits")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".parity", Integer.valueOf(serial.getAttributeValue("parity")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".baudrate", Integer.valueOf(serial.getAttributeValue("baudrate")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolin", Integer.valueOf(serial.getAttributeValue("flowcontrolin")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolout", Integer.valueOf(serial.getAttributeValue("flowcontrolout")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".databits", Integer.valueOf(serial.getAttributeValue("databits")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".stopbits", Integer.valueOf(serial.getAttributeValue("stopbits")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".parity", Integer.valueOf(serial.getAttributeValue("parity")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		List cashdrawers = printer.getChildren("cashdrawer"); //$NON-NLS-1$
 		for (Iterator j = cashdrawers.iterator(); j.hasNext();)
 		{
 			Element cashdrawer = (Element) j.next();
 			String cashdrawerId = cashdrawer.getAttributeValue("id"); //$NON-NLS-1$
-			this
-							.setDefault(
-											"periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".use", new Boolean(cashdrawer.getAttributeValue("use")).booleanValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			this
-							.setDefault(
-											"periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pin", Integer.valueOf(cashdrawer.getAttributeValue("pin")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			this
-							.setDefault(
-											"periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pulseon", Integer.valueOf(cashdrawer.getAttributeValue("pulseon")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			this
-							.setDefault(
-											"periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pulseoff", Integer.valueOf(cashdrawer.getAttributeValue("pulseoff")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			this
-							.setDefault(
-											"periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".currency", cashdrawer.getAttributeValue("currency")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			this.setDefault("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".use", new Boolean(cashdrawer.getAttributeValue("use")).booleanValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			this.setDefault("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pin", Integer.valueOf(cashdrawer.getAttributeValue("pin")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			this.setDefault("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pulseon", Integer.valueOf(cashdrawer.getAttributeValue("pulseon")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			this.setDefault("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pulseoff", Integer.valueOf(cashdrawer.getAttributeValue("pulseoff")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			this.setDefault("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".currency", cashdrawer.getAttributeValue("currency")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		}
 		
 		Element customerDisplay = cfg.getCustomerDisplay();
 		id = customerDisplay.getAttributeValue("id"); //$NON-NLS-1$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + ".use", new Boolean(customerDisplay.getAttributeValue("use")).booleanValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		this.setDefault("periphery.customer-display." + id + ".use", new Boolean(customerDisplay.getAttributeValue("use")).booleanValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		this.setDefault("periphery.customer-display." + id + ".name", customerDisplay.getAttributeValue("name")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		this.setDefault("periphery.customer-display." + id + ".class", customerDisplay.getAttributeValue("class")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + ".emulation", Integer.valueOf(customerDisplay.getAttributeValue("emulation")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + ".line-count", Integer.valueOf(customerDisplay.getAttributeValue("line-count")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + ".line-length", Integer.valueOf(customerDisplay.getAttributeValue("line-length")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		this.setDefault("periphery.customer-display." + id + ".emulation", Integer.valueOf(customerDisplay.getAttributeValue("emulation")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		this.setDefault("periphery.customer-display." + id + ".line-count", Integer.valueOf(customerDisplay.getAttributeValue("line-count")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		this.setDefault("periphery.customer-display." + id + ".line-length", Integer.valueOf(customerDisplay.getAttributeValue("line-length")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		device = customerDisplay.getChild("device"); //$NON-NLS-1$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + ".port", device.getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + ".alias", device.getAttributeValue("alias")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + ".charset", device.getAttributeValue("charset")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + ".characterset", Integer.valueOf(device.getAttributeValue("charactertable")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + ".port", device.getAttributeValue("port")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + ".alias", device.getAttributeValue("alias")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + ".charset", device.getAttributeValue("charset")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + ".characterset", Integer.valueOf(device.getAttributeValue("charactertable")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		serial = device.getChild("serial"); //$NON-NLS-1$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".baudrate", Integer.valueOf(serial.getAttributeValue("baudrate")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolin", Integer.valueOf(serial.getAttributeValue("flowcontrolin")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolout", Integer.valueOf(serial.getAttributeValue("flowcontrolout")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".databits", Integer.valueOf(serial.getAttributeValue("databits")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".stopbits", Integer.valueOf(serial.getAttributeValue("stopbits")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		this
-						.setDefault(
-										"periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".parity", Integer.valueOf(serial.getAttributeValue("parity")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".baudrate", Integer.valueOf(serial.getAttributeValue("baudrate")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolin", Integer.valueOf(serial.getAttributeValue("flowcontrolin")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolout", Integer.valueOf(serial.getAttributeValue("flowcontrolout")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".databits", Integer.valueOf(serial.getAttributeValue("databits")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".stopbits", Integer.valueOf(serial.getAttributeValue("stopbits")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		this.setDefault("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".parity", Integer.valueOf(serial.getAttributeValue("parity")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		
 		Element welcome = cfg.getCustomerDisplayTextElement("welcome"); //$NON-NLS-1$
 		if (welcome == null)
@@ -784,12 +652,8 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		}
 		this.setDefault("customer-display.welcome-text", welcome.getText()); //$NON-NLS-1$
 		this.setDefault("customer-display.welcome-text.scroll", welcome.getAttributeValue("scroll")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"customer-display.timer", new Boolean(customerDisplay.getAttributeValue("timer")).booleanValue()); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"customer-display.seconds", Integer.valueOf(customerDisplay.getAttributeValue("seconds")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("customer-display.timer", new Boolean(customerDisplay.getAttributeValue("timer")).booleanValue()); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("customer-display.seconds", Integer.valueOf(customerDisplay.getAttributeValue("seconds")).intValue()); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		Element closed = cfg.getCustomerDisplayTextElement("closed"); //$NON-NLS-1$
 		if (closed == null)
@@ -809,16 +673,10 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		this.setDefault("receipt.header.logo", cfg.getReceiptHeader().getAttributeValue("logo")); //$NON-NLS-1$ //$NON-NLS-2$
 		this.setDefault("receipt.header.logomode", cfg.getReceiptHeader().getAttributeValue("logomode")); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		this
-						.setDefault(
-										"receipt.position.print-second-line", cfg.getReceiptPosition().getAttributeValue("print-second-line")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("receipt.position.print-second-line", cfg.getReceiptPosition().getAttributeValue("print-second-line")); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		this
-						.setDefault(
-										"settlement.admit-test-settlement", cfg.getSettlement().getAttributeValue("admit-test-settlement")); //$NON-NLS-1$ //$NON-NLS-2$
-		this
-						.setDefault(
-										"settlement.print-payment-quantity", cfg.getSettlement().getAttributeValue("print-payment-quantity")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("settlement.admit-test-settlement", cfg.getSettlement().getAttributeValue("admit-test-settlement")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.setDefault("settlement.print-payment-quantity", cfg.getSettlement().getAttributeValue("print-payment-quantity")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		this.dirty = false;
 	}
@@ -910,6 +768,7 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		element.setAttribute("password", this.getString("database.standard.connection.password")); //$NON-NLS-1$ //$NON-NLS-2$
 		element.setAttribute("batch-mode", this.getString("database.standard.connection.batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
 		element.setAttribute("use-auto-commit", this.getString("database.standard.connection.use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		element.setAttribute("heartbeat", this.getString("database.standard.connection.heartbeat")); //$NON-NLS-1$ //$NON-NLS-2$
 		cfg.setDatabaseStandardConnection(element);
 		
 		cfg.setDatabaseTemporaryName(this.getString("database.temporary.name")); //$NON-NLS-1$
@@ -931,6 +790,7 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		element.setAttribute("password", this.getString("database.temporary.connection.password")); //$NON-NLS-1$ //$NON-NLS-2$
 		element.setAttribute("batch-mode", this.getString("database.temporary.connection.batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
 		element.setAttribute("use-auto-commit", this.getString("database.temporary.connection.use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		element.setAttribute("heartbeat", this.getString("database.temporary.connection.heartbeat")); //$NON-NLS-1$ //$NON-NLS-2$
 		cfg.setDatabaseTemporaryConnection(element);
 		
 		cfg.setDatabaseTutorialName(this.getString("database.tutorial.name")); //$NON-NLS-1$
@@ -952,6 +812,7 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		element.setAttribute("password", this.getString("database.tutorial.connection.password")); //$NON-NLS-1$ //$NON-NLS-2$
 		element.setAttribute("batch-mode", this.getString("database.tutorial.connection.batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
 		element.setAttribute("use-auto-commit", this.getString("database.tutorial.connection.use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		element.setAttribute("heartbeat", this.getString("database.tutorial.connection.heartbeat")); //$NON-NLS-1$ //$NON-NLS-2$
 		cfg.setDatabaseTutorialConnection(element);
 		
 		cfg.setSalespointId(this.getInt("salespoint.id")); //$NON-NLS-1$
@@ -1062,48 +923,36 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		device.setAttribute("alias", this.getString("periphery.pos-printer." + id + "." + device.getName() + ".alias")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		device.setAttribute(
 						"charset", this.getString("periphery.pos-printer." + id + "." + device.getName() + ".charset")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		device
-						.setAttribute(
-										"charactertable", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + ".charactertable"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		device.setAttribute(
+						"charactertable", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + ".charactertable"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		Element serial = device.getChild("serial"); //$NON-NLS-1$
-		serial
-						.setAttribute(
-										"baudrate", String.valueOf(this	.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".baudrate"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"flowcontrolin", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolin"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"flowcontrolout", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolout"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"databits", String.valueOf(this	.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".databits"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"stopbits", String.valueOf(this	.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".stopbits"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"parity", String.valueOf(this	.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".parity"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"baudrate", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".baudrate"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"flowcontrolin", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolin"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"flowcontrolout", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolout"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"databits", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".databits"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"stopbits", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".stopbits"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"parity", String.valueOf(this.getInt("periphery.pos-printer." + id + "." + device.getName() + "." + serial.getName() + ".parity"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		List cashdrawers = printer.getChildren("cashdrawer"); //$NON-NLS-1$
 		for (Iterator j = cashdrawers.iterator(); j.hasNext();)
 		{
 			Element cashdrawer = (Element) j.next();
 			String cashdrawerId = cashdrawer.getAttributeValue("id"); //$NON-NLS-1$
-			cashdrawer
-							.setAttribute(
-											"use", this		.getString("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".use")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			cashdrawer
-							.setAttribute(
-											"pin", String	.valueOf(this	.getInt("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pin"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			cashdrawer
-							.setAttribute(
-											"pulseon", String.valueOf(this	.getInt("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pulseon"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			cashdrawer
-							.setAttribute(
-											"pulseoff", String.valueOf(this	.getInt("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pulseoff"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			cashdrawer
-							.setAttribute(
-											"currency", this.getString("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".currency")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			cashdrawer.setAttribute(
+							"use", this.getString("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".use")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			cashdrawer.setAttribute(
+							"pin", String.valueOf(this.getInt("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pin"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			cashdrawer.setAttribute(
+							"pulseon", String.valueOf(this.getInt("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pulseon"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			cashdrawer.setAttribute(
+							"pulseoff", String.valueOf(this.getInt("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".pulseoff"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			cashdrawer.setAttribute(
+							"currency", this.getString("periphery.pos-printer." + id + ".cashdrawer." + cashdrawerId + ".currency")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		}
 		
 		Element customerDisplay = cfg.getCustomerDisplay();
@@ -1116,48 +965,36 @@ public class PreferenceStore implements IPersistentPreferenceStore
 						"emulation", String.valueOf(this.getInt("periphery.customer-display." + id + ".emulation"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		customerDisplay.setAttribute(
 						"line-count", String.valueOf(this.getInt("periphery.customer-display." + id + ".line-count"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		customerDisplay
-						.setAttribute(
-										"line-length", String.valueOf(this.getInt("periphery.customer-display." + id + ".line-length"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		customerDisplay.setAttribute(
+						"line-length", String.valueOf(this.getInt("periphery.customer-display." + id + ".line-length"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		device = customerDisplay.getChild("device"); //$NON-NLS-1$
 		device.setAttribute(
 						"port", this.getString("periphery.customer-display." + id + "." + device.getName() + ".port")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		device
-						.setAttribute(
-										"alias", this	.getString("periphery.customer-display." + id + "." + device.getName() + ".alias")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		device
-						.setAttribute(
-										"charset", this	.getString("periphery.customer-display." + id + "." + device.getName() + ".charset")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		device
-						.setAttribute(
-										"charactertable", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + ".charactertable"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		device.setAttribute(
+						"alias", this.getString("periphery.customer-display." + id + "." + device.getName() + ".alias")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		device.setAttribute(
+						"charset", this.getString("periphery.customer-display." + id + "." + device.getName() + ".charset")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		device.setAttribute(
+						"charactertable", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + ".charactertable"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		serial = device.getChild("serial"); //$NON-NLS-1$
-		serial
-						.setAttribute(
-										"baudrate", String.valueOf(this	.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".baudrate"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"flowcontrolin", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolin"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"flowcontrolout", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolout"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"databits", String.valueOf(this	.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".databits"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"stopbits", String.valueOf(this	.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".stopbits"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		serial
-						.setAttribute(
-										"parity", String.valueOf(this	.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".parity"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"baudrate", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".baudrate"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"flowcontrolin", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolin"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"flowcontrolout", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".flowcontrolout"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"databits", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".databits"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"stopbits", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".stopbits"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		serial.setAttribute(
+						"parity", String.valueOf(this.getInt("periphery.customer-display." + id + "." + device.getName() + "." + serial.getName() + ".parity"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		customerDisplay.setAttribute("timer", String.valueOf(this.getBoolean("customer-display.timer"))); //$NON-NLS-1$ //$NON-NLS-2$ 
 		customerDisplay.setAttribute("seconds", String.valueOf(this.getInt("customer-display.seconds"))); //$NON-NLS-1$ //$NON-NLS-2$ 
-		cfg
-						.setCustomerDisplayTextElement(
-										"welcome", new Boolean(this.getBoolean("customer-display.welcome-text.scroll")), this.getString("customer-display.welcome-text")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		cfg
-						.setCustomerDisplayTextElement(
-										"closed", new Boolean(this.getBoolean("customer-display.closed-text.scroll")), this.getString("customer-display.closed-text")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		cfg.setCustomerDisplayTextElement(
+						"welcome", new Boolean(this.getBoolean("customer-display.welcome-text.scroll")), this.getString("customer-display.welcome-text")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		cfg.setCustomerDisplayTextElement(
+						"closed", new Boolean(this.getBoolean("customer-display.closed-text.scroll")), this.getString("customer-display.closed-text")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		
 		cfg.getReceipt().setAttribute("automatic-print",
 						new Boolean(this.getBoolean("receipt.automatic-print")).toString());

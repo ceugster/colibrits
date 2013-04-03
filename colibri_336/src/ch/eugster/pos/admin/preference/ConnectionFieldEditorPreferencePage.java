@@ -199,6 +199,10 @@ public class ConnectionFieldEditorPreferencePage extends FieldEditorPreferencePa
 						"database." + this.whichConnection + ".connection.use-auto-commit", Messages.getString("ConnectionFieldEditorPreferencePage.text_57"), this.getFieldEditorParent(), names, values); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		this.addField(useAutoCommitEditor);
 		
+		this.heartbeatEditor = new IntegerFieldEditor("database." + this.whichConnection + ".connection.heartbeat",
+						"Heartbeat", this.getFieldEditorParent());
+		this.addField(this.heartbeatEditor);
+		
 		BooleanFieldEditor activeEditor = new BooleanFieldEditor(
 						"database." + this.whichConnection + ".active", Messages.getString("ConnectionFieldEditorPreferencePage.text_58"), this.getFieldEditorParent()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		this.addField(activeEditor);
@@ -208,7 +212,7 @@ public class ConnectionFieldEditorPreferencePage extends FieldEditorPreferencePa
 		//
 		//		BooleanFieldEditor batchModeEditor = new BooleanFieldEditor("database." + whichConnection + ".connection.batch-mode", Messages.getString("ConnectionFieldEditorPreferencePage.text_64"), getFieldEditorParent()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		// addField(batchModeEditor);
-		//	
+		//
 		this.testConnection = new ButtonFieldEditor(
 						Messages.getString("ConnectionFieldEditorPreferencePage.text_65"), this.getFieldEditorParent()); //$NON-NLS-1$
 		this.testConnection.getButton().addSelectionListener(this);
@@ -236,36 +240,27 @@ public class ConnectionFieldEditorPreferencePage extends FieldEditorPreferencePa
 			for (int i = 0; i < this.platforms.length; i++)
 			{
 				if (this.platforms[i].getAttributeValue("id").equals(this.platformEditor.getCombo().getText())) { //$NON-NLS-1$
-					this
-									.getPreferenceStore()
-									.setValue(
-													"database." + this.whichConnection + ".connection.jdbc-level", Double.parseDouble(this.platforms[i].getAttributeValue("jdbc-level"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					this.getPreferenceStore()
+									.setValue("database." + this.whichConnection + ".connection.jdbc-level", Double.parseDouble(this.platforms[i].getAttributeValue("jdbc-level"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					this.levelEditor.doLoad();
-					this
-									.getPreferenceStore()
-									.setValue(
-													"database." + this.whichConnection + ".connection.driver", this.platforms[i].getAttributeValue("driver")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					this.getPreferenceStore()
+									.setValue("database." + this.whichConnection + ".connection.driver", this.platforms[i].getAttributeValue("driver")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					this.driverEditor.load();
-					this
-									.getPreferenceStore()
-									.setValue(
-													"database." + this.whichConnection + ".connection.protocol", this.platforms[i].getAttributeValue("protocol")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					this.getPreferenceStore()
+									.setValue("database." + this.whichConnection + ".connection.protocol", this.platforms[i].getAttributeValue("protocol")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					this.protocolEditor.load();
-					this
-									.getPreferenceStore()
-									.setValue(
-													"database." + this.whichConnection + ".connection.subprotocol", this.platforms[i].getAttributeValue("subprotocol")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					this.getPreferenceStore()
+									.setValue("database." + this.whichConnection + ".connection.subprotocol", this.platforms[i].getAttributeValue("subprotocol")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					this.subprotocolEditor.load();
-					this
-									.getPreferenceStore()
-									.setValue(
-													"database." + this.whichConnection + ".connection.port", Integer.parseInt(this.platforms[i].getAttributeValue("port"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					this.getPreferenceStore()
+									.setValue("database." + this.whichConnection + ".connection.port", Integer.parseInt(this.platforms[i].getAttributeValue("port"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					this.portEditor.load();
-					this
-									.getPreferenceStore()
-									.setValue(
-													"database." + this.whichConnection + ".connection.options", this.platforms[i].getAttributeValue("options")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					this.getPreferenceStore()
+									.setValue("database." + this.whichConnection + ".connection.options", this.platforms[i].getAttributeValue("options")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					this.optionEditor.load();
+					this.getPreferenceStore()
+									.setValue("database." + this.whichConnection + ".connection.heartbeat", this.platforms[i].getAttributeValue("heartbeat")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					this.heartbeatEditor.load();
 				}
 			}
 			if (e.getNewValue().equals(new Boolean(true)))
@@ -299,10 +294,9 @@ public class ConnectionFieldEditorPreferencePage extends FieldEditorPreferencePa
 		}
 		catch (ClassNotFoundException cnfe)
 		{
-			MessageDialog
-							.openError(
-											this.getShell(),
-											Messages.getString("ConnectionFieldEditorPreferencePage.text_87"), Messages.getString("ConnectionFieldEditorPreferencePage.text_88")); //$NON-NLS-1$ //$NON-NLS-2$
+			MessageDialog.openError(
+							this.getShell(),
+							Messages.getString("ConnectionFieldEditorPreferencePage.text_87"), Messages.getString("ConnectionFieldEditorPreferencePage.text_88")); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		
@@ -330,10 +324,9 @@ public class ConnectionFieldEditorPreferencePage extends FieldEditorPreferencePa
 		}
 		catch (SQLException se)
 		{
-			MessageDialog
-							.openError(
-											this.getShell(),
-											Messages.getString("ConnectionFieldEditorPreferencePage.text_96"), Messages.getString("ConnectionFieldEditorPreferencePage.text_97") + se.getSQLState() + System.getProperty("line.separator") + se.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			MessageDialog.openError(
+							this.getShell(),
+							Messages.getString("ConnectionFieldEditorPreferencePage.text_96"), Messages.getString("ConnectionFieldEditorPreferencePage.text_97") + se.getSQLState() + System.getProperty("line.separator") + se.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			return;
 		}
 		
@@ -347,16 +340,14 @@ public class ConnectionFieldEditorPreferencePage extends FieldEditorPreferencePa
 		}
 		catch (SQLException sqle)
 		{
-			MessageDialog
-							.openError(
-											this.getShell(),
-											Messages.getString("ConnectionFieldEditorPreferencePage.text_100"), Messages.getString("ConnectionFieldEditorPreferencePage.text_101") + sqle.getSQLState() + System.getProperty("line.separator") + sqle.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			MessageDialog.openError(
+							this.getShell(),
+							Messages.getString("ConnectionFieldEditorPreferencePage.text_100"), Messages.getString("ConnectionFieldEditorPreferencePage.text_101") + sqle.getSQLState() + System.getProperty("line.separator") + sqle.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			return;
 		}
-		MessageDialog
-						.openInformation(
-										this.getShell(),
-										Messages.getString("ConnectionFieldEditorPreferencePage.text_103"), Messages.getString("ConnectionFieldEditorPreferencePage.text_104")); //$NON-NLS-1$ //$NON-NLS-2$
+		MessageDialog.openInformation(
+						this.getShell(),
+						Messages.getString("ConnectionFieldEditorPreferencePage.text_103"), Messages.getString("ConnectionFieldEditorPreferencePage.text_104")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	private StringFieldEditor nameEditor;
@@ -372,6 +363,7 @@ public class ConnectionFieldEditorPreferencePage extends FieldEditorPreferencePa
 	private StringFieldEditor usernameEditor;
 	private StringFieldEditor passwordEditor;
 	private ButtonFieldEditor testConnection;
+	private IntegerFieldEditor heartbeatEditor;
 	private Element[] platforms;
 	private String whichConnection;
 	

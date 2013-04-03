@@ -214,13 +214,15 @@ public class PositionBlock extends ABlock implements ReceiptChildChangeListener,
 		if (e.getActionCommand().equals("up")) { //$NON-NLS-1$
 			if (this.table.getSelectedRow() > 0)
 			{
-				this.table.getSelectionModel().setLeadSelectionIndex(this.table.getSelectedRow() - 1);
+				int selectedRow = this.table.getSelectedRow() - 1;
+				this.table.setRowSelectionInterval(selectedRow, selectedRow);
 			}
 		}
 		else if (e.getActionCommand().equals("down")) { //$NON-NLS-1$
 			if (this.table.getSelectedRow() < this.table.getRowCount() - 1)
 			{
-				this.table.getSelectionModel().setLeadSelectionIndex(this.table.getSelectedRow() + 1);
+				int selectedRow = this.table.getSelectedRow() + 1;
+				this.table.setRowSelectionInterval(selectedRow, selectedRow);
 			}
 		}
 		((PosButton) this.buttons.get("up")).setEnabled(this.table.getSelectedRow() > 0); //$NON-NLS-1$
@@ -271,6 +273,7 @@ public class PositionBlock extends ABlock implements ReceiptChildChangeListener,
 		}
 	}
 	
+	@Override
 	public void modeChangePerformed(ModeChangeEvent e)
 	{
 	}

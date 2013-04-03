@@ -196,11 +196,11 @@ public class SettlementPrinterFromStatistics
 		}
 		catch (FileNotFoundException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (IOException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		return this.properties;
 	}
@@ -1058,12 +1058,12 @@ public class SettlementPrinterFromStatistics
 			if (this.generalCutType.equals("partial"))
 			{
 				this.printer.partialCut(this.generalLfBeforeCut);
-				Logger.getLogger("colibri").info("      Beleg geschnitten.");
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("      Beleg geschnitten.");
 			}
 			else if (this.generalCutType.equals("full"))
 			{
 				this.printer.fullCut(this.generalLfBeforeCut);
-				Logger.getLogger("colibri").info("      Beleg geschnitten.");
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("      Beleg geschnitten.");
 			}
 		}
 	}

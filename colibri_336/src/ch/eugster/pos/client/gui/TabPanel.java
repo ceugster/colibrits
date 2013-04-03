@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Logger;
 
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
@@ -93,15 +94,15 @@ public class TabPanel extends JTabbedPane implements LoginListener, ChangeListen
 		
 		this.fg = Config.getInstance().getTabPanelColorForeground();
 		this.bg = Config.getInstance().getTabPanelColorBackground();
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("TabPanel.Initialisierung_TabPanel._2")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("TabPanel.Initialisierung_TabPanel._2")); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("TabPanel.Konfiguration_wird_gelesen._4")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("TabPanel.Konfiguration_wird_gelesen._4")); //$NON-NLS-1$ //$NON-NLS-2$
 		Config config = Config.getInstance();
 		this.setFocusable(false);
 		this.setFont(this.getFont().deriveFont(config.getFontStyle(config.getTabPanelFont()),
 						config.getFontSize(config.getTabPanelFont())));
 		
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("TabPanel.ClockPanel_wird_initialisiert._6")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("TabPanel.ClockPanel_wird_initialisiert._6")); //$NON-NLS-1$ //$NON-NLS-2$
 		this.clockPanel = new ClockPanel(this);
 		this.clockPanel.setEnabled(false);
 		String tabText = Database.getCurrent().equals(Database.getTutorial()) ? Messages
@@ -116,7 +117,8 @@ public class TabPanel extends JTabbedPane implements LoginListener, ChangeListen
 		ExceptionThrownDelegate.addExceptionThrownListener(this.clockPanel);
 		this.clockPanel.updateStates();
 		
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("TabPanel.LoginPanel_wird_initialisiert._10")); //$NON-NLS-1$ //$NON-NLS-2$
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+						Messages.getString("TabPanel.LoginPanel_wird_initialisiert._10")); //$NON-NLS-1$ 
 		this.loginPanel = new LoginPanel(this);
 		this.addChangeListener(this);
 		this.addTab(this.loginTitle, this.loginPanel);
@@ -126,15 +128,17 @@ public class TabPanel extends JTabbedPane implements LoginListener, ChangeListen
 	
 	protected void loadPrinter()
 	{
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("TabPanel.Bondrucker_wird_initialisiert._12")); //$NON-NLS-1$ //$NON-NLS-2$
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+						Messages.getString("TabPanel.Bondrucker_wird_initialisiert._12")); //$NON-NLS-1$ 
 		Element printer = Config.getInstance().getPosPrinter();
 		this.receiptPrinter = ReceiptPrinter.getInstance(printer);
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("TabPanel.Bondrucker_sind_initialisiert._14")); //$NON-NLS-1$ //$NON-NLS-2$
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+						Messages.getString("TabPanel.Bondrucker_sind_initialisiert._14")); //$NON-NLS-1$ 
 	}
 	
 	protected void loadDisplay()
 	{
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("TabPanel.Kundendisplays_werden_initialisiert._16")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("TabPanel.Kundendisplays_werden_initialisiert._16")); //$NON-NLS-1$ //$NON-NLS-2$
 		Element display = Config.getInstance().getCustomerDisplay();
 		this.customerDisplay = new CustomerDisplay(display);
 		this.showClosedText();
@@ -275,9 +279,9 @@ public class TabPanel extends JTabbedPane implements LoginListener, ChangeListen
 				if (c instanceof Container)
 				{
 					Component[] children = ((Container) c).getComponents();
-					for (int i = 0; i < children.length; i++)
+					for (Component element : children)
 					{
-						this.addKeyEventSenders(children[i]);
+						this.addKeyEventSenders(element);
 					}
 				}
 			}
@@ -290,9 +294,9 @@ public class TabPanel extends JTabbedPane implements LoginListener, ChangeListen
 		if (c instanceof Container)
 		{
 			Component[] children = ((Container) c).getComponents();
-			for (int i = 0; i < children.length; i++)
+			for (Component element : children)
 			{
-				this.removeKeyEventSenders(children[i]);
+				this.removeKeyEventSenders(element);
 			}
 		}
 	}
@@ -371,11 +375,11 @@ public class TabPanel extends JTabbedPane implements LoginListener, ChangeListen
 	public void cleanUpPanels()
 	{
 		Component[] tabs = this.getComponents();
-		for (int i = 0; i < tabs.length; i++)
+		for (Component tab : tabs)
 		{
-			if (tabs[i] instanceof UserPanel)
+			if (tab instanceof UserPanel)
 			{
-				((UserPanel) tabs[i]).cleanUp();
+				((UserPanel) tab).cleanUp();
 			}
 		}
 	}
@@ -403,9 +407,9 @@ public class TabPanel extends JTabbedPane implements LoginListener, ChangeListen
 	private void fireModeChangeEvent(ModeChangeEvent e)
 	{
 		ModeChangeListener[] l = (ModeChangeListener[]) this.modeChangeListeners.toArray(new ModeChangeListener[0]);
-		for (int i = 0; i < l.length; i++)
+		for (ModeChangeListener element : l)
 		{
-			l[i].modeChangePerformed(e);
+			element.modeChangePerformed(e);
 		}
 	}
 	

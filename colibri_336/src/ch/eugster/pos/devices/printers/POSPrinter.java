@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.comm.CommPortIdentifier;
 import javax.comm.NoSuchPortException;
@@ -53,6 +54,7 @@ public abstract class POSPrinter implements IPOSPrinter
 	
 	private void init(Element p)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Belegdrucker wird initialisiert.");
 		this.usePOSPrinter = new Boolean(p.getAttributeValue("use")).booleanValue(); //$NON-NLS-1$
 		
 		this.id = p.getAttributeValue("id"); //$NON-NLS-1$
@@ -81,10 +83,10 @@ public abstract class POSPrinter implements IPOSPrinter
 		{
 			Element[] drawers = (Element[]) p.getChildren("cashdrawer").toArray(new Element[0]); //$NON-NLS-1$
 			List d = new ArrayList();
-			for (int i = 0; i < drawers.length; i++)
+			for (Element drawer : drawers)
 			{
-				if (new Boolean(drawers[i].getAttributeValue("use")).booleanValue()) { //$NON-NLS-1$
-					d.add(new DefaultCashDrawer(drawers[i], this.outputStream));
+				if (new Boolean(drawer.getAttributeValue("use")).booleanValue()) { //$NON-NLS-1$
+					d.add(new DefaultCashDrawer(drawer, this.outputStream));
 				}
 			}
 			this.cashDrawers = new CashDrawer[d.size()];
@@ -98,6 +100,7 @@ public abstract class POSPrinter implements IPOSPrinter
 	
 	private OutputStream openPort(String port, String alias)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Port wird geöffnet.");
 		CommPortIdentifier portId = null;
 		this.serialPort = null;
 		this.outputStream = null;
@@ -108,11 +111,14 @@ public abstract class POSPrinter implements IPOSPrinter
 		}
 		catch (NoSuchPortException e)
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Port existiert nicht.");
 			if (Version.getRunningProgram() == Version.COLIBRI)
 			{
-				MessageDialog.showInformation(null, Messages.getString("POSPrinter.Falscher_Port_31"), Messages
-								.getString("POSPrinter.Der_serielle_Port__29").concat(port).concat(
-												Messages.getString("POSPrinter._existiert_nicht._30")), 0);
+				MessageDialog.showInformation(
+								null,
+								Messages.getString("POSPrinter.Falscher_Port_31"),
+								Messages.getString("POSPrinter.Der_serielle_Port__29").concat(port)
+												.concat(Messages.getString("POSPrinter._existiert_nicht._30")), 0);
 			}
 			this.usePOSPrinter = false;
 		}
@@ -131,14 +137,13 @@ public abstract class POSPrinter implements IPOSPrinter
 				{
 					if (Version.getRunningProgram() == Version.COLIBRI)
 					{
-						MessageDialog
-										.showInformation(
-														null,
-														"Fehler beim Initialisieren des Coupondruckers",
-														"Der serielle Port "
-																		+ port
-																		+ " wird von einem anderen Gerät genutzt. Das Programm wird verlassen.",
-														0);
+						MessageDialog.showInformation(
+										null,
+										"Fehler beim Initialisieren des Coupondruckers",
+										"Der serielle Port "
+														+ port
+														+ " wird von einem anderen Gerät genutzt. Das Programm wird verlassen.",
+										0);
 					}
 					this.usePOSPrinter = false;
 				}
@@ -150,14 +155,13 @@ public abstract class POSPrinter implements IPOSPrinter
 				{
 					if (Version.getRunningProgram() == Version.COLIBRI)
 					{
-						MessageDialog
-										.showInformation(
-														null,
-														"Fehler beim Initialisieren des Coupondruckers",
-														"Der serielle Port "
-																		+ port
-																		+ " unterstützt einen Befehl nicht. Das Programm wird verlassen.",
-														0);
+						MessageDialog.showInformation(
+										null,
+										"Fehler beim Initialisieren des Coupondruckers",
+										"Der serielle Port "
+														+ port
+														+ " unterstützt einen Befehl nicht. Das Programm wird verlassen.",
+										0);
 					}
 					System.exit(-23);
 				}
@@ -182,7 +186,8 @@ public abstract class POSPrinter implements IPOSPrinter
 		}
 		catch (IOException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").warning(Messages.getString("POSPrinter.Der_Bondrucker__47") + name + Messages.getString("POSPrinter._konnte_nicht_ordnungsgem_u00E4ss_geschlossen_werden___48") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.warning(Messages.getString("POSPrinter.Der_Bondrucker__47") + this.name + Messages.getString("POSPrinter._konnte_nicht_ordnungsgem_u00E4ss_geschlossen_werden___48") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ 
 		}
 	}
 	
@@ -195,7 +200,7 @@ public abstract class POSPrinter implements IPOSPrinter
 		}
 		catch (IOException e)
 		{
-			//				LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage());
 		}
 		// }
 	}
@@ -205,14 +210,14 @@ public abstract class POSPrinter implements IPOSPrinter
 		// if (usePOSPrinter) {
 		try
 		{
-			for (int i = 0; i < codes.length; i++)
+			for (int code : codes)
 			{
-				this.outputStream.write(codes[i]);
+				this.outputStream.write(code);
 			}
 		}
 		catch (IOException e)
 		{
-			//				LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage());
 		}
 		// }
 	}
@@ -227,21 +232,22 @@ public abstract class POSPrinter implements IPOSPrinter
 	
 	public void print(String s)
 	{
+		// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("...");
 		int[] intArray = this.convert(s);
 		try
 		{
-			for (int i = 0; i < intArray.length; i++)
+			for (int element : intArray)
 			{
-				this.outputStream.write(intArray[i]);
+				this.outputStream.write(element);
 				if (!System.out.equals(this.outputStream))
 				{
-					System.out.write(intArray[i]);
+					System.out.write(element);
 				}
 			}
 		}
 		catch (IOException e)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage());
 		}
 	}
 	
@@ -259,7 +265,7 @@ public abstract class POSPrinter implements IPOSPrinter
 		}
 		catch (IOException e)
 		{
-			//				LogManager.getLogManager().getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage());
 		}
 		// }
 	}
@@ -356,18 +362,18 @@ public abstract class POSPrinter implements IPOSPrinter
 						}
 						catch (NumberFormatException e)
 						{
-							//							LogManager.getLogManager().getLogger("colibri").warning(Messages.getString("POSPrinter.Ung_u00FCltiger_Wert_in_der_Convertertabelle___55") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+							//							Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).warning(Messages.getString("POSPrinter.Ung_u00FCltiger_Wert_in_der_Convertertabelle___55") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
 			}
 			catch (FileNotFoundException e)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").warning(Messages.getString("POSPrinter.Converterdatei__57") + filename + Messages.getString("POSPrinter._nicht_gefunden___58") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).warning(Messages.getString("POSPrinter.Converterdatei__57") + filename + Messages.getString("POSPrinter._nicht_gefunden___58") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			catch (IOException e)
 			{
-				//				LogManager.getLogManager().getLogger("colibri").warning(Messages.getString("POSPrinter.Converterdatei__60") + filename + Messages.getString("POSPrinter._konnte_nicht_geladen_werden___61") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).warning(Messages.getString("POSPrinter.Converterdatei__60") + filename + Messages.getString("POSPrinter._konnte_nicht_geladen_werden___61") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			finally
 			{
@@ -383,6 +389,7 @@ public abstract class POSPrinter implements IPOSPrinter
 	 *         printer prints in the second case to System.out.
 	 * 
 	 */
+	@Deprecated
 	public boolean isPOSPrinterUsed()
 	{
 		return this.usePOSPrinter;

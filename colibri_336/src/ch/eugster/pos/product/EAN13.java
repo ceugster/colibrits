@@ -14,6 +14,11 @@ package ch.eugster.pos.product;
  */
 public class EAN13
 {
+	// 10442
+	public static boolean isEbook(String ean13)
+	{
+		return ean13.length() == 14 && ean13.startsWith(EAN13.PRE_EBOOK);
+	}
 	
 	public static String getGalileoSearchValue(String ean13)
 	{
@@ -81,7 +86,7 @@ public class EAN13
 	{
 		String orderId = "";
 		Long id = new Long(0);
-		if (ean13.length() == 13 && ean13.startsWith("989"))
+		if (ean13.length() == 13 && ean13.startsWith(EAN13.PRE_ORDERED))
 		{
 			orderId = ean13.substring(3, 12);
 			try
@@ -99,4 +104,6 @@ public class EAN13
 	public static final String PRE_ISBN = "978";
 	public static final String PRE_ORDERED = "989";
 	public static final String PRE_CUSTOMER_ID = "992";
+	// 10442
+	public static final String PRE_EBOOK = "E" + EAN13.PRE_ISBN;
 }

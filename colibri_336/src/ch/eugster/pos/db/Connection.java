@@ -13,8 +13,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,7 +81,7 @@ public abstract class Connection
 		JdbcConnectionDescriptor jcd = new JdbcConnectionDescriptor();
 		this.setConnection(jcd, db);
 		cr.addDescriptor(jcd);
-		//		Logger.getLogger("colibri").info(Messages.getString("Connection.Broker_f_u00FCr_4") + " " + getName() + " " + Messages.getString("Connection.initialisieren..._7")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Connection.Broker_f_u00FCr_4") + " " + getName() + " " + Messages.getString("Connection.initialisieren..._7")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		try
 		{
 			this.broker = PersistenceBrokerFactory.createPersistenceBroker(key);
@@ -96,11 +99,11 @@ public abstract class Connection
 		}
 		catch (PBFactoryException e)
 		{
-			//			Logger.getLogger("colibri").severe(Messages.getString("Connection.Broker_f_u00FCr_38") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__41")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(Messages.getString("Connection.Broker_f_u00FCr_38") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__41")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			String[] msg = e.getMessages();
 			for (int i = 0; i < msg.length; i++)
 			{
-				//				Logger.getLogger("colibri").severe(msg[i]); //$NON-NLS-1$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(msg[i]); //$NON-NLS-1$
 			}
 			this.setConnected(false);
 			// setActive(false);
@@ -108,11 +111,11 @@ public abstract class Connection
 		catch (PersistenceBrokerException e)
 		{
 			if (this.broker.isInTransaction()) this.broker.abortTransaction();
-			//			Logger.getLogger("colibri").severe(Messages.getString("Connection.Broker_f_u00FCr_44") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__47")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(Messages.getString("Connection.Broker_f_u00FCr_44") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__47")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			String[] msg = e.getMessages();
 			for (int i = 0; i < msg.length; i++)
 			{
-				//				Logger.getLogger("colibri").severe(msg[i]); //$NON-NLS-1$
+				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(msg[i]); //$NON-NLS-1$
 			}
 			this.setConnected(false);
 			// setActive(false);
@@ -124,7 +127,7 @@ public abstract class Connection
 			 */
 			this.updateDB();
 			
-			//			Logger.getLogger("colibri").info(Messages.getString("Connection.Datenbankversion_von_28") + " " + getName() + " " + Messages.getString("Connection.abrufen..._31")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Connection.Datenbankversion_von_28") + " " + getName() + " " + Messages.getString("Connection.abrufen..._31")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			try
 			{
 				this.broker.beginTransaction();
@@ -138,8 +141,14 @@ public abstract class Connection
 			finally
 			{
 			}
-			//			Logger.getLogger("colibri").info(Messages.getString("Connection.Verbindung_zu_33") + " " + getName() + " " + Messages.getString("Connection.erfolgreich_hergestellt..._36")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Connection.Verbindung_zu_33") + " " + getName() + " " + Messages.getString("Connection.erfolgreich_hergestellt..._36")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		}
+		
+		/*
+		 * keep connection open
+		 */
+		this.heartbeat();
+		
 		return this.isConnected();
 	}
 	
@@ -1362,6 +1371,32 @@ public abstract class Connection
 				}
 				// Datenversion 35: Build 340: 10429
 			}
+			// if (v == 36 && dataVersion < v)
+			// {
+			// // Datenversion 36: Build 368: 10442
+			// this.logger.info("Updating to Version " + v);
+			//
+			// if (!this.columnExists(con, "pos_position", "ebook"))
+			// {
+			// done = done
+			// && this.executeSQLStatement(con,
+			// "ALTER TABLE pos_position ADD COLUMN ebook SMALLINT DEFAULT 0");
+			// // done = done
+			// // && this.executeSQLStatement(
+			// // con,
+			// //
+			// "UPDATE pos_position SET ebook = ROUND(-amount / 107.6 * 7.6, 2) WHERE discount <> 0 AND current_tax_id > 6 AND current_tax_id < 10;");
+			// }
+			// if (done)
+			// {
+			// dataVersion = v;
+			// rst.updateInt("data_version", dataVersion);
+			// rst.updateRow();
+			// this.logger.info("Update to Version " + v + " successfully.");
+			// }
+			//
+			// }
+			// // Datenversion 36: Build 368: 10442
 			
 			/*
 			 * Immer testen: Ist eine Bargruppe und eine BAR Zahlungsart
@@ -1448,6 +1483,39 @@ public abstract class Connection
 	private boolean executeSQLStatement(java.sql.Connection con, String sql)
 	{
 		return this.executeSQLStatement(con, sql, false);
+	}
+	
+	private int getHeartbeat()
+	{
+		String value = this.getConnectionData().getAttributeValue("heartbeat");
+		if (value == null)
+		{
+			return 0;
+		}
+		try
+		{
+			return Integer.valueOf(value).intValue();
+		}
+		catch (NumberFormatException e)
+		{
+			return 0;
+		}
+	}
+	
+	public void heartbeat()
+	{
+		int heartbeat = this.getHeartbeat();
+		if (heartbeat > 0)
+		{
+			Timer timer = new Timer();
+			timer.scheduleAtFixedRate(new TimerTask()
+			{
+				public void run()
+				{
+					Version.select(Connection.this);
+				}
+			}, GregorianCalendar.getInstance().getTime(), 1000 * heartbeat);
+		}
 	}
 	
 	private boolean executeSQLStatement(java.sql.Connection con, String sql, boolean ignoreError)

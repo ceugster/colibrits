@@ -6,7 +6,6 @@
 package ch.eugster.pos.product;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,11 +26,9 @@ import ch.eugster.pos.db.Tax;
 import ch.eugster.pos.db.Version;
 import ch.eugster.pos.events.MessageDialog;
 import ch.eugster.pos.events.ShowMessageEvent;
-import ch.eugster.pos.galileo.galserve.gdserve;
 import ch.eugster.pos.util.Config;
 
-import com.ibm.bridge2java.ComException;
-import com.ibm.bridge2java.OleEnvironment;
+import com4j.ComException;
 
 /**
  * @author administrator
@@ -41,8 +38,10 @@ import com.ibm.bridge2java.OleEnvironment;
  */
 public class GalileoServer extends ProductServer
 {
+	// private static final Logger log =
+	// Logger.getLogger("ch.eugster.pos.product");
 	
-	protected gdserve server = null;
+	protected Igdserve server = null;
 	protected static final String version = "1.3.8";
 	
 	protected GalileoServer()
@@ -50,12 +49,18 @@ public class GalileoServer extends ProductServer
 		this.init();
 	}
 	
+	@Override
 	protected void init()
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Konfiguration für Verbindung zu Galileo wird geladen.");
 		Config cfx = Config.getInstance();
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Konfiguriere Pfad zur Galileo Datenbank.");
 		this.path = cfx.getGalileoPath();
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Konfiguriere Aktualisierung von Daten in Galileo.");
 		this.update = cfx.getGalileoUpdate();
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Konfiguriere Zugriff auf VLB DVD.");
 		this.readCd = cfx.getGalileoSearchCd();
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Konfiguriere Zugriffspfad auf VLB DVD.");
 		this.cdPath = cfx.getGalileoCdPath();
 		
 		this.active = this.connect(this.path);
@@ -64,12 +69,14 @@ public class GalileoServer extends ProductServer
 	public boolean connect(String path)
 	{
 		boolean connected = false;
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Prüfen, ob Galileo verwendet werden soll.");
 		if (ProductServer.isUsed())
 		{
 			try
 			{
-				OleEnvironment.Initialize();
-				this.server = new gdserve();
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Initialisiere OLE Umgebung.");
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Instantiiere COM-Server galserve.");
+				this.server = GalserveFactory.creategdserve();
 				this.open();
 				if (!Config.getInstance().getProductServerHold())
 				{
@@ -77,16 +84,9 @@ public class GalileoServer extends ProductServer
 				}
 				connected = true;
 			}
-			catch (IOException e)
+			catch (ComException e)
 			{
-				OleEnvironment.UnInitialize();
-				
-				Logger.getLogger("colibri").severe("Galserve konnte nicht initialisiert werden.");
-				Logger.getLogger("colibri").throwing(this.getClass().getName(), "connect", e);
-			}
-			finally
-			{
-				OleEnvironment.UnInitialize();
+				this.catchComException(e);
 			}
 		}
 		return connected;
@@ -103,35 +103,22 @@ public class GalileoServer extends ProductServer
 			}
 			catch (ComException e)
 			{
-				ComException ex = new ComException(
-								"Beim Schliessen der Verbindung zum COM-Server ist ein Fehler aufgetreten.");
-				this.catchComException(ex);
-			}
-			finally
-			{
-				
+				this.catchComException(e);
 			}
 		}
 	}
 	
+	@Override
 	protected void finalize()
 	{
 		try
 		{
-			this.server.release();
-			OleEnvironment.UnInitialize();
-		}
-		catch (IOException ioe)
-		{
-			Logger.getLogger("colibri").severe("Beim Beenden des COM-Servers ist ein IO-Fehler aufgetreten.");
-			Logger.getLogger("colibri").throwing(this.getClass().getName(), "finalize", ioe);
-			ComException ex = new ComException("Beim Beenden des COM-Servers ist ein IO-Fehler aufgetreten.");
-			this.catchComException(ex);
+			this.server.dispose();
 		}
 		catch (ComException e)
 		{
-			Logger.getLogger("colibri").severe("Beim Beenden des COM-Servers wurde eine COM-Exception geworfen.");
-			Logger.getLogger("colibri").throwing(this.getClass().getName(), "finalize", e);
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: finalize: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
 		}
 		finally
@@ -145,9 +132,12 @@ public class GalileoServer extends ProductServer
 		{
 			try
 			{
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Verbindung zu Galileo wird geöffnet.");
 				this.open = this.server.do_NOpen(this.path);
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Verbindung zu Galileo wurde geöffnet.");
 				if (this.open)
 				{
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Verbindung zu Galileo wird konfiguriert.");
 					if (this.readCd) this.readCd = new File(this.cdPath).exists();
 					this.setReadCd(this.readCd);
 					this.setUpdate(this.update);
@@ -156,38 +146,19 @@ public class GalileoServer extends ProductServer
 				else
 				{
 					this.active = false;
-					Logger.getLogger("colibri").severe(
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
 									"Verbindung zu Galileo konnte nicht geöffnet werden (Keine Fehlerangabe).");
 					ComException ex = new ComException(
-									"Beim Öffnen der Verbindung zum COM-Server ist ein unbekannter Fehler aufgetreten.");
+									"Beim Öffnen der Verbindung zum COM-Server ist ein unbekannter Fehler aufgetreten.",
+									-1);
 					this.catchComException(ex);
 				}
 			}
-			catch (IOException ioe)
-			{
-				this.active = false;
-				Logger.getLogger("colibri").throwing(this.getClass().getName(), "open", ioe);
-				Logger.getLogger("colibri").severe(
-								"Beim Öffnen der Verbindung zum COM-Server ist ein IO-Fehler aufgetreten ("
-												+ ioe.getMessage() + ").");
-				
-				ComException ex = new ComException(
-								"Beim Öffnen der Verbindung zum COM-Server ist ein IO-Fehler aufgetreten (\"\r\n"
-												+ "												+ ioe.getLocalizedMessage() + \").");
-				this.catchComException(ex);
-			}
 			catch (ComException e)
 			{
-				Logger.getLogger("colibri").severe(
-								"Beim Öffnen der Verbindung zum COM-Server ist ein Fehler aufgetreten ("
-												+ e.getLocalizedMessage() + ").");
-				Logger.getLogger("colibri").throwing(this.getClass().getName(), "open", e);
-				// ComException ex = new ComException(
-				// "Beim Öffnen der Verbindung zum COM-Server ist ein Fehler aufgetreten.");
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+								"Method: open: " + e.getClass().getName() + ": " + e.getMessage());
 				this.catchComException(e);
-			}
-			finally
-			{
 			}
 		}
 	}
@@ -198,24 +169,14 @@ public class GalileoServer extends ProductServer
 		{
 			try
 			{
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Verbindung zu Galileo wird geschlossen.");
 				this.open = !((Boolean) this.server.do_NClose()).booleanValue();
-			}
-			catch (IOException ioe)
-			{
-				ioe.printStackTrace();
-				ComException ex = new ComException(
-								"Beim Schliessen der Verbindung zum COM-Server ist ein IO-Fehler aufgetreten.");
-				this.catchComException(ex);
 			}
 			catch (ComException e)
 			{
-				ComException ex = new ComException(
-								"Beim Schliessen der Verbindung zum COM-Server ist ein Fehler aufgetreten.");
-				this.catchComException(ex);
-			}
-			finally
-			{
-				
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+								"Method: close: " + e.getClass().getName() + ": " + e.getMessage());
+				this.catchComException(e);
 			}
 		}
 	}
@@ -234,6 +195,9 @@ public class GalileoServer extends ProductServer
 			if (this.open)
 			{
 				found = this.server.do_getkunde(customerId.intValue());
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+								"Kunde mit der Nummer " + customerId + " wird gesucht: "
+												+ (found ? "gefunden" : "nicht gefunden"));
 			}
 			if (!isOpen)
 			{
@@ -241,17 +205,13 @@ public class GalileoServer extends ProductServer
 			}
 			
 		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			ComException ex = new ComException(
-							"Beim Versuch, die Daten eines Kunden via COM-Server anzufordern, ist ein IO-Fehler aufgetreten.");
-			this.catchComException(ex);
-		}
 		catch (ComException e)
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getCustomer: " + e.getClass().getName() + ": " + e.getMessage());
 			ComException ex = new ComException(
-							"Beim Versuch, die Daten eines Kunden via COM-Server anzufordern, ist ein Fehler aufgetreten.");
+							"Beim Versuch, die Daten eines Kunden via COM-Server anzufordern, ist ein Fehler aufgetreten: "
+											+ e.getMessage(), -1);
 			this.catchComException(ex);
 		}
 		return found;
@@ -260,6 +220,7 @@ public class GalileoServer extends ProductServer
 	// 10157
 	public Customer getCustomerObject()
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Kundendaten werden gelesen.");
 		Customer customer = new Customer();
 		customer.setId(this.getCustomerId().toString());
 		customer.setName(this.getCustomerName());
@@ -276,23 +237,17 @@ public class GalileoServer extends ProductServer
 		Integer customerId = new Integer(0);
 		try
 		{
-			customerId = (Integer) this.server.getKUNDENNR();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			ComException ex = new ComException(
-							"Beim Versuch, die Kundennummer eines Kunden via COM-Server abzufragen, ist ein IO-Fehler aufgetreten.");
-			this.catchComException(ex);
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Kundennummer wird gelesen.");
+			customerId = (Integer) this.server.kundennr();
 		}
 		catch (ComException e)
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getCustomerId: " + e.getClass().getName() + ": " + e.getMessage());
 			ComException ex = new ComException(
-							"Beim Versuch, die Kundennummer eines Kunden via COM-Server abzufragen, ist ein Fehler aufgetreten.");
+							"Beim Versuch, die Kundennummer eines Kunden via COM-Server abzufragen, ist ein Fehler aufgetreten: "
+											+ e.getMessage(), -1);
 			this.catchComException(ex);
-		}
-		finally
-		{
 		}
 		return customerId;
 	}
@@ -305,25 +260,19 @@ public class GalileoServer extends ProductServer
 		String name = "";
 		try
 		{
-			String lastname = (String) this.server.getCNAME1();
-			String vorname = (String) this.server.getCVORNAME();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Kundenname wird gelesen.");
+			String lastname = (String) this.server.cnamE1();
+			String vorname = (String) this.server.cvorname();
 			name = lastname.trim() + (vorname.trim().length() > 0 ? ", " + vorname.trim() : "");
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			ComException ex = new ComException(
-							"Beim Versuch, den Namen eines Kunden via COM-Server abzufragen, ist ein IO-Fehler aufgetreten.");
-			this.catchComException(ex);
 		}
 		catch (ComException e)
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getCustomerName: " + e.getClass().getName() + ": " + e.getMessage());
 			ComException ex = new ComException(
-							"Beim Versuch, den Namen eines Kunden via COM-Server abzufragen, ist ein IO-Fehler aufgetreten.");
+							"Beim Versuch, den Namen eines Kunden via COM-Server abzufragen, ist ein IO-Fehler aufgetreten: "
+											+ e.getMessage(), -1);
 			this.catchComException(ex);
-		}
-		finally
-		{
 		}
 		return name;
 	}
@@ -336,24 +285,18 @@ public class GalileoServer extends ProductServer
 		boolean hasCard = false;
 		try
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Kundenkarte wird gelesen.");
 			hasCard = false;
-			hasCard = ((Boolean) this.server.getLKUNDKARTE()).booleanValue();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			ComException ex = new ComException(
-							"Beim Versuch, via COM-Server abzufragen, ob der Kunde eine Kundenkarte hat, ist ein IO-Fehler aufgetreten.");
-			this.catchComException(ex);
+			hasCard = ((Boolean) this.server.lkundkarte()).booleanValue();
 		}
 		catch (ComException e)
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: customerHasCard: " + e.getClass().getName() + ": " + e.getMessage());
 			ComException ex = new ComException(
-							"Beim Versuch, via COM-Server abzufragen, ob der Kunde eine Kundenkarte hat, ist ein COM-Fehler aufgetreten.");
+							"Beim Versuch, via COM-Server abzufragen, ob der Kunde eine Kundenkarte hat, ist ein COM-Fehler aufgetreten: "
+											+ e.getMessage(), -1);
 			this.catchComException(ex);
-		}
-		finally
-		{
 		}
 		return hasCard;
 	}
@@ -366,10 +309,11 @@ public class GalileoServer extends ProductServer
 		Double account = new Double(0d);
 		try
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Kundenkonto wird gelesen.");
 			account = new Double(0d);
 			Integer iAccount = null;
 			Long lAccount = null;
-			Object oAccount = this.server.getNKUNDKONTO();
+			Object oAccount = this.server.nkundkonto();
 			if (oAccount instanceof Integer)
 			{
 				iAccount = (Integer) oAccount;
@@ -380,19 +324,15 @@ public class GalileoServer extends ProductServer
 				lAccount = (Long) oAccount;
 				account = new Double(lAccount.doubleValue());
 			}
-			else if (oAccount instanceof Double) account = (Double) this.server.getNKUNDKONTO();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			ComException ex = new ComException(
-							"Beim Versuch, den Kontostand eines Kunden via COM-Server abzufragen, ist ein IO-Fehler aufgetreten.");
-			this.catchComException(ex);
+			else if (oAccount instanceof Double) account = (Double) this.server.nkundkonto();
 		}
 		catch (ComException e)
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getCustomerAccount: " + e.getClass().getName() + ": " + e.getMessage());
 			ComException ex = new ComException(
-							"Beim Versuch, den Kontostand eines Kunden via COM-Server abzufragen, ist ein COM-Fehler aufgetreten.");
+							"Beim Versuch, den Kontostand eines Kunden via COM-Server abzufragen, ist ein COM-Fehler aufgetreten: "
+											+ e.getMessage(), -1);
 			this.catchComException(ex);
 		}
 		finally
@@ -403,31 +343,11 @@ public class GalileoServer extends ProductServer
 	
 	// 10157
 	
+	@Override
 	public boolean isStockManagement()
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Prüfe Status Warenbewirtschaftung.");
 		return Config.getInstance().getGalileoUpdate() == 2;
-		// boolean returnValue = false;
-		// try
-		// {
-		// returnValue = ((Boolean) this.server.iswws()).booleanValue();
-		// }
-		// catch (IOException e)
-		// {
-		// e.printStackTrace();
-		// ComException ex = new
-		// ComException("Beim Versuch, den Warenbewirtschaftungsstatus von Galileo via COM-Server abzufragen, ist ein IO-Fehler aufgetreten.");
-		// this.catchComException(ex);
-		// }
-		// catch (ComException e)
-		// {
-		// ComException ex = new
-		// ComException("Beim Versuch, den Warenbewirtschaftungsstatus von Galileo via COM-Server abzufragen, ist ein Fehler aufgetreten.");
-		// this.catchComException(ex);
-		// }
-		// finally
-		// {
-		// }
-		// return returnValue;
 	}
 	
 	public boolean getItem(String code)
@@ -445,7 +365,7 @@ public class GalileoServer extends ProductServer
 			{
 				this.open();
 			}
-			Logger.getLogger("colibri").info("Aufruf von do_NSearch mit " + code + ".");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Aufruf von do_NSearch mit " + code + ".");
 			// boolean o = this.open;
 			this.server.do_NSearch(code);
 			returnValue = this.found();
@@ -463,18 +383,12 @@ public class GalileoServer extends ProductServer
 				this.close();
 			}
 		}
-		catch (ComException ce)
+		catch (ComException e)
 		{
-			Logger.getLogger("colibri").severe("do_NSearch hat ComException in getItem ausgelöst.");
-			this.catchComException(ce);
-		}
-		catch (IOException ioe)
-		{
-			ioe.printStackTrace();
-			this.catchComException(new ComException(ioe.getMessage()));
-		}
-		finally
-		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getItem: " + e.getClass().getName() + ": " + e.getMessage());
+			this.catchComException(e);
 		}
 		return returnValue;
 	}
@@ -499,19 +413,15 @@ public class GalileoServer extends ProductServer
 			{
 				this.open();
 			}
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Prüfe Bestellung.");
 			validOrder = this.server.do_teststorno(code);
 		}
-		catch (ComException ce)
+		catch (ComException e)
 		{
-			// showError(ce);
-			ce.printStackTrace();
-			this.catchComException(ce);
-		}
-		catch (IOException ioe)
-		{
-			ioe.printStackTrace();
-			// showError(ioe);
-			this.catchComException(new ComException());
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: isOrderValid: " + e.getClass().getName() + ": " + e.getMessage());
+			this.catchComException(e);
 		}
 		finally
 		{
@@ -556,6 +466,7 @@ public class GalileoServer extends ProductServer
 	
 	public boolean setData(Position p)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Galileo Daten werden in Position übernommen.");
 		p.ordered = this.isOrdered();
 		// String oId = this.getOrderId().trim();
 		if (this.setProductData(p))
@@ -583,6 +494,7 @@ public class GalileoServer extends ProductServer
 	
 	public void setReversedData(Position p)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Rückname daten werden in Position übernommen.");
 		// p.setPositionState(Position.STATE_TAKE_BACK);
 		if (p.productId.startsWith(EAN13.PRE_ORDERED))
 		{
@@ -607,33 +519,14 @@ public class GalileoServer extends ProductServer
 		}
 		if (p.getReceipt().hasCustomer())
 		{
-			// Integer id = new Integer(0);
-			// try
-			// {
-			// id = new Integer(p.getReceipt().getCustomerId());
-			// }
-			// catch (NumberFormatException e)
-			// {
-			// System.out.println("No Customer...");
-			// }
-			// finally
-			// {
-			// if (this.getCustomer(id))
-			// {
-			// p.getReceipt().setCustomer(this.getCustomerObject());
-			// }
-			// else
-			// {
-			// p.getReceipt().setCustomer();
-			// }
 			p.updateCustomerAccount = true;
-			// }
 		}
 		p.setOrderedQuantity(0); // 10224
 	}
 	
 	public void setOrderedData(Position p)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Bestelldaten werden in Position übernommen.");
 		/*
 		 * Bestelldaten
 		 */
@@ -655,6 +548,7 @@ public class GalileoServer extends ProductServer
 	
 	private void setStockData(Position p)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Lagerdaten werden in Position übernommen.");
 		p.optCode = this.getOptCode(p); // 10178
 		p.stock = true;
 		p.setOrderedQuantity(0); // 10224
@@ -662,6 +556,7 @@ public class GalileoServer extends ProductServer
 	
 	private boolean setProductData(Position p)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Artikeldaten werden in Position übernommen.");
 		p.author = this.getAuthor().trim();
 		p.title = this.getTitle().trim();
 		p.publisher = this.getPublisher().trim();
@@ -703,42 +598,20 @@ public class GalileoServer extends ProductServer
 		return result;
 	}
 	
-	// private String getProductNumber()
-	// {
-	// String productNumber = "";
-	// try
-	// {
-	// productNumber = (String) this.server.getBESTNUMMER();
-	// }
-	// catch (Exception e)
-	// {
-	// e.printStackTrace();
-	// this.catchComException(new ComException());
-	// }
-	// finally
-	// {
-	// return productNumber;
-	// }
-	// }
-	
 	public boolean found()
 	{
 		boolean found = false;
 		try
 		{
-			found = ((Boolean) this.server.getGEFUNDEN()).booleanValue();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Gefunden.");
+			found = ((Boolean) this.server.gefunden()).booleanValue();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: found: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return found;
 	}
@@ -752,19 +625,15 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			s = (String) this.server.getAUTOR();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Autor wird übernommen.");
+			s = (String) this.server.autor();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getAuthor: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return s;
 	}
@@ -778,19 +647,15 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			s = (String) this.server.getTITEL();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Titel wird übernommen.");
+			s = (String) this.server.titel();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getTitle: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return s;
 	}
@@ -804,19 +669,15 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			s = (String) this.server.getVERLAG();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Verlag wird übernommen.");
+			s = (String) this.server.verlag();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getPublisher: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return s;
 	}
@@ -830,19 +691,14 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			s = (String) this.server.getWGRUPPE();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Warengruppe wird übernommen.");
+			s = (String) this.server.wgruppe();
 		}
 		catch (ComException e)
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getProductGroup: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return s;
 	}
@@ -856,28 +712,24 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			price = (Double) this.server.getPREIS();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Preis wird übernommen.");
+			price = (Double) this.server.preis();
 		}
 		catch (NumberFormatException e)
 		{
-			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-		}
-		catch (IOException ioe)
-		{
-			Logger.getLogger("colibri").severe(ioe.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage());
 		}
 		catch (ClassCastException e)
 		{
 			price = this.getPrice(price);
-			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage());
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getPrice: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return price.doubleValue();
 	}
@@ -887,18 +739,15 @@ public class GalileoServer extends ProductServer
 		Double d = new Double(0d);
 		try
 		{
-			d = new Double(((Integer) this.server.getPREIS()).doubleValue());
-		}
-		catch (IOException ioe)
-		{
-			return price;
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Preis wird übernommen.");
+			d = new Double(((Integer) this.server.preis()).doubleValue());
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getPrice: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return d;
 	}
@@ -912,14 +761,14 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			tax = (String) this.server.getMWST();
-		}
-		catch (IOException e)
-		{
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Mehrwertsteuercode wird übernommen.");
+			tax = (String) this.server.mwst();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getTax: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
 		}
 		return tax;
@@ -935,23 +784,20 @@ public class GalileoServer extends ProductServer
 			try
 			{
 				Boolean b = new Boolean(false);
-				b = (Boolean) this.server.getBESTELLT();
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Optionscode wird übernommen.");
+				b = (Boolean) this.server.bestellt();
 				if (b.booleanValue())
 				{
-					b = (Boolean) this.server.getLAGERABHOLFACH();
+					b = (Boolean) this.server.lagerabholfach();
 				}
 				optCode = b.booleanValue() ? "B" : "L"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			catch (IOException e)
-			{
-				this.catchComException(new ComException());
-			}
 			catch (ComException e)
 			{
+				e.printStackTrace();
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+								"Method: getOptCode: " + e.getClass().getName() + ": " + e.getMessage());
 				this.catchComException(e);
-			}
-			finally
-			{
 			}
 		}
 		else
@@ -977,18 +823,15 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			s = (String) this.server.getISBN();
-		}
-		catch (IOException e)
-		{
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("ISBN wird übernommen.");
+			s = (String) this.server.isbn();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getISBN: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return s;
 	}
@@ -1002,18 +845,15 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			s = (String) this.server.getBZNR();
-		}
-		catch (IOException e)
-		{
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("BZ-Nummer wird übernommen.");
+			s = (String) this.server.bznr();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getBZNumber: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return s;
 	}
@@ -1029,19 +869,15 @@ public class GalileoServer extends ProductServer
 		// Object bestellt = null;
 		try
 		{
-			isOrdered = (Boolean) this.server.getBESTELLT();
-		}
-		catch (IOException ioe)
-		{
-			Logger.getLogger("colibri").severe(ioe.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Bestellstatus wird übernommen.");
+			isOrdered = (Boolean) this.server.bestellt();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: isOrdered: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return isOrdered.booleanValue();
 	}
@@ -1052,16 +888,15 @@ public class GalileoServer extends ProductServer
 		// Object lagerabholfach = null;
 		try
 		{
-			bestellt = this.server.getBESTELLT();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Bestellstatus wird übernommen.");
+			bestellt = this.server.bestellt();
 			// lagerabholfach = this.server.getLagerabholfach();
-		}
-		catch (IOException ioe)
-		{
-			Logger.getLogger("colibri").severe(ioe.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getOrderId: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
 		}
 		
@@ -1073,15 +908,15 @@ public class GalileoServer extends ProductServer
 				// Boolean isOrdered = new Boolean(false);
 				// if (this.server.getBESTELLT().equals(new Boolean(true)))
 				// {
-				s = (String) this.server.getBESTNUMMER();
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Bestellnummerwird übernommen.");
+				s = (String) this.server.bestnummer();
 				// }
-			}
-			catch (IOException ioe)
-			{
-				this.catchComException(new ComException());
 			}
 			catch (ComException e)
 			{
+				e.printStackTrace();
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+								"Method: getOrderId: " + e.getClass().getName() + ": " + e.getMessage());
 				this.catchComException(e);
 			}
 		}
@@ -1098,22 +933,18 @@ public class GalileoServer extends ProductServer
 		
 		try
 		{
-			if (this.server.getBESTELLT().equals(new Boolean(true)))
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Menge wird übernommen.");
+			if (this.server.bestellt().equals(new Boolean(true)))
 			{
-				quantity = (Integer) this.server.getMENGE();
+				quantity = (Integer) this.server.menge();
 			}
-		}
-		catch (IOException ioe)
-		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getQuantity: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return quantity.intValue();
 	}
@@ -1128,22 +959,18 @@ public class GalileoServer extends ProductServer
 		
 		try
 		{
-			if (this.server.getBESTELLT().equals(new Boolean(true)))
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Bestellte Menge wird übernommen.");
+			if (this.server.bestellt().equals(new Boolean(true)))
 			{
-				quantity = (Integer) this.server.getMENGE();
+				quantity = (Integer) this.server.menge();
 			}
-		}
-		catch (IOException ioe)
-		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getOrderedQuantity: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return quantity;
 	}
@@ -1157,23 +984,19 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			Object object = this.server.getBESTAND();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Lagerbestand wird übernommen.");
+			Object object = this.server.bestand();
 			if (object != null && object instanceof String)
 			{
 				s = (String) object;
 			}
 		}
-		catch (IOException ioe)
-		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
-		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getStock: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return s;
 	}
@@ -1186,15 +1009,14 @@ public class GalileoServer extends ProductServer
 		{
 			try
 			{
-				object = this.server.getLASTVKDAT();
-			}
-			catch (IOException ioe)
-			{
-				//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-				this.catchComException(new ComException());
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Letztes Verkaufsdatum wird übernommen.");
+				object = this.server.lastvkdat();
 			}
 			catch (ComException e)
 			{
+				e.printStackTrace();
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+								"Method: getLastCashSaleDate: " + e.getClass().getName() + ": " + e.getMessage());
 				this.catchComException(e);
 			}
 		}
@@ -1232,23 +1054,19 @@ public class GalileoServer extends ProductServer
 		}
 		try
 		{
-			Object object = this.server.getLAGERABHOLFACH();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Lagerabholfach wird übernommen.");
+			Object object = this.server.lagerabholfach();
 			if (object != null && object instanceof Boolean)
 			{
 				b = (Boolean) object;
 			}
 		}
-		catch (IOException ioe)
-		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
-		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: isFromStock: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return b.booleanValue();
 	}
@@ -1257,15 +1075,13 @@ public class GalileoServer extends ProductServer
 	{
 		try
 		{
-			this.server.setLCDSUCHE(new Boolean(value));
-		}
-		catch (IOException ioe)
-		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
+			this.server.lcdsuche(new Boolean(value));
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: setReadCd: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
 		}
 		finally
@@ -1278,19 +1094,15 @@ public class GalileoServer extends ProductServer
 		boolean doUpdate = value > 0;
 		try
 		{
-			this.server.setNICHTBUCHEN(new Boolean(!doUpdate));
-		}
-		catch (IOException ioe)
-		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Buchungsstatus wird übernommen.");
+			this.server.nichtbuchen(new Boolean(!doUpdate));
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: setUpdate: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 	}
 	
@@ -1298,18 +1110,12 @@ public class GalileoServer extends ProductServer
 	{
 		try
 		{
-			this.server.setCBIBINI(path);
-		}
-		catch (IOException ioe)
-		{
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Bibwin.ini-Pfad wird übernommen.");
+			this.server.cbibini(path);
 		}
 		catch (ComException e)
 		{
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 	}
 	
@@ -1318,19 +1124,15 @@ public class GalileoServer extends ProductServer
 		boolean err = true;
 		try
 		{
-			err = ((Boolean) this.server.getLCDERROR()).booleanValue();
-		}
-		catch (IOException ioe)
-		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-			return err;
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Ob DVD Fehler vorhanden wird übernommen.");
+			err = ((Boolean) this.server.lcderror()).booleanValue();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: isCdError: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return err;
 	}
@@ -1340,26 +1142,21 @@ public class GalileoServer extends ProductServer
 		String err = "";
 		try
 		{
-			err = (String) this.server.getCCDERROR();
-		}
-		catch (IOException ioe)
-		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
-			this.catchComException(new ComException());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("DVD Fehlertext lesen.");
+			err = (String) this.server.ccderror();
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: getError: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return err;
 	}
 	
 	public boolean update(int receiptState, Position position)
 	{
-		Logger.getLogger("colibri").info("Entered: GalileoServer.update()");
 		if (Database.getCurrent().equals(Database.getTutorial()))
 		{
 			return true;
@@ -1386,10 +1183,12 @@ public class GalileoServer extends ProductServer
 						this.close();
 					}
 				}
-				catch (ComException ce)
+				catch (ComException e)
 				{
-					result = false;
-					this.catchComException(ce);
+					e.printStackTrace();
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+									"Method: update: " + e.getClass().getName() + ": " + e.getMessage());
+					this.catchComException(e);
 				}
 				finally
 				{
@@ -1405,15 +1204,16 @@ public class GalileoServer extends ProductServer
 	
 	private boolean doUpdate(int receiptState, Position position)
 	{
-		Logger.getLogger("colibri").info("Entered: GalileoServer.doUpdate()");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Galileo Daten werden aktualisiert.");
 		boolean booked = true;
 		/*
 		 * Nur buchen, wenn Buchenflag gesetzt
 		 */
-		Logger.getLogger("colibri").info("         p.galileoBook == " + Boolean.toString(position.galileoBook));
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+						"         p.galileoBook == " + Boolean.toString(position.galileoBook));
 		if (position.galileoBook)
 		{
-			Logger.getLogger("colibri").info("         p.productId == " + position.productId);
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("         p.productId == " + position.productId);
 			if (position.productId.length() > 0 && !position.productId.equals("0"))
 			{
 				if (position.getProductGroup() == null || position.getProductGroup().getId().equals(Table.ZERO_VALUE))
@@ -1429,15 +1229,18 @@ public class GalileoServer extends ProductServer
 			 * Nur buchen, wenn entweder der Beleg bereits verbucht und aber
 			 * storniert ist oder wenn der Beleg noch nicht verbucht ist.
 			 */
-			Logger.getLogger("colibri").info("         p.galileoBooked == " + Boolean.toString(position.galileoBooked));
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+							"         p.galileoBooked == " + Boolean.toString(position.galileoBooked));
 			
 			if (receiptState == Receipt.RECEIPT_STATE_SERIALIZED)
 			{
-				Logger.getLogger("colibri").info("         p.ordered == " + Boolean.toString(position.ordered));
-				Logger.getLogger("colibri").info("         p.type == " + position.type);
-				Logger.getLogger("colibri").info(
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+								"         p.ordered == " + Boolean.toString(position.ordered));
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("         p.type == " + position.type);
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
 								"         productGroup.galileoId == " + position.getProductGroup().galileoId);
-				Logger.getLogger("colibri").info("         productGroup.type == " + position.getProductGroup().type);
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+								"         productGroup.type == " + position.getProductGroup().type);
 				if (!position.galileoBooked)
 				{
 					// 10221
@@ -1486,7 +1289,7 @@ public class GalileoServer extends ProductServer
 					// (position.getProductGroup().type.equals(ProductGroup.TYPE_INCOME))
 					else if (position.type == ProductGroup.TYPE_INCOME)
 					{
-						Logger.getLogger("colibri").info("         r.state == " + receiptState);
+						Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("         r.state == " + receiptState);
 						if (receiptState == Receipt.RECEIPT_STATE_SERIALIZED)
 						{
 							// 10427
@@ -1504,7 +1307,7 @@ public class GalileoServer extends ProductServer
 				{
 					if (!position.isPayedInvoice())
 					{
-						Logger.getLogger("colibri").log(Level.INFO, "Rückbuchung"); //$NON-NLS-1$ //$NON-NLS-2$
+						Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Rückbuchung"); //$NON-NLS-1$ 
 						// 10427
 						booked = position.getQuantity() < 0 ? this.updateStock(position) : this.reverseStock(position);
 						// booked = this.reverseStock(position);
@@ -1534,7 +1337,6 @@ public class GalileoServer extends ProductServer
 	
 	private boolean updateStock(Position position)
 	{
-		Logger.getLogger("colibri").info("Entered: GalileoServer.updateStock()");
 		boolean result = true;
 		if (!this.open)
 		{
@@ -1554,21 +1356,23 @@ public class GalileoServer extends ProductServer
 	
 	private boolean doUpdateStock(Position position)
 	{
-		Logger.getLogger("colibri").info("Entered: GalileoServer.doUpdateStock()");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Galileo Lagerbestand wird mit verkauften Daten aktualisiert");
 		boolean booked = false;
 		boolean transactionWritten = false;
 		boolean stockUpdated = false;
 		try
 		{
 			int menge = Math.abs(position.getQuantity()); // 10224
-			this.server.setNICHTBUCHEN(new Boolean(this.getUpdate() == 0));
-			this.server.setVCOUPONNR(position.getReceipt().getNumber());
-			this.server.setVNUMMER(position.productId);
-			this.server.setVPREIS(new Double(Math.abs(position.getPrice())));
-			this.server.setVMWST(position.getCurrentTax().getTax().galileoId);
-			this.server.setVWGRUPPE(position.getProductGroup().galileoId);
-			this.server.setVMENGE(new Integer(menge));
-			this.server.setVRABATT(new Double(position.getDiscountAmount()));
+			this.server.nichtbuchen(new Boolean(this.getUpdate() == 0));
+			this.server.vcouponnr(position.getReceipt().getNumber());
+			this.server.vnummer(position.productNumber);
+			this.server.vpreis(new Double(Math.abs(position.getPrice())));
+			this.server.vmwst(position.getCurrentTax().getTax().galileoId);
+			this.server.vwgruppe(position.getProductGroup().galileoId);
+			this.server.vmenge(new Integer(menge));
+			this.server.vrabatt(new Double(position.getDiscountAmount()));
+			// 10442
+			this.server.vebook(position.productNumber.startsWith(EAN13.PRE_EBOOK));
 			
 			Integer customerId = new Integer(0);
 			try
@@ -1584,19 +1388,20 @@ public class GalileoServer extends ProductServer
 			}
 			finally
 			{
-				this.server.setKUNDENNR(customerId);
-				this.server.setVKUNDENNR(customerId);
+				this.server.kundennr(customerId);
+				this.server.vkundennr(customerId);
 			}
 			
-			this.server.setVBESTELLT(new Boolean(position.ordered));
-			this.server.setVLAGERABHOLFACH(new Boolean(position.stock));
+			this.server.vbestellt(new Boolean(position.ordered));
+			this.server.vlagerabholfach(new Boolean(position.stock));
 			
 			long productId = 0;
 			try
 			{
 				// 10143
 				// productId = new Long(position.productId).longValue();
-				productId = new Long(position.productId.replace('X', '0')).longValue();
+				String value = position.productId.replace('X', '0');
+				productId = new Long(value).longValue();
 				// 10143
 			}
 			catch (NumberFormatException nfe)
@@ -1605,18 +1410,20 @@ public class GalileoServer extends ProductServer
 			}
 			if (productId == 0)
 			{
-				this.server.setVWGRUPPE(position.getProductGroupId().toString());
-				this.server.setVWGNAME(position.getProductGroup().name);
+				this.server.vwgruppe(position.getProductGroupId().toString());
+				this.server.vwgname(position.getProductGroup().name);
 				booked = this.server.do_wgverkauf();
-				Logger.getLogger("colibri").info("do_wgverkauf aufrufen..." + (booked ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+								"do_wgverkauf aufrufen..." + (booked ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			else
 			{
 				booked = this.server.do_verkauf(position.productId);
-				Logger.getLogger("colibri").info("do_verkauf aufrufen..." + (booked ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+								"do_verkauf aufrufen..." + (booked ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			
-			transactionWritten = ((Boolean) this.server.getVTRANSWRITE()).booleanValue();
+			transactionWritten = ((Boolean) this.server.vtranswrite()).booleanValue();
 			if (this.getUpdate() > 0)
 			{
 				if (position.ordered)
@@ -1625,7 +1432,8 @@ public class GalileoServer extends ProductServer
 					// stockUpdated = server.do_delabholfach(position.orderId);
 					stockUpdated = this.server.do_delabholfach(position.orderId, menge);
 					// 10224
-					Logger.getLogger("colibri").info("do_delabholfach aufrufen..." + (stockUpdated ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+									"do_delabholfach aufrufen..." + (stockUpdated ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				else if (productId == 0)
 				{
@@ -1633,28 +1441,23 @@ public class GalileoServer extends ProductServer
 				}
 				else
 				{
-					stockUpdated = ((Boolean) this.server.getVLAGERUPDATE()).booleanValue();
+					stockUpdated = ((Boolean) this.server.vlagerupdate()).booleanValue();
 				}
 			}
 			if (position.getReceipt().getCustomer().hasCard())
 			{
-				Object object = this.server.getNKUNDKONTO();
+				Object object = this.server.nkundkonto();
 				Double account = new Double(object.toString());
 				position.getReceipt().getCustomer().setAccount(account);
 			}
 			booked = transactionWritten;
 		}
-		catch (IOException ioe)
-		{
-			ioe.printStackTrace();
-			this.catchComException(new ComException());
-		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: doUpdateStock: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return booked;
 	}
@@ -1663,20 +1466,20 @@ public class GalileoServer extends ProductServer
 	
 	private boolean doUpdatePayedInvoice(Position position)
 	{
-		Logger.getLogger("colibri").info("Entered: GalileoServer.doUpdatePayedInvoice()");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Galileo bezahlte Rechnung wird aktualisiert");
 		boolean booked = false;
 		// boolean transactionWritten = false;
 		// boolean stockUpdated = false;
 		try
 		{
-			this.server.setNICHTBUCHEN(new Boolean(this.getUpdate() == 0));
-			this.server.setVCOUPONNR(position.getReceipt().getNumber());
-			this.server.setVNUMMER(position.productId);
-			this.server.setVPREIS(new Double(Math.abs(position.getPrice())));
-			this.server.setVMWST(position.getCurrentTax().getTax().galileoId);
-			this.server.setVWGRUPPE(position.getProductGroup().galileoId);
-			this.server.setVMENGE(new Integer(Math.abs(position.getQuantity())));
-			this.server.setVRABATT(new Double(position.getDiscountAmount()));
+			this.server.nichtbuchen(new Boolean(this.getUpdate() == 0));
+			this.server.vcouponnr(position.getReceipt().getNumber());
+			this.server.vnummer(position.productId);
+			this.server.vpreis(new Double(Math.abs(position.getPrice())));
+			this.server.vmwst(position.getCurrentTax().getTax().galileoId);
+			this.server.vwgruppe(position.getProductGroup().galileoId);
+			this.server.vmenge(new Integer(Math.abs(position.getQuantity())));
+			this.server.vrabatt(new Double(position.getDiscountAmount()));
 			
 			Integer customerId = new Integer(0);
 			try
@@ -1692,30 +1495,25 @@ public class GalileoServer extends ProductServer
 			}
 			finally
 			{
-				this.server.setKUNDENNR(customerId);
-				this.server.setVKUNDENNR(customerId);
+				this.server.kundennr(customerId);
+				this.server.vkundennr(customerId);
 			}
 			
-			this.server.setVBESTELLT(new Boolean(position.ordered));
-			this.server.setVLAGERABHOLFACH(new Boolean(position.stock));
+			this.server.vbestellt(new Boolean(position.ordered));
+			this.server.vlagerabholfach(new Boolean(position.stock));
 			
 			booked = this.server.do_BucheRechnung(position.getInvoiceNumber().intValue());
 			if (!booked)
 			{
-				this.message = (String) this.server.getCRGERROR();
+				this.message = (String) this.server.crgerror();
 			}
-		}
-		catch (IOException ioe)
-		{
-			ioe.printStackTrace();
-			this.catchComException(new ComException());
 		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: doUpdatePayedInvoice: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return booked;
 	}
@@ -1724,7 +1522,8 @@ public class GalileoServer extends ProductServer
 	
 	private boolean reverseStock(Position position)
 	{
-		Logger.getLogger("colibri").info("Entered: GalileoServer.reverseStock()");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+						"Galileo Lagerbestand wird mit zurückgenommenen Daten aktualisiert");
 		boolean result = true;
 		if (!this.open)
 		{
@@ -1739,8 +1538,10 @@ public class GalileoServer extends ProductServer
 			}
 			catch (Exception e)
 			{
-				result = false;
-				this.catchComException(new ComException());
+				e.printStackTrace();
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+								"Method: reverseStock: " + e.getClass().getName() + ": " + e.getMessage());
+				this.catchComException(new ComException(e.getLocalizedMessage(), -1));
 			}
 			finally
 			{
@@ -1755,19 +1556,20 @@ public class GalileoServer extends ProductServer
 	
 	private boolean doReverse(Position position)
 	{
-		Logger.getLogger("colibri").info("Entered: GalileoServer.doReverse()");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Konfiguriere Rücknahme");
 		boolean booked = false;
 		boolean transactionWritten = false;
 		try
 		{
-			this.server.setNICHTBUCHEN(new Boolean(this.getUpdate() == 0));
-			this.server.setVCOUPONNR(position.getReceipt().getNumber());
-			this.server.setVNUMMER(position.productId);
-			this.server.setVPREIS(new Double(Math.abs(position.getPrice())));
-			this.server.setVMWST(position.getCurrentTax().getTax().galileoId);
-			this.server.setVWGRUPPE(position.getProductGroup().galileoId);
-			this.server.setVMENGE(new Integer(Math.abs(position.getQuantity())));
-			this.server.setVRABATT(new Double(position.getDiscountAmount()));
+			this.server.nichtbuchen(new Boolean(this.getUpdate() == 0));
+			this.server.vcouponnr(position.getReceipt().getNumber());
+			this.server.vnummer(position.productId);
+			this.server.vpreis(new Double(Math.abs(position.getPrice())));
+			this.server.vmwst(position.getCurrentTax().getTax().galileoId);
+			this.server.vwgruppe(position.getProductGroup().galileoId);
+			this.server.vmenge(new Integer(Math.abs(position.getQuantity())));
+			this.server.vrabatt(new Double(position.getDiscountAmount()));
+			this.server.vebook(position.productNumber.startsWith(EAN13.PRE_EBOOK));
 			
 			Integer customerId = new Integer(0);
 			try
@@ -1783,19 +1585,20 @@ public class GalileoServer extends ProductServer
 			}
 			finally
 			{
-				this.server.setKUNDENNR(customerId);
-				this.server.setVKUNDENNR(customerId);
+				this.server.kundennr(customerId);
+				this.server.vkundennr(customerId);
 			}
 			
-			this.server.setVBESTELLT(new Boolean(position.ordered));
-			this.server.setVLAGERABHOLFACH(new Boolean(position.stock));
+			this.server.vbestellt(new Boolean(position.ordered));
+			this.server.vlagerabholfach(new Boolean(position.stock));
 			
 			long productId = 0;
 			try
 			{
 				// 10143
 				// productId = new Long(position.productId).longValue();
-				productId = new Long(position.productId.replace('X', '0')).longValue();
+				String value = position.productId.replace('X', '0');
+				productId = new Long(value).longValue();
 				// 10143
 			}
 			catch (NumberFormatException nfe)
@@ -1804,18 +1607,20 @@ public class GalileoServer extends ProductServer
 			}
 			if (productId == 0)
 			{
-				this.server.setVWGRUPPE(position.getProductGroupId().toString());
-				this.server.setVWGNAME(position.getProductGroup().name);
+				this.server.vwgruppe(position.getProductGroupId().toString());
+				this.server.vwgname(position.getProductGroup().name);
 				booked = this.server.do_wgstorno();
-				Logger.getLogger("colibri").info("do_wgstorno aufrufen..." + (booked ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+								"do_wgstorno aufrufen..." + (booked ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			else
 			{
 				booked = this.server.do_storno(position.productId);
-				Logger.getLogger("colibri").info("do_storno aufrufen..." + (booked ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+								"do_storno aufrufen..." + (booked ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			
-			transactionWritten = ((Boolean) this.server.getVTRANSWRITE()).booleanValue();
+			transactionWritten = ((Boolean) this.server.vtranswrite()).booleanValue();
 			if (this.getUpdate() > 0)
 			{
 				// 10060
@@ -1835,7 +1640,7 @@ public class GalileoServer extends ProductServer
 				// stockUpdated = this.server.do_delabholfach(position.orderId,
 				// position.getQuantity().intValue());
 				// // 10224
-				//						Logger.getLogger("colibri").info("do_delabholfach aufrufen..." + (stockUpdated ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
+				//						Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("do_delabholfach aufrufen..." + (stockUpdated ? " Ok!" : " Fehler!")); //$NON-NLS-1$ //$NON-NLS-2$
 				// }
 				// else if (productId == 0)
 				// {
@@ -1849,7 +1654,7 @@ public class GalileoServer extends ProductServer
 				// }
 				if (position.getReceipt().getCustomer().hasCard())
 				{
-					Object object = this.server.getNKUNDKONTO();
+					Object object = this.server.nkundkonto();
 					Double account = new Double(object.toString());
 					position.getReceipt().getCustomer().setAccount(account);
 				}
@@ -1865,22 +1670,17 @@ public class GalileoServer extends ProductServer
 			}
 			if (position.getReceipt().getCustomer().hasCard())
 			{
-				Object object = this.server.getNKUNDKONTO();
+				Object object = this.server.nkundkonto();
 				Double account = new Double(object.toString());
 				position.getReceipt().getCustomer().setAccount(account);
 			}
 		}
-		catch (IOException ioe)
-		{
-			ioe.printStackTrace();
-			this.catchComException(new ComException());
-		}
 		catch (ComException e)
 		{
+			e.printStackTrace();
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(
+							"Method: doReverse: " + e.getClass().getName() + ": " + e.getMessage());
 			this.catchComException(e);
-		}
-		finally
-		{
 		}
 		return transactionWritten;
 	}
@@ -1888,7 +1688,7 @@ public class GalileoServer extends ProductServer
 	public void catchComException(Exception e) throws ComException
 	{
 		this.setActive(false);
-		
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).throwing(this.getClass().getName(), "catchComException", e);
 		// if (this.update > 0 &&
 		// Database.getCurrent().equals(Database.getStandard()))
 		if (Database.getCurrent().equals(Database.getStandard()))
@@ -1908,5 +1708,4 @@ public class GalileoServer extends ProductServer
 			}
 		}
 	}
-	
 }

@@ -121,6 +121,11 @@ public class Action extends AbstractAction
 		return (Integer) this.getValue(Action.POS_KEY_ACTION_TYPE);
 	}
 	
+	public UserPanel getContext()
+	{
+		return this.context;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -133,9 +138,9 @@ public class Action extends AbstractAction
 		{
 			PosEvent p = new PosEvent(this);
 			PosEventListener[] l = (PosEventListener[]) this.posEventListeners.toArray(new PosEventListener[0]);
-			for (int i = 0; i < l.length; i++)
+			for (PosEventListener element : l)
 			{
-				l[i].posEventPerformed(p);
+				element.posEventPerformed(p);
 			}
 		}
 	}

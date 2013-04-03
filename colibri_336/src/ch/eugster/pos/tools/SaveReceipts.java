@@ -282,6 +282,8 @@ public class SaveReceipts implements InitializationListener
 		{
 			Logger.getLogger("SaveReceipts").info("Kunde " + customerCode + " gefunden.");
 			customer = this.productServer.getCustomerObject();
+			customer.setId(customerCode);
+			System.out.println(customer.getAccount());
 		}
 		else
 		{

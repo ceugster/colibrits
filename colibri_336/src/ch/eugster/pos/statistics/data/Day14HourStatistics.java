@@ -104,7 +104,7 @@ public class Day14HourStatistics extends Statistics
 		 */
 		while (iterator.hasNext())
 		{
-			Logger.getLogger("colibri").info("Daten konvertieren");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Daten konvertieren");
 			Object[] results = this.convertResults((Object[]) iterator.next());
 			// Erste und letzte Tagesstunde für Output speichern...
 			int hour = ((Integer) results[1]).intValue();
@@ -117,23 +117,23 @@ public class Day14HourStatistics extends Statistics
 				/*
 				 * Record initialisieren...
 				 */
-				Logger.getLogger("colibri").info("SortMap initialisieren");
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("SortMap initialisieren");
 				map = this.initRecord(results);
 			}
 			else
 			{
-				Logger.getLogger("colibri").info("Numerische Daten übertragen");
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Numerische Daten übertragen");
 				map = this.initNumericValue(results, map);
 			}
 			
-			Logger.getLogger("colibri").info("SortMap In Liste übertragen");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("SortMap In Liste übertragen");
 			records.put(results[0], map);
 		}
 		
 		/*
 		 * Nun die Daten aus der Hashtable in eine Liste umladen...
 		 */
-		Logger.getLogger("colibri").info("In Sortierliste übertragen");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("In Sortierliste übertragen");
 		ArrayList list = new ArrayList();
 		Enumeration enumerationeration = records.elements();
 		while (enumerationeration.hasMoreElements())
@@ -141,7 +141,7 @@ public class Day14HourStatistics extends Statistics
 			list.add(enumerationeration.nextElement());
 		}
 		
-		Logger.getLogger("colibri").info("Daten sortieren");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Daten sortieren");
 		Object[] array = list.toArray(new Object[0]);
 		Arrays.sort(array);
 		

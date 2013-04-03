@@ -7,13 +7,12 @@
 package ch.eugster.pos.admin;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
@@ -89,120 +88,79 @@ public class App
 		
 		if (App.isAlreadyRunning())
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.WARNING, Messages.getString("App.Eine_Instanz_des_Programms_laeuft_bereits._13")); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.WARNING,
+							Messages.getString("App.Eine_Instanz_des_Programms_laeuft_bereits._13")); //$NON-NLS-1$ 
 			App.alert(Messages.getString("App.Eine_Instanz_des_Administrationsprogramms_laeuft_bereits..._14")); //$NON-NLS-1$
 			System.exit(15);
 		}
 		if (App.colibriIsRunning())
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.WARNING, Messages.getString("App.Eine_Instanz_des_Programms_Colibri_laeuft._16")); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-			App
-							.alert(Messages
-											.getString("App.Eine_Instanz_des_Kassenprogramms_Colibri_laeuft._Bitte_beenden_Sie_dieses,_bevor_Sie_das_Administrationsprogramm_starten._17")); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.WARNING,
+							Messages.getString("App.Eine_Instanz_des_Programms_Colibri_laeuft._16")); //$NON-NLS-1$ 
+			App.alert(Messages
+							.getString("App.Eine_Instanz_des_Kassenprogramms_Colibri_laeuft._Bitte_beenden_Sie_dieses,_bevor_Sie_das_Administrationsprogramm_starten._17")); //$NON-NLS-1$
 			System.exit(17);
 		}
 		
 		if (!App.isCompatible())
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.SEVERE, Messages.getString("App.Das_Programm_benoetigt_mindestens_die_Laufzeitumgebunt_JRE_1.4.x._19")); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-			App
-							.alert(Messages
-											.getString("App.Der_Colibri_Administrator_benoetigt_mindestens_die_Laufzeitumgebunt_JRE_1.4.x._Das_Programm_wird_beendet._20")); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.log(Level.SEVERE,
+											Messages.getString("App.Das_Programm_benoetigt_mindestens_die_Laufzeitumgebunt_JRE_1.4.x._19")); //$NON-NLS-1$ 
+			App.alert(Messages
+							.getString("App.Der_Colibri_Administrator_benoetigt_mindestens_die_Laufzeitumgebunt_JRE_1.4.x._Das_Programm_wird_beendet._20")); //$NON-NLS-1$
 			System.exit(14);
 		}
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager
-							.getLogManager()
-							.getLogger("colibri").log(Level.INFO, Messages.getString("App.Pruefen_der_Unterverzeichnisse..._22")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,
+						Messages.getString("App.Pruefen_der_Unterverzeichnisse..._22")); //$NON-NLS-1$ 
 		if (!App.testDefaultPath(Path.getInstance().cfgDir, false))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.SEVERE, Messages.getString("App.Unterverzeichnis__24") + Path.getInstance().cfgDir + Messages.getString("App._fehlt._25")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-			App
-							.alert(Messages
-											.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__26") + Path.getInstance().cfgDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._27")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.log(Level.SEVERE,
+											Messages.getString("App.Unterverzeichnis__24") + Path.getInstance().cfgDir + Messages.getString("App._fehlt._25")); //$NON-NLS-1$ //$NON-NLS-2$ 
+			App.alert(Messages
+							.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__26") + Path.getInstance().cfgDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._27")); //$NON-NLS-1$ //$NON-NLS-2$
 			System.exit(16);
 		}
 		if (!App.testDefaultPath(Path.getInstance().ojbDir, false))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.SEVERE, Messages.getString("App.Unterverzeichnis__29") + Path.getInstance().ojbDir + Messages.getString("App._fehlt._30")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-			App
-							.alert(Messages
-											.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__31") + Path.getInstance().ojbDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._32")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.log(Level.SEVERE,
+											Messages.getString("App.Unterverzeichnis__29") + Path.getInstance().ojbDir + Messages.getString("App._fehlt._30")); //$NON-NLS-1$ //$NON-NLS-2$ 
+			App.alert(Messages
+							.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__31") + Path.getInstance().ojbDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._32")); //$NON-NLS-1$ //$NON-NLS-2$
 			System.exit(16);
 		}
 		if (!App.testDefaultPath(Path.getInstance().lockDir, false))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.SEVERE, Messages.getString("App.Unterverzeichnis__34") + Path.getInstance().lockDir + Messages.getString("App._fehlt._35")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-			App
-							.alert(Messages
-											.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__36") + Path.getInstance().lockDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._37")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.log(Level.SEVERE,
+											Messages.getString("App.Unterverzeichnis__34") + Path.getInstance().lockDir + Messages.getString("App._fehlt._35")); //$NON-NLS-1$ //$NON-NLS-2$ 
+			App.alert(Messages
+							.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__36") + Path.getInstance().lockDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._37")); //$NON-NLS-1$ //$NON-NLS-2$
 			System.exit(16);
 		}
 		if (!App.testDefaultPath(Path.getInstance().logDir, false))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.SEVERE, Messages.getString("App.Unterverzeichnis__39") + Path.getInstance().logDir + Messages.getString("App._fehlt._40")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-			App
-							.alert(Messages
-											.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__41") + Path.getInstance().logDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._42")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.log(Level.SEVERE,
+											Messages.getString("App.Unterverzeichnis__39") + Path.getInstance().logDir + Messages.getString("App._fehlt._40")); //$NON-NLS-1$ //$NON-NLS-2$ 
+			App.alert(Messages
+							.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__41") + Path.getInstance().logDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._42")); //$NON-NLS-1$ //$NON-NLS-2$
 			System.exit(16);
 		}
 		if (!App.testDefaultPath(Path.getInstance().iconDir, false))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.SEVERE, Messages.getString("App.Unterverzeichnis__44") + Path.getInstance().iconDir + Messages.getString("App._fehlt._45")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-			App
-							.alert(Messages
-											.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__46") + Path.getInstance().iconDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._47")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.log(Level.SEVERE,
+											Messages.getString("App.Unterverzeichnis__44") + Path.getInstance().iconDir + Messages.getString("App._fehlt._45")); //$NON-NLS-1$ //$NON-NLS-2$ 
+			App.alert(Messages
+							.getString("App.Es_wurden_Fehler_in_der_Konfiguration_der_Unterverzeichnisse_festgestellt._Das_Verzeichnis__46") + Path.getInstance().iconDir + Messages.getString("App._fehlt._Das_Programm_wird_beendet._47")); //$NON-NLS-1$ //$NON-NLS-2$
 			System.exit(16);
 		}
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager
-							.getLogManager()
-							.getLogger("colibri").log(Level.INFO, Messages.getString("App.Unterverzeichnisse_gepr_u00FCft__OK._49")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,
+						Messages.getString("App.Unterverzeichnisse_gepr_u00FCft__OK._49")); //$NON-NLS-1$ 
 		
 		Version.setRunningProgram(Version.ADMINISTRATOR);
 		
@@ -293,23 +251,17 @@ public class App
 				{
 					if (!file.mkdirs())
 					{
-						if (LogManager.getLogManager().getLogger("colibri") != null)
-						{
-							LogManager
-											.getLogManager()
-											.getLogger("colibri").log(Level.INFO, Messages.getString("App.Das_Unterverzeichnis__54") + file.getName() + Messages.getString("App._fehlt._55")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						}
+						Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+										.log(Level.INFO,
+														Messages.getString("App.Das_Unterverzeichnis__54") + file.getName() + Messages.getString("App._fehlt._55")); //$NON-NLS-1$ //$NON-NLS-2$ 
 						exists = false;
 					}
 				}
 				else
 				{
-					if (LogManager.getLogManager().getLogger("colibri") != null)
-					{
-						LogManager
-										.getLogManager()
-										.getLogger("colibri").log(Level.INFO, Messages.getString("App.Das_Unterverzeichnis__57") + file.getName() + Messages.getString("App._fehlt._58")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					}
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+									.log(Level.INFO,
+													Messages.getString("App.Das_Unterverzeichnis__57") + file.getName() + Messages.getString("App._fehlt._58")); //$NON-NLS-1$ //$NON-NLS-2$ 
 					exists = false;
 				}
 			}
@@ -323,39 +275,37 @@ public class App
 	
 	private static boolean initLogging()
 	{
-		File logDir = new File(Path.getInstance().DIR_LOG);
+		File logDir = new File(Path.getInstance().logDir);
 		if (logDir.exists() && logDir.isDirectory())
 		{
-			FileFilter filter = new FileFilter()
-			{
-				public boolean accept(File pathname)
-				{
-					if (pathname.getName().startsWith("colibri")) { //$NON-NLS-1$
-						return true;
-					}
-					return false;
-				}
-			};
-			File[] files = logDir.listFiles(filter);
-			for (int i = 0; i < files.length; i++)
-			{
-				files[i].delete();
-			}
+			// FileFilter filter = new FileFilter()
+			// {
+			// public boolean accept(File pathname)
+			// {
+			//					if (pathname.getName().startsWith("colibri")) { //$NON-NLS-1$
+			// return true;
+			// }
+			// return false;
+			// }
+			// };
+			// File[] files = logDir.listFiles(filter);
+			// for (int i = 0; i < files.length; i++)
+			// {
+			// files[i].delete();
+			// }
 		}
 		
-		LogManager.getLogManager().addLogger(Logger.getLogger("colibri")); //$NON-NLS-1$
 		try
 		{
 			FileHandler fh = new FileHandler(Path.getInstance().logDir.concat(Path.getInstance().FILE_LOG), true);
 			fh.setFormatter(new SimpleFormatter());
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager.getLogManager().getLogger("colibri").addHandler(fh); //$NON-NLS-1$
-				LogManager.getLogManager()
-								.getLogger("colibri").setLevel(Level.parse(Config.getInstance().getLoggingLevel())); //$NON-NLS-1$ 
-				LogManager.getLogManager().getLogger("colibri").info(
-								"Logging-Level: " + Config.getInstance().getLoggingLevel());
-			}
+			ConsoleHandler ch = new ConsoleHandler();
+			ch.setFormatter(new SimpleFormatter());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).addHandler(fh);
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).addHandler(ch);
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.parse(Config.getInstance().getLoggingLevel()));
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.info("Logging-Level: " + Config.getInstance().getLoggingLevel());
 			return true;
 		}
 		catch (IOException e)
@@ -420,48 +370,29 @@ public class App
 	 */
 	private static boolean connect()
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager
-							.getLogManager()
-							.getLogger("colibri").info("Searching for file OJB.properties in path " + Path.getInstance().ojbDir); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+						"Searching for file OJB.properties in path " + Path.getInstance().ojbDir); //$NON-NLS-1$ 
 		System.setProperty("OJB.properties", Path.getInstance().ojbDir.concat(Path.getInstance().FILE_OJBCFG)); //$NON-NLS-1$
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager
-							.getLogManager()
-							.getLogger("colibri").log(Level.INFO, Messages.getString("App.Laden_der_Datenbankinformationen._84")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,
+						Messages.getString("App.Laden_der_Datenbankinformationen._84")); //$NON-NLS-1$ 
 		Database.load();
 		Database.setCurrent(Database.getStandard());
 		
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager
-							.getLogManager()
-							.getLogger("colibri").log(Level.INFO, Messages.getString("App.Verbindungsaufbau_zur_Datenbank__86") + Database.getCurrent().getName()); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+						.log(Level.INFO,
+										Messages.getString("App.Verbindungsaufbau_zur_Datenbank__86") + Database.getCurrent().getName()); //$NON-NLS-1$ 
 		if (!Database.getCurrent().openConnection())
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").severe(Messages.getString("App.Verbindung_zur_Datenbank__88") + Database.getCurrent().getName() + Messages.getString("App._fehlgeschlagen._89")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.severe(Messages.getString("App.Verbindung_zur_Datenbank__88") + Database.getCurrent().getName() + Messages.getString("App._fehlgeschlagen._89")); //$NON-NLS-1$ //$NON-NLS-2$ 
 			return false;
 		}
 		
 		if (Database.getCurrent() == null)
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.SEVERE, Messages.getString("App.Es_konnte_keine_Datenbankverbindung_hergestellt_werden._91")); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE,
+							Messages.getString("App.Es_konnte_keine_Datenbankverbindung_hergestellt_werden._91")); //$NON-NLS-1$ 
 			return false;
 		}
 		if (Database.getCurrent().equals(Database.getStandard()))
@@ -479,19 +410,11 @@ public class App
 	 */
 	private static void setLocale(String language, String country)
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager
-							.getLogManager()
-							.getLogger("colibri").log(Level.INFO, Messages.getString("App.Setzen_des_Defaultlocale..._101")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,
+						Messages.getString("App.Setzen_des_Defaultlocale..._101")); //$NON-NLS-1$ 
 		Locale.setDefault(new Locale(language, country));
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager
-							.getLogManager()
-							.getLogger("colibri").log(Level.INFO, Messages.getString("App.Defaultlocale_gesetzt..._103")); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,
+						Messages.getString("App.Defaultlocale_gesetzt..._103")); //$NON-NLS-1$ 
 	}
 	
 	/**
@@ -501,9 +424,7 @@ public class App
 	private static void setLocale()
 	{
 		Element localeElement = Config.getInstance().getLocale();
-		App
-						.setLocale(
-										localeElement.getAttributeValue(Messages.getString("App.language_105")), localeElement.getAttributeValue(Messages.getString("App.country_106"))); //$NON-NLS-1$ //$NON-NLS-2$
+		App.setLocale(localeElement.getAttributeValue(Messages.getString("App.language_105")), localeElement.getAttributeValue(Messages.getString("App.country_106"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	private static void alert(String msg)

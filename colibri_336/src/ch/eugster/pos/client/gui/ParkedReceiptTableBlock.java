@@ -48,7 +48,8 @@ import ch.eugster.pos.util.NumberUtility;
  *         To change the template for this generated type comment go to
  *         Window>Preferences>Java>Code Generation>Code and Comments
  */
-public class ParkedReceiptTableBlock extends ABlock implements DetailBlock, TableModel, ListSelectionListener, ActionListener, PosEventListener
+public class ParkedReceiptTableBlock extends ABlock implements DetailBlock, TableModel, ListSelectionListener,
+				ActionListener, PosEventListener
 {
 	
 	private static final long serialVersionUID = 0l;
@@ -79,15 +80,15 @@ public class ParkedReceiptTableBlock extends ABlock implements DetailBlock, Tabl
 		
 		int rows = 0;
 		int cols = 0;
-		for (int i = 0; i < fixKeys.length; i++)
+		for (FixKey fixKey : fixKeys)
 		{
-			if (fixKeys[i].row >= rows)
+			if (fixKey.row >= rows)
 			{
-				rows = fixKeys[i].row + 1;
+				rows = fixKey.row + 1;
 			}
-			if (fixKeys[i].column >= cols)
+			if (fixKey.column >= cols)
 			{
-				cols = fixKeys[i].column + 1;
+				cols = fixKey.column + 1;
 			}
 		}
 		
@@ -131,6 +132,7 @@ public class ParkedReceiptTableBlock extends ABlock implements DetailBlock, Tabl
 		return this.table;
 	}
 	
+	@Override
 	public void posEventPerformed(PosEvent e)
 	{
 		if (e.getPosAction() instanceof ParkAction)
@@ -150,10 +152,11 @@ public class ParkedReceiptTableBlock extends ABlock implements DetailBlock, Tabl
 		}
 		if (this.table.getRowCount() > 0)
 		{
+			int selectedRow = this.table.getSelectedRow();
 			if (e.getActionCommand().equals("get")) { //$NON-NLS-1$
-				if (this.table.getSelectedRow() > -1)
+				if (selectedRow > -1)
 				{
-					Receipt receipt = (Receipt) this.receiptList.get(this.table.getSelectedRow());
+					Receipt receipt = (Receipt) this.receiptList.get(selectedRow);
 					receipt.status = Receipt.RECEIPT_STATE_NEW;
 					if (Database.getCurrent().equals(Database.getTemporary())) receipt.update();
 					receipt.store(false);
@@ -161,31 +164,33 @@ public class ParkedReceiptTableBlock extends ABlock implements DetailBlock, Tabl
 				}
 			}
 			else if (e.getActionCommand().equals("delete")) { //$NON-NLS-1$
-				if (this.table.getSelectedRow() > -1)
+				if (selectedRow > -1)
 				{
-					DBResult result = ((Receipt) this.receiptList.get(this.table.getSelectedRow())).delete();
+					DBResult result = ((Receipt) this.receiptList.get(selectedRow)).delete();
 					if (result.getErrorCode() == 0)
 					{
-						this.receiptList.remove(this.table.getSelectedRow());
+						this.receiptList.remove(selectedRow);
 						this.table.updateUI();
 					}
 				}
 			}
 			else if (e.getActionCommand().equals("up")) { //$NON-NLS-1$
-				if (this.table.getSelectedRow() > 0)
+				if (selectedRow > 0)
 				{
-					this.table.getSelectionModel().setLeadSelectionIndex(this.table.getSelectedRow() - 1);
+					selectedRow--;
+					this.table.setRowSelectionInterval(selectedRow, selectedRow);
 					this.scrollToVisible();
 				}
-				this.up.setEnabled(this.table.getSelectedRow() > 0);
+				this.up.setEnabled(selectedRow > 0);
 			}
 			else if (e.getActionCommand().equals("down")) { //$NON-NLS-1$
-				if (this.table.getSelectedRow() < this.table.getRowCount() - 1)
+				if (selectedRow < this.table.getRowCount() - 1)
 				{
-					this.table.getSelectionModel().setLeadSelectionIndex(this.table.getSelectedRow() + 1);
+					selectedRow++;
+					this.table.setRowSelectionInterval(selectedRow, selectedRow);
 					this.scrollToVisible();
 				}
-				this.down.setEnabled(this.table.getSelectedRow() < this.table.getRowCount() - 1);
+				this.down.setEnabled(selectedRow < this.table.getRowCount() - 1);
 			}
 		}
 	}
@@ -199,40 +204,40 @@ public class ParkedReceiptTableBlock extends ABlock implements DetailBlock, Tabl
 		this.setButtonState();
 		TableModelEvent e = new TableModelEvent(this);
 		TableModelListener[] l = (TableModelListener[]) this.tableModelListeners.toArray(new TableModelListener[0]);
-		for (int i = 0; i < l.length; i++)
+		for (TableModelListener element : l)
 		{
-			l[i].tableChanged(e);
+			element.tableChanged(e);
 		}
 		if (this.table.getRowCount() > 0)
 		{
-			this.table.getSelectionModel().setLeadSelectionIndex(0);
+			this.table.setRowSelectionInterval(0, 0);
 		}
 	}
 	
 	private void setButtonState()
 	{
-		for (int i = 0; i < this.buttons.length; i++)
+		for (PosButton[] button : this.buttons)
 		{
-			if (this.buttons[i].length > 0)
+			if (button.length > 0)
 			{
-				for (int j = 0; j < this.buttons[i].length; j++)
+				for (PosButton element : button)
 				{
-					if (this.buttons[i][j] != null)
+					if (element != null)
 					{
-						if (this.buttons[i][j].getActionCommand().equals("up")) { //$NON-NLS-1$
-							this.buttons[i][j].setEnabled(this.table.getSelectedRow() > 0);
+						if (element.getActionCommand().equals("up")) { //$NON-NLS-1$
+							element.setEnabled(this.table.getSelectedRow() > 0);
 						}
-						else if (this.buttons[i][j].getActionCommand().equals("down")) { //$NON-NLS-1$
-							this.buttons[i][j].setEnabled(this.table.getSelectedRow() < this.table.getRowCount() - 1);
+						else if (element.getActionCommand().equals("down")) { //$NON-NLS-1$
+							element.setEnabled(this.table.getSelectedRow() < this.table.getRowCount() - 1);
 						}
-						else if (this.buttons[i][j].getActionCommand().equals("get")) { //$NON-NLS-1$
-							this.buttons[i][j].setEnabled(!(this.table.getSelectedRow() == -1));
+						else if (element.getActionCommand().equals("get")) { //$NON-NLS-1$
+							element.setEnabled(!(this.table.getSelectedRow() == -1));
 						}
-						else if (this.buttons[i][j].getActionCommand().equals("delete")) { //$NON-NLS-1$
-							this.buttons[i][j].setEnabled(!(this.table.getSelectedRow() == -1));
+						else if (element.getActionCommand().equals("delete")) { //$NON-NLS-1$
+							element.setEnabled(!(this.table.getSelectedRow() == -1));
 						}
-						else if (this.buttons[i][j].getActionCommand().equals("back")) { //$NON-NLS-1$
-							this.buttons[i][j].setEnabled(true);
+						else if (element.getActionCommand().equals("back")) { //$NON-NLS-1$
+							element.setEnabled(true);
 						}
 					}
 				}

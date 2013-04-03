@@ -38,8 +38,8 @@ public class Version
 	private static int major = 1;
 	private static int minor = 6;
 	private static int service = 0;
-	private static int build = 358;
-	private static String date = "21.09.2012";
+	private static int build = 374;
+	private static String date = "03.04.2013";
 	
 	private String connectionId = ""; //$NON-NLS-1$
 	private static int runningProgram = -1;
@@ -134,11 +134,11 @@ public class Version
 		}
 		catch (Error e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (Exception e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		// v = new Version();
 		Query query = QueryFactory.newQuery(Version.class, new Criteria());
@@ -193,7 +193,7 @@ public class Version
 	
 	protected DBResult describeError(Exception e)
 	{
-		//		Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		DBResult result = new DBResult();
 		if (e.getCause() instanceof SQLException)
 		{
@@ -286,10 +286,10 @@ public class Version
 	{
 		Version.clearData();
 		Element[] elements = Database.getTemporary().getRecords("version"); //$NON-NLS-1$
-		for (int i = 0; i < elements.length; i++)
+		for (Element element : elements)
 		{
 			Version record = new Version();
-			List fields = elements[i].getChildren("field"); //$NON-NLS-1$
+			List fields = element.getChildren("field"); //$NON-NLS-1$
 			Iterator iter = fields.iterator();
 			while (iter.hasNext())
 			{

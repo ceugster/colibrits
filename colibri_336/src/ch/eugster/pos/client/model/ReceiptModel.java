@@ -10,7 +10,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import ch.eugster.pos.client.gui.Frame;
 import ch.eugster.pos.client.gui.TabPanel;
@@ -77,8 +77,8 @@ public class ReceiptModel implements PosEventListener
 		
 		this.context = context;
 		
-		this.receipt = Receipt.getReceipt(Salespoint.getCurrent(), context.getUser(), ForeignCurrency
-						.getDefaultCurrency());
+		this.receipt = Receipt.getReceipt(Salespoint.getCurrent(), context.getUser(),
+						ForeignCurrency.getDefaultCurrency());
 		
 		this.positionTableModel = new PositionTableModel(this);
 		this.paymentTableModel = new PaymentTableModel(this);
@@ -117,8 +117,8 @@ public class ReceiptModel implements PosEventListener
 	public void prepareReceipt()
 	{
 		this.context.setCurrentForeignCurrencyToDefault();
-		this.setReceipt(Receipt.getReceipt(Salespoint.getCurrent(), this.context.getUser(), ForeignCurrency
-						.getDefaultCurrency()));
+		this.setReceipt(Receipt.getReceipt(Salespoint.getCurrent(), this.context.getUser(),
+						ForeignCurrency.getDefaultCurrency()));
 	}
 	
 	public void setReceipt(Receipt receipt)
@@ -169,8 +169,8 @@ public class ReceiptModel implements PosEventListener
 		nf.setCurrency(fc.getCurrency());
 		
 		double diff = this.receipt.getAmount() - this.receipt.getPayment();
-		return NumberUtility.round(diff / this.getContext().getCurrentForeignCurrency().quotation, nf
-						.getMaximumFractionDigits());
+		return NumberUtility.round(diff / this.getContext().getCurrentForeignCurrency().quotation,
+						nf.getMaximumFractionDigits());
 	}
 	
 	public boolean balance()
@@ -260,9 +260,9 @@ public class ReceiptModel implements PosEventListener
 		{
 			Receipt receipt = this.context.getReceiptModel().getReceipt();
 			Position[] positions = receipt.getPositionsAsArray();
-			for (int i = 0; i < positions.length; i++)
+			for (Position position : positions)
 			{
-				int type = positions[i].getProductGroup().type;
+				int type = position.getProductGroup().type;
 				if (type == ProductGroup.TYPE_INPUT)
 				{
 					inputPosition = true;
@@ -279,9 +279,9 @@ public class ReceiptModel implements PosEventListener
 		{
 			Receipt receipt = this.context.getReceiptModel().getReceipt();
 			Position[] positions = receipt.getPositionsAsArray();
-			for (int i = 0; i < positions.length; i++)
+			for (Position position : positions)
 			{
-				int type = positions[i].getProductGroup().type;
+				int type = position.getProductGroup().type;
 				if (type == ProductGroup.TYPE_WITHDRAW)
 				{
 					withdrawPosition = true;
@@ -342,11 +342,7 @@ public class ReceiptModel implements PosEventListener
 	
 	private void storeReceipt(PosEvent e)
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").info(
-							"Start: Beleg " + this.receipt.getNumber() + " speichern...");
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Start: Beleg " + this.receipt.getNumber() + " speichern...");
 		PaymentType paymentType = null;
 		if (e.getPosAction() instanceof StoreReceiptAction)
 		{
@@ -368,8 +364,8 @@ public class ReceiptModel implements PosEventListener
 			if (!this.isBalanced())
 			{
 				
-				double diff = NumberUtility.round(Math.abs(this.getReceipt().getAmount())
-								- Math.abs(this.getReceipt().getPayment()), 2);
+				double diff = NumberUtility.round(
+								Math.abs(this.getReceipt().getAmount()) - Math.abs(this.getReceipt().getPayment()), 2);
 				if (diff != 0)
 				{
 					this.receipt.addPayment(this.computeBackMoney(paymentType));
@@ -403,14 +399,17 @@ public class ReceiptModel implements PosEventListener
 			 * Falls die Speicherung erfolgreich war, wird der Beleg jetzt
 			 * ausgedruckt
 			 */
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Beleg gespeichert. Beleg wird gedruckt...");
 			if (result.getErrorCode() == 0)
 			{
 				this.fireReceiptSaveEvent(this.receipt);
 				if (this.context.getParent() instanceof TabPanel)
 				{
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Check Belegdrucker aktiv...");
 					TabPanel parent = (TabPanel) this.context.getParent();
 					if (parent.getReceiptPrinter().getPrinter() != null)
 					{
+						Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Belegdrucker gefunden.");
 						/*
 						 * Abhängig von der Währung, mit der bezahlt wurde, wird
 						 * nun die Schublade geöffnet, nämlich: 1. Wenn die
@@ -424,21 +423,24 @@ public class ReceiptModel implements PosEventListener
 						 */
 						if (this.receipt.openCashdrawer())
 						{
+							Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Schublade öffnen...");
 							// 10226
 							boolean[] openCashDrawer = new boolean[]
 							{ false, false };
 							Payment[] payments = this.receipt.getPaymentsAsArray();
-							for (int i = 0; i < payments.length; i++)
+							for (Payment payment : payments)
 							{
-								if (payments[i].getForeignCurrency().getId().equals(
-												ForeignCurrency.getDefaultCurrency().getId()))
+								if (payment.getForeignCurrency().getId()
+												.equals(ForeignCurrency.getDefaultCurrency().getId()))
 								{
 									openCashDrawer[0] = true;
 									System.out.println("Leitwährungskasse geöffnet.");
+									Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Leitwährungskasse geöffnet.");
 								}
 								else
 								{
 									openCashDrawer[1] = true;
+									Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Zweitwährungskasse geöffnet.");
 									System.out.println("Zweitwährungskasse geöffnet.");
 								}
 							}
@@ -464,8 +466,19 @@ public class ReceiptModel implements PosEventListener
 						
 						if (Config.getInstance().getReceipt().getAttributeValue("automatic-print").equals("true"))
 						{
-							if (Config.getInstance().getReceipt().getAttributeValue("take-back-print-twice").equals(
-											"true"))
+							Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Beleg wird gedruckt...");
+							parent.getReceiptPrinter().print(parent.getReceiptPrinter().getPrinter(), this.receipt);
+							
+							if (e.getPosAction() instanceof StoreReceiptVoucherAction)
+							{
+								Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Gutschein wird gedruckt...");
+								parent.getReceiptPrinter().printVoucher(parent.getReceiptPrinter().getPrinter(),
+												this.receipt);
+							}
+							
+							Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Check automatischer Belegdruck: JA");
+							if (Config.getInstance().getReceipt().getAttributeValue("take-back-print-twice")
+											.equals("true"))
 							{
 								Collection positions = this.receipt.getPositions();
 								Iterator iterator = positions.iterator();
@@ -477,6 +490,7 @@ public class ReceiptModel implements PosEventListener
 									{
 										if (position.getQuantity() < 0)
 										{
+											Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Beleg wird gedruckt.");
 											parent.getReceiptPrinter().print(parent.getReceiptPrinter().getPrinter(),
 															this.receipt);
 											break;
@@ -484,12 +498,15 @@ public class ReceiptModel implements PosEventListener
 									}
 								}
 							}
-							parent.getReceiptPrinter().print(parent.getReceiptPrinter().getPrinter(), this.receipt);
-							if (e.getPosAction() instanceof StoreReceiptVoucherAction)
-							{
-								parent.getReceiptPrinter().printVoucher(parent.getReceiptPrinter().getPrinter(),
-												this.receipt);
-							}
+							// }
+							// parent.getReceiptPrinter().print(parent.getReceiptPrinter().getPrinter(),
+							// this.receipt);
+							// if (e.getPosAction() instanceof
+							// StoreReceiptVoucherAction)
+							// {
+							// parent.getReceiptPrinter().printVoucher(parent.getReceiptPrinter().getPrinter(),
+							// this.receipt);
+							// }
 						}
 					}
 				}
@@ -526,11 +543,7 @@ public class ReceiptModel implements PosEventListener
 				}
 			}
 		}
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").info(
-							"Ende: Beleg " + this.receipt.getNumber() + " speichern...");
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Ende: Beleg " + this.receipt.getNumber() + " speichern...");
 	}
 	
 	private Payment computeBackMoney(PaymentType paymentType)
@@ -543,8 +556,8 @@ public class ReceiptModel implements PosEventListener
 		 * ist nur ein Betrag drin, wenn es sich um eine Geldentnahme oder
 		 * -einlage in Fremdwährung handelt.
 		 */
-		double totalAmountFC = NumberUtility.round(this.getReceipt().getAmountFC(p.getForeignCurrency()), p
-						.getForeignCurrency().roundFactor);
+		double totalAmountFC = NumberUtility.round(this.getReceipt().getAmountFC(p.getForeignCurrency()),
+						p.getForeignCurrency().roundFactor);
 		
 		/**
 		 * Das ist die 'normale' Summe der Positionen
@@ -563,10 +576,10 @@ public class ReceiptModel implements PosEventListener
 		 */
 		double allPaymentsFC = 0d;
 		Payment[] payments = this.getReceipt().getPaymentsAsArray();
-		for (int i = 0; i < payments.length; i++)
+		for (Payment payment : payments)
 		{
-			allPaymentsFC += NumberUtility.round(payments[i].getAmountFC() * payments[i].getQuotation(), payments[i]
-							.getRoundFactorFC());
+			allPaymentsFC += NumberUtility.round(payment.getAmountFC() * payment.getQuotation(),
+							payment.getRoundFactorFC());
 		}
 		double paymentFC = NumberUtility.round(allPaymentsFC / p.getForeignCurrency().quotation,
 						p.getForeignCurrency().roundFactor);
@@ -593,9 +606,9 @@ public class ReceiptModel implements PosEventListener
 	{
 		ReceiptChangeListener[] l = (ReceiptChangeListener[]) this.receiptChangeListeners
 						.toArray(new ReceiptChangeListener[0]);
-		for (int i = 0; i < l.length; i++)
+		for (ReceiptChangeListener element : l)
 		{
-			l[i].receiptChangePerformed(e);
+			element.receiptChangePerformed(e);
 		}
 	}
 	
@@ -613,9 +626,9 @@ public class ReceiptModel implements PosEventListener
 	{
 		ReceiptSaveListener[] l = (ReceiptSaveListener[]) this.receiptSaveListeners.toArray(new ReceiptSaveListener[0]);
 		ReceiptSaveEvent event = new ReceiptSaveEvent(receipt);
-		for (int i = 0; i < l.length; i++)
+		for (ReceiptSaveListener element : l)
 		{
-			l[i].receiptSaved(event);
+			element.receiptSaved(event);
 		}
 	}
 	
@@ -646,9 +659,9 @@ public class ReceiptModel implements PosEventListener
 	protected void fireModeChangeEvent(ModeChangeEvent e)
 	{
 		ModeChangeListener[] l = (ModeChangeListener[]) this.modeChangeListeners.toArray(new ModeChangeListener[0]);
-		for (int i = 0; i < l.length; i++)
+		for (ModeChangeListener element : l)
 		{
-			l[i].modeChangePerformed(e);
+			element.modeChangePerformed(e);
 		}
 	}
 	
@@ -683,9 +696,9 @@ public class ReceiptModel implements PosEventListener
 		CustomerChangeEvent event = new CustomerChangeEvent(receipt.getCustomer());
 		CustomerChangeListener[] listeners = (CustomerChangeListener[]) this.customerChangeListeners
 						.toArray(new CustomerChangeListener[0]);
-		for (int i = 0; i < listeners.length; i++)
+		for (CustomerChangeListener listener : listeners)
 		{
-			listeners[i].customerChanged(event);
+			listener.customerChanged(event);
 		}
 	}
 	

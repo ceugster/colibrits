@@ -76,11 +76,11 @@ public class EnterAction extends ModeChangeAction implements ReceiptChildChangeL
 	 */
 	public void actionPerformed(ActionEvent e)
 	{
-		Logger.getLogger("colibri").info("Enter pressed...");
-		Logger.getLogger("colibri").info("Position mode " + this.context.getMode());
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Enter pressed...");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Position mode " + this.context.getMode());
 		if (this.context.getMode().equals(UserPanel.CONTEXT_MODE_POS))
 		{
-			Logger.getLogger("colibri").info("Position mode...");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Position mode...");
 			this.positionAction(e);
 		}
 		else if (this.context.getMode().equals(UserPanel.CONTEXT_MODE_PAY))
@@ -93,7 +93,7 @@ public class EnterAction extends ModeChangeAction implements ReceiptChildChangeL
 	private void positionAction(ActionEvent e)
 	{
 		String value = this.context.getNumericBlock().readValue();
-		Logger.getLogger("colibri").info("Entered value: " + (value == null ? "Null" : value));
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Entered value: " + (value == null ? "Null" : value));
 		PositionModel pm = this.context.getReceiptModel().getPositionModel();
 		if (value.trim().length() == 0 && pm.isFresh())
 		{

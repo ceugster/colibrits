@@ -153,19 +153,19 @@ public abstract class Key extends Table
 			e.printStackTrace();
 		}
 		// catch (ClassNotFoundException e) {
-		////			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+		////			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		// }
 		// catch (IllegalAccessException e) {
-		////			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+		////			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		// }
 		// catch (InstantiationException e) {
-		////			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+		////			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		// }
 		// catch (NoSuchMethodException e) {
-		////			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+		////			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		// }
 		// catch (InvocationTargetException e) {
-		////			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+		////			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		// }
 		return action;
 	}

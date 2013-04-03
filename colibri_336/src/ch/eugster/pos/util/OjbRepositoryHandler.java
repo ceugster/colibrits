@@ -55,12 +55,12 @@ public class OjbRepositoryHandler
 		}
 		catch (JDOMException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-18);
 		}
 		catch (IOException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 			System.exit(-18);
 		}
 	}
@@ -69,9 +69,9 @@ public class OjbRepositoryHandler
 	{
 		if (OjbRepositoryHandler.ojbRepositoryHandler == null)
 		{
-			//			Logger.getLogger("colibri").info(Messages.getString("Config.Pfad_der_Konfigurationsdatei_2") + " " + Path.getInstance().cfgDir.concat(Path.getInstance().FILE_CFG) + " " + Messages.getString("Config.ermitteln..._5")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Config.Pfad_der_Konfigurationsdatei_2") + " " + Path.getInstance().cfgDir.concat(Path.getInstance().FILE_CFG) + " " + Messages.getString("Config.ermitteln..._5")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			OjbRepositoryHandler.ojbRepository = new File(Path.getInstance().ojbFile);
-			//			Logger.getLogger("colibri").info(Messages.getString("Config.Konfigurationsdatei_7") + " " + Path.getInstance().cfgDir.concat(Path.getInstance().FILE_CFG) + " " + Messages.getString("Config.laden..._10")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Config.Konfigurationsdatei_7") + " " + Path.getInstance().cfgDir.concat(Path.getInstance().FILE_CFG) + " " + Messages.getString("Config.laden..._10")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			OjbRepositoryHandler.ojbRepositoryHandler = OjbRepositoryHandler
 							.loadOjbRepositoryHandler(OjbRepositoryHandler.ojbRepository);
 		}
@@ -82,10 +82,10 @@ public class OjbRepositoryHandler
 	{
 		OjbRepositoryHandler c = null;
 		File file = new File(fileName);
-		//		Logger.getLogger("colibri").info(Messages.getString("Config.test_config_path_6")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Config.test_config_path_6")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (file.exists())
 		{
-			//			Logger.getLogger("colibri").info(Messages.getString("Config.config_file_exists_8")); //$NON-NLS-1$ //$NON-NLS-2$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Config.config_file_exists_8")); //$NON-NLS-1$ //$NON-NLS-2$
 			c = OjbRepositoryHandler.loadOjbRepositoryHandler(file);
 		}
 		return c;
@@ -93,7 +93,7 @@ public class OjbRepositoryHandler
 	
 	protected static OjbRepositoryHandler loadOjbRepositoryHandler(File file)
 	{
-		//		Logger.getLogger("colibri").info(Messages.getString("Config.load_config_file_10") + file.getAbsolutePath() + "..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Config.load_config_file_10") + file.getAbsolutePath() + "..."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		return new OjbRepositoryHandler(file);
 	}
 	

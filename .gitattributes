@@ -816,10 +816,8 @@ colibri_336/src/ch/eugster/pos/product/Code128Part.java -text
 colibri_336/src/ch/eugster/pos/product/EAN13.java -text
 colibri_336/src/ch/eugster/pos/product/GalileoProductGroupServer.java -text
 colibri_336/src/ch/eugster/pos/product/GalileoServer.java -text
-colibri_336/src/ch/eugster/pos/product/GalileoServer2.java -text
 colibri_336/src/ch/eugster/pos/product/ICode128.java -text
 colibri_336/src/ch/eugster/pos/product/IGalileoProductGroupServer.java -text
-colibri_336/src/ch/eugster/pos/product/IOctoServerProductGroup.java -text
 colibri_336/src/ch/eugster/pos/product/IProductServer.java -text
 colibri_336/src/ch/eugster/pos/product/ISBN.java -text
 colibri_336/src/ch/eugster/pos/product/ProductServer.java -text

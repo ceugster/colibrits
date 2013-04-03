@@ -51,8 +51,6 @@ public class UserTableLabelProvider extends TableLabelProvider
 	 */
 	public String getColumnText(Object element, int columnIndex)
 	{
-		assert columnIndex >= 0 && columnIndex < this.columnNames.length;
-		
 		if (element == null)
 		{
 			return this.columnNames[columnIndex];

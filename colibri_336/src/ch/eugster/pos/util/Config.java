@@ -161,8 +161,8 @@ public class Config
 			if (doc.getRootElement().getChild("receipt").getChild("header").getAttribute("printlogo") == null)
 			{
 				String logo = doc.getRootElement().getChild("receipt").getChild("header").getAttributeValue("logo");
-				String logomode = doc.getRootElement().getChild("receipt").getChild("header").getAttributeValue(
-								"logomode");
+				String logomode = doc.getRootElement().getChild("receipt").getChild("header")
+								.getAttributeValue("logomode");
 				String rows = doc.getRootElement().getChild("receipt").getChild("header").getAttributeValue("rows");
 				String text = doc.getRootElement().getChild("receipt").getChild("header").getAttributeValue("text");
 				
@@ -182,8 +182,8 @@ public class Config
 			{
 				doc.getRootElement().getChild("receipt").getChild("header").setAttribute("logo", "0");
 			}
-			else if (doc.getRootElement().getChild("receipt").getChild("header").getAttributeValue("logo").equals(
-							"false"))
+			else if (doc.getRootElement().getChild("receipt").getChild("header").getAttributeValue("logo")
+							.equals("false"))
 			{
 				doc.getRootElement().getChild("receipt").getChild("header").setAttribute("logo", "0");
 			}
@@ -205,8 +205,8 @@ public class Config
 			{
 				Element versionElement = doc.getRootElement().getChild("version");
 				versionElement.setText("96");
-				doc.getRootElement().getChild("galileo").setAttribute("show-add-customer-message",
-								String.valueOf(false));
+				doc.getRootElement().getChild("galileo")
+								.setAttribute("show-add-customer-message", String.valueOf(false));
 			}
 			// 10064
 			// 10077
@@ -243,10 +243,10 @@ public class Config
 					{
 						newChild.setAttribute("update", new Integer(galileo.getAttributeValue("update")).toString());
 						newChild.setAttribute("path", galileo.getAttributeValue("path"));
-						newChild.setAttribute("show-add-customer-message", new Boolean(galileo
-										.getAttributeValue("show-add-customer-message")).toString());
-						newChild.setAttribute("search-cd", new Boolean(comServers[i].getAttributeValue("search-cd"))
-										.toString());
+						newChild.setAttribute("show-add-customer-message",
+										new Boolean(galileo.getAttributeValue("show-add-customer-message")).toString());
+						newChild.setAttribute("search-cd",
+										new Boolean(comServers[i].getAttributeValue("search-cd")).toString());
 						newChild.setAttribute("cd-path", comServers[i].getAttributeValue("cd-path"));
 						galileo.setAttribute("use", new Boolean(comServers[i].getAttributeValue("use")).toString());
 					}
@@ -482,8 +482,8 @@ public class Config
 					doc = newDoc;
 				}
 				
-				doc.getRootElement().getChild("receipt").getChild("header").setAttribute(
-								new Attribute("number-length", "0"));
+				doc.getRootElement().getChild("receipt").getChild("header")
+								.setAttribute(new Attribute("number-length", "0"));
 				
 				doSave = true;
 			}
@@ -1116,7 +1116,7 @@ public class Config
 				return elements[i];
 			}
 		}
-		return null; //$NON-NLS-1$
+		return null;
 	}
 	
 	public Element getCustomerDisplay()
@@ -1291,7 +1291,7 @@ public class Config
 	/*
 	 * Eigenschaften der Belege
 	 */
-
+	
 	public Element getReceipt()
 	{
 		return Config.doc.getRootElement().getChild("receipt"); //$NON-NLS-1$
@@ -1490,6 +1490,7 @@ public class Config
 		this.getDatabaseStandardConnection().setAttribute("batch-mode", element.getAttributeValue("batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
 		this.getDatabaseStandardConnection().setAttribute(
 						"use-auto-commit", element.getAttributeValue("use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.getDatabaseStandardConnection().setAttribute("heartbeat", element.getAttributeValue("heartbeat")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void setDatabaseTemporaryName(String value)
@@ -1521,6 +1522,7 @@ public class Config
 		this.getDatabaseTemporaryConnection().setAttribute("batch-mode", element.getAttributeValue("batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
 		this.getDatabaseTemporaryConnection().setAttribute(
 						"use-auto-commit", element.getAttributeValue("use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.getDatabaseTemporaryConnection().setAttribute("heartbeat", element.getAttributeValue("heartbeat")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void setDatabaseTutorialName(String value)
@@ -1552,6 +1554,7 @@ public class Config
 		this.getDatabaseTutorialConnection().setAttribute("batch-mode", element.getAttributeValue("batch-mode")); //$NON-NLS-1$ //$NON-NLS-2$
 		this.getDatabaseTutorialConnection().setAttribute(
 						"use-auto-commit", element.getAttributeValue("use-auto-commit")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.getDatabaseTutorialConnection().setAttribute("heartbeat", element.getAttributeValue("heartbeat")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void setSalespointId(int value)
@@ -1997,8 +2000,7 @@ public class Config
 	// 10182
 	public void setSettlementAdmitTestSettlement(boolean admitTestSettlement)
 	{
-		Config.doc
-						.getRootElement()
+		Config.doc.getRootElement()
 						.getChild("settlement").setAttribute("admit-test-settlement", String.valueOf(admitTestSettlement)); //$NON-NLS-1$
 	}
 	
@@ -2014,7 +2016,7 @@ public class Config
 	 * 
 	 * 
 	 */
-
+	
 	public void setTabPanelRGBForeground(RGB rgb)
 	{
 		Element color = this.getTabPanel().getChild("fgcolor"); //$NON-NLS-1$

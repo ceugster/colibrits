@@ -56,7 +56,8 @@ import ch.eugster.pos.util.Serializer;
  *         To change the template for this generated type comment go to
  *         Window>Preferences>Java>Code Generation>Code and Comments
  */
-public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, TableModel, ListSelectionListener, ActionListener, PosEventListener
+public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, TableModel, ListSelectionListener,
+				ActionListener, PosEventListener
 {
 	private static final long serialVersionUID = 0l;
 	
@@ -84,15 +85,15 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 		
 		int rows = 0;
 		int cols = 0;
-		for (int i = 0; i < fixKeys.length; i++)
+		for (FixKey fixKey : fixKeys)
 		{
-			if (fixKeys[i].row >= rows)
+			if (fixKey.row >= rows)
 			{
-				rows = fixKeys[i].row + 1;
+				rows = fixKey.row + 1;
 			}
-			if (fixKeys[i].column >= cols)
+			if (fixKey.column >= cols)
 			{
-				cols = fixKeys[i].column + 1;
+				cols = fixKey.column + 1;
 			}
 		}
 		
@@ -139,6 +140,7 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 		this.messageListener = listener;
 	}
 	
+	@Override
 	public void posEventPerformed(PosEvent e)
 	{
 		if (e.getPosAction() instanceof ShowReceiptListAction)
@@ -170,7 +172,8 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 					if (this.context.getParent() instanceof TabPanel)
 					{
 						TabPanel parent = (TabPanel) this.context.getParent();
-						parent.getReceiptPrinter().print(parent.getReceiptPrinter().getPrinter(), this.receipts[this.table.getSelectedRow()]);
+						parent.getReceiptPrinter().print(parent.getReceiptPrinter().getPrinter(),
+										this.receipts[this.table.getSelectedRow()]);
 					}
 				}
 			}
@@ -194,8 +197,11 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 											"<html><p>Der Beleg enthält eine Position zum Bezahlen einer Rechnung.</p><p>Diese Bezahlung kann nicht rückgängig gemacht werden.</p><p>Bitte stellen Sie sicher, dass die Rückbuchung in Galileo manuell vorgenommen wird:</p><p>Nummer: "
 															+ p.getInvoiceNumber().toString()
 															+ "</p><p>Datum:  "
-															+ (p.getInvoiceDate() instanceof Date ? SimpleDateFormat.getDateInstance().format(p.getInvoiceDate()) : "</p></html>"),
-											"Bezahlte Rechnung", MessageDialog.TYPE_INFORMATION);
+															+ (p.getInvoiceDate() instanceof Date ? SimpleDateFormat
+																			.getDateInstance().format(
+																							p.getInvoiceDate())
+																			: "</p></html>"), "Bezahlte Rechnung",
+											MessageDialog.TYPE_INFORMATION);
 							this.messageListener.showMessage(event);
 						}
 						receipt.status = Receipt.RECEIPT_STATE_REVERSED;
@@ -224,7 +230,8 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 			else if (e.getActionCommand().equals("up")) { //$NON-NLS-1$
 				if (this.table.getSelectedRow() > 0)
 				{
-					this.table.getSelectionModel().setLeadSelectionIndex(this.table.getSelectedRow() - 1);
+					int selectedRow = this.table.getSelectedRow() - 1;
+					this.table.setRowSelectionInterval(selectedRow, selectedRow);
 					this.scrollToVisible();
 				}
 				this.up.setEnabled(this.table.getSelectedRow() > 0);
@@ -232,7 +239,8 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 			else if (e.getActionCommand().equals("down")) { //$NON-NLS-1$
 				if (this.table.getSelectedRow() < this.table.getRowCount() - 1)
 				{
-					this.table.getSelectionModel().setLeadSelectionIndex(this.table.getSelectedRow() + 1);
+					int selectedRow = this.table.getSelectedRow() + 1;
+					this.table.setRowSelectionInterval(selectedRow, selectedRow);
 					this.scrollToVisible();
 				}
 				this.down.setEnabled(this.table.getSelectedRow() < this.table.getRowCount() - 1);
@@ -243,11 +251,11 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 	private Position hasPayedInvoice(Receipt receipt)
 	{
 		Position[] p = receipt.getPositionsAsArray();
-		for (int i = 0; i < p.length; i++)
+		for (Position element : p)
 		{
-			if (p[i].isPayedInvoice())
+			if (element.isPayedInvoice())
 			{
-				return p[i];
+				return element;
 			}
 		}
 		return null;
@@ -260,7 +268,7 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 	// updatePositions(receipt);
 	// updatePayments(receipt);
 	// }
-	//	
+	//
 	// private void updatePositions(Receipt receipt) {
 	// Iterator iterator = receipt.getPositions().iterator();
 	// while (iterator.hasNext()) {
@@ -299,28 +307,28 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 		this.receipts = this.getReceipts(reversedToo);
 		if (this.table.getRowCount() > 0)
 		{
-			this.table.getSelectionModel().setLeadSelectionIndex(0);
+			this.table.setRowSelectionInterval(0, 0);
 		}
-		for (int i = 0; i < this.buttons.length; i++)
+		for (PosButton[] button : this.buttons)
 		{
-			for (int j = 0; j < this.buttons[i].length; j++)
+			for (PosButton element : button)
 			{
-				if (this.buttons[i][j] != null)
+				if (element != null)
 				{
-					if (this.buttons[i][j].getActionCommand().equals("up")) { //$NON-NLS-1$
-						this.buttons[i][j].setEnabled(this.table.getSelectedRow() > 0);
+					if (element.getActionCommand().equals("up")) { //$NON-NLS-1$
+						element.setEnabled(this.table.getSelectedRow() > 0);
 					}
-					else if (this.buttons[i][j].getActionCommand().equals("down")) { //$NON-NLS-1$
-						this.buttons[i][j].setEnabled(this.table.getSelectedRow() < this.table.getRowCount() - 1);
+					else if (element.getActionCommand().equals("down")) { //$NON-NLS-1$
+						element.setEnabled(this.table.getSelectedRow() < this.table.getRowCount() - 1);
 					}
-					else if (this.buttons[i][j].getActionCommand().equals("print")) { //$NON-NLS-1$
-						this.buttons[i][j].setEnabled(!(this.table.getSelectedRow() == -1));
+					else if (element.getActionCommand().equals("print")) { //$NON-NLS-1$
+						element.setEnabled(!(this.table.getSelectedRow() == -1));
 					}
-					else if (this.buttons[i][j].getActionCommand().equals("reverse")) { //$NON-NLS-1$
-						this.buttons[i][j].setEnabled(!(this.table.getSelectedRow() == -1));
+					else if (element.getActionCommand().equals("reverse")) { //$NON-NLS-1$
+						element.setEnabled(!(this.table.getSelectedRow() == -1));
 					}
-					else if (this.buttons[i][j].getActionCommand().equals("back")) { //$NON-NLS-1$
-						this.buttons[i][j].setEnabled(true);
+					else if (element.getActionCommand().equals("back")) { //$NON-NLS-1$
+						element.setEnabled(true);
 					}
 				}
 			}
@@ -331,9 +339,9 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 	private void fireTableChangedEvent(TableModelEvent e)
 	{
 		TableModelListener[] l = (TableModelListener[]) this.tableModelListeners.toArray(new TableModelListener[0]);
-		for (int i = 0; i < l.length; i++)
+		for (TableModelListener element : l)
 		{
-			l[i].tableChanged(e);
+			element.tableChanged(e);
 		}
 	}
 	
@@ -476,27 +484,28 @@ public class CurrentReceiptTableBlock extends ABlock implements DetailBlock, Tab
 	{
 		if (e.getValueIsAdjusting()) return;
 		
-		for (int i = 0; i < this.buttons.length; i++)
+		for (PosButton[] button : this.buttons)
 		{
-			for (int j = 0; j < this.buttons[i].length; j++)
+			for (PosButton element : button)
 			{
-				if (this.buttons[i][j] != null)
+				if (element != null)
 				{
-					if (this.buttons[i][j].getAction() instanceof ReverseAction)
+					if (element.getAction() instanceof ReverseAction)
 					{
-						this.buttons[i][j].setEnabled(this.table.getSelectedRow() == -1 ? false : UserPanel.getCurrent().getUser().getReverseReceipts());
+						element.setEnabled(this.table.getSelectedRow() == -1 ? false : UserPanel.getCurrent().getUser()
+										.getReverseReceipts());
 					}
-					else if (this.buttons[i][j].getAction() instanceof PrintReceiptAction)
+					else if (element.getAction() instanceof PrintReceiptAction)
 					{
-						this.buttons[i][j].setEnabled(this.table.getSelectedRow() == -1 ? false : true);
+						element.setEnabled(this.table.getSelectedRow() == -1 ? false : true);
 					}
 					else
 					{
-						if (this.buttons[i][j].getActionCommand().equals("up")) { //$NON-NLS-1$
-							this.buttons[i][j].setEnabled(this.table.getSelectedRow() > 0);
+						if (element.getActionCommand().equals("up")) { //$NON-NLS-1$
+							element.setEnabled(this.table.getSelectedRow() > 0);
 						}
-						else if (this.buttons[i][j].getActionCommand().equals("down")) { //$NON-NLS-1$
-							this.buttons[i][j].setEnabled(this.table.getSelectedRow() < this.table.getRowCount() - 1);
+						else if (element.getActionCommand().equals("down")) { //$NON-NLS-1$
+							element.setEnabled(this.table.getSelectedRow() < this.table.getRowCount() - 1);
 						}
 					}
 				}

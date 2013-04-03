@@ -6,7 +6,6 @@
  */
 package ch.eugster.pos.product;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -15,11 +14,9 @@ import ch.eugster.pos.db.Database;
 import ch.eugster.pos.db.ProductGroup;
 import ch.eugster.pos.db.Table;
 import ch.eugster.pos.db.Tax;
-import ch.eugster.pos.galileo.wgserve.Iwgserve;
-import ch.eugster.pos.galileo.wgserve.wgserve;
 import ch.eugster.pos.util.Config;
 
-import com.ibm.bridge2java.ComException;
+import com4j.ComException;
 
 /**
  * @author administrator
@@ -32,14 +29,14 @@ public class GalileoProductGroupServer
 	
 	private static String[] convertCodeStringToArray(String codes)
 	{
-		ArrayList list = new ArrayList();
+		ArrayList<String> list = new ArrayList<String>();
 		String delimiter = "|"; //$NON-NLS-1$
 		StringTokenizer st = new StringTokenizer(codes, delimiter);
 		while (st.hasMoreTokens())
 		{
 			list.add(st.nextToken(delimiter));
 		}
-		return (String[]) list.toArray(new String[0]);
+		return list.toArray(new String[0]);
 	}
 	
 	private static boolean storeProductGroup(ProductGroup productGroup, String code, String name, String account)
@@ -79,44 +76,40 @@ public class GalileoProductGroupServer
 		boolean result = true;
 		try
 		{
-			Iwgserve srv = new wgserve();
+			Iwgserve srv = WgserveFactory.createwgserve();
 			if (((Boolean) srv.do_open(new Object[]
 			{ Config.getInstance().getGalileoPath() })).booleanValue())
 			{
 				result = ((Boolean) srv.do_getwglist()).booleanValue();
 				if (result)
 				{
-					Object obj2 = srv.getWGLIST();
+					Object obj2 = srv.do_getwglist();
 					
 					String[] codes = GalileoProductGroupServer.convertCodeStringToArray((String) obj2);
-					for (int i = 0; i < codes.length; i++)
+					for (String code : codes)
 					{
 						if (((Boolean) srv.do_getwg(new Object[]
-						{ codes[i] })).booleanValue())
+						{ code })).booleanValue())
 						{
-							ProductGroup group = ProductGroup.selectByGalileoId(codes[i], false);
-							String name = (String) srv.getWGTEXT();
-							String account = (String) srv.getKONTO();
-							result = result ? GalileoProductGroupServer.storeProductGroup(group, codes[i], name,
-											account) : false;
+							ProductGroup group = ProductGroup.selectByGalileoId(code, false);
+							String name = (String) srv.wgtext();
+							String account = (String) srv.konto();
+							result = result ? GalileoProductGroupServer.storeProductGroup(group, code, name, account)
+											: false;
 							if (Database.getCurrent().equals(Database.getStandard()))
 							{
 								srv.do_setbestaetigt(new Object[]
-								{ codes[i] });
+								{ code });
 							}
 						}
 					}
 				}
 				srv.do_close();
 			}
-			srv.Destroy();
+			srv.dispose();
 			srv = null;
 		}
 		catch (ComException e)
-		{
-			result = false;
-		}
-		catch (IOException e)
 		{
 			result = false;
 		}
@@ -134,46 +127,42 @@ public class GalileoProductGroupServer
 		{
 			if (ProductServer.isUsed())
 			{
-				srv = new wgserve();
+				srv = WgserveFactory.createwgserve();
 				if (((Boolean) srv.do_open(new Object[]
 				{ Config.getInstance().getGalileoPath() })).booleanValue())
 				{
 					result = ((Boolean) srv.do_getchangedwglist()).booleanValue();
 					if (result)
 					{
-						Object obj2 = srv.getWGLIST();
+						Object obj2 = srv.wglist();
 						
 						String[] codes = GalileoProductGroupServer.convertCodeStringToArray((String) obj2);
-						for (int i = 0; i < codes.length; i++)
+						for (String code : codes)
 						{
 							Boolean found = (Boolean) srv.do_getwg(new Object[]
-							{ codes[i] });
+							{ code });
 							if (found.booleanValue())
 							{
-								ProductGroup group = ProductGroup.selectByGalileoId(codes[i], false);
-								String name = (String) srv.getWGTEXT();
-								String account = (String) srv.getKONTO();
-								result = result ? GalileoProductGroupServer.storeProductGroup(group, codes[i], name,
+								ProductGroup group = ProductGroup.selectByGalileoId(code, false);
+								String name = (String) srv.wgtext();
+								String account = (String) srv.konto();
+								result = result ? GalileoProductGroupServer.storeProductGroup(group, code, name,
 												account) : false;
 								if (Database.getCurrent().equals(Database.getStandard()))
 								{
 									srv.do_setbestaetigt(new Object[]
-									{ codes[i] });
+									{ code });
 								}
 							}
 						}
 					}
 					srv.do_close();
 				}
-				srv.Destroy();
+				srv.dispose();
 				srv = null;
 			}
 		}
 		catch (ComException e)
-		{
-			result = false;
-		}
-		catch (IOException e)
 		{
 			result = false;
 		}
@@ -186,15 +175,8 @@ public class GalileoProductGroupServer
 		{
 			if (srv != null)
 			{
-				try
-				{
-					srv.do_close();
-					srv = null;
-				}
-				catch (IOException ioe)
-				{
-					result = false;
-				}
+				srv.do_close();
+				srv = null;
 			}
 		}
 		return result;
@@ -208,7 +190,7 @@ public class GalileoProductGroupServer
 		{
 			if (ProductServer.isUsed())
 			{
-				srv = new wgserve();
+				srv = WgserveFactory.createwgserve();
 				if (((Boolean) srv.do_open(new Object[]
 				{ Config.getInstance().getGalileoPath() })).booleanValue())
 				{
@@ -216,18 +198,14 @@ public class GalileoProductGroupServer
 					{ "XXX" });
 					srv.do_getwg(new Object[]
 					{ galileoId });
-					result = ((Boolean) srv.getGEFUNDEN()).booleanValue();
+					result = ((Boolean) srv.gefunden()).booleanValue();
 					srv.do_close();
 				}
-				srv.Destroy();
+				srv.dispose();
 				srv = null;
 			}
 		}
 		catch (ComException e)
-		{
-			result = false;
-		}
-		catch (IOException e)
 		{
 			result = false;
 		}
@@ -240,15 +218,8 @@ public class GalileoProductGroupServer
 		{
 			if (srv != null)
 			{
-				try
-				{
-					srv.do_close();
-					srv = null;
-				}
-				catch (IOException ioe)
-				{
-					result = false;
-				}
+				srv.do_close();
+				srv = null;
 			}
 		}
 		return result;

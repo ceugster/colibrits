@@ -118,8 +118,8 @@ public class ReceiptStatistics extends Statistics
 			
 			this.addItem(item);
 			
-			Logger.getLogger("colibri").info("Daten einfügen");
-			Logger.getLogger("colibri").info("Daten in Liste übertragen");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Daten einfügen");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Daten in Liste übertragen");
 		}
 		
 		if (this.receiptStatisticsComposite.getGroupSelection() == 0)

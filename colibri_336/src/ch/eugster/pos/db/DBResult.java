@@ -110,8 +110,8 @@ public class DBResult
 	
 	public void log()
 	{
-		//		if (getErrorCode() != 0) Logger.getLogger("colibri").severe(getErrorCode() + ": " + getErrorText()); //$NON-NLS-1$ //$NON-NLS-2$
-		//		if (!getExternalErrorCode().equals("")) Logger.getLogger("colibri").severe(getExternalErrorCode() + ": " + getExternalErrorText()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		//		if (getErrorCode() != 0) Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(getErrorCode() + ": " + getErrorText()); //$NON-NLS-1$ //$NON-NLS-2$
+		//		if (!getExternalErrorCode().equals("")) Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(getExternalErrorCode() + ": " + getExternalErrorText()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	public int showMessage()

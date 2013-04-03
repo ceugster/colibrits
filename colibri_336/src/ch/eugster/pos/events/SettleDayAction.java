@@ -17,6 +17,7 @@ import ch.eugster.pos.client.gui.UserPanel;
 import ch.eugster.pos.db.Coin;
 import ch.eugster.pos.db.Database;
 import ch.eugster.pos.db.Key;
+import ch.eugster.pos.db.Salespoint;
 import ch.eugster.pos.printing.SettlementPrinter2;
 import ch.eugster.pos.util.Config;
 
@@ -71,45 +72,63 @@ public class SettleDayAction extends Action implements ModeChangeRequest, IFailO
 		this.addModeChangeListener(this.context);
 	}
 	
+	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		if (Database.getCurrent().equals(Database.getTemporary()))
 		{
-			MessageDialog.showSimpleDialog(Frame.getMainFrame(), "Funktion nicht aktiv", "Diese Funktion ist im Failover Modus nicht aktiv.", MessageDialog.TYPE_INFORMATION);
+			MessageDialog.showSimpleDialog(Frame.getMainFrame(), "Funktion nicht aktiv",
+							"Diese Funktion ist im Failover Modus nicht aktiv.", MessageDialog.TYPE_INFORMATION);
 		}
 		else
 		{
-			String msgSettle = this.printer.receiptsToSettle() ? "<br>- Tagesabschluss" : "";
-			String msgStock = "";
 			Coin[] countedCurrencies = this.printer.getCountedCurrencies();
-			for (int i = 0; i < countedCurrencies.length; i++)
+			if (this.printer.receiptsToSettle() && !Salespoint.getCurrent().variableStock
+							&& countedCurrencies.length == 0)
 			{
-				msgStock = msgStock + "<br>- Kassensturz " + countedCurrencies[i].getForeignCurrency().code;
+				MessageDialog.showSimpleDialog(
+								Frame.getMainFrame(),
+								"Kassensturz noch nicht vorgenommen",
+								"Der Kassensturz wurde noch nicht vorgenommen (Bei fixem Kassenstock muss der Kassensturz immer vorgenommen werden.",
+								MessageDialog.TYPE_INFORMATION);
 			}
-			
-			if (!this.printer.receiptsToSettle() && countedCurrencies.length == 0)
-				MessageDialog.showInformation(Frame.getMainFrame(), "Keine Vorgänge", "Es stehen keine Vorgänge zur Durchführung an.", MessageDialog.TYPE_INFORMATION);
 			else
 			{
-				int i = MessageDialog.showSimpleDialog(Frame.getMainFrame(), Messages.getString("SettleDayAction.Tagesabschluss_2"), "<html>" + "Folgende Vorgänge werden durchgeführt:<br>"
-								+ msgSettle + msgStock + "<br><br>Wollen Sie weiterfahren?</html>", 1);
-				
-				if (i == MessageDialog.BUTTON_YES)
+				String msgSettle = this.printer.receiptsToSettle() ? "<br>- Tagesabschluss" : "";
+				String msgStock = "";
+				for (Coin countedCurrencie : countedCurrencies)
 				{
-					int j = 0;
-					if (Config.getInstance().getSettlementAdmitTestSettlement())
-					{ // 10182
-						j = MessageDialog.showSimpleDialog(Frame.getMainFrame(), "Probeabschluss", "Soll ein Probeabschluss vorgenommen werden?", 1);
-					} // 10182
-					if (j == MessageDialog.BUTTON_YES)
+					msgStock = msgStock + "<br>- Kassensturz " + countedCurrencie.getForeignCurrency().code;
+				}
+				
+				if (!this.printer.receiptsToSettle() && countedCurrencies.length == 0)
+					MessageDialog.showInformation(Frame.getMainFrame(), "Keine Vorgänge",
+									"Es stehen keine Vorgänge zur Durchführung an.", MessageDialog.TYPE_INFORMATION);
+				else
+				{
+					int i = MessageDialog.showSimpleDialog(Frame.getMainFrame(),
+									Messages.getString("SettleDayAction.Tagesabschluss_2"), "<html>"
+													+ "Folgende Vorgänge werden durchgeführt:<br>" + msgSettle
+													+ msgStock + "<br><br>Wollen Sie weiterfahren?</html>", 1);
+					
+					if (i == MessageDialog.BUTTON_YES)
 					{
-						this.printer.setTestPrint(true);
-						super.actionPerformed(e);
-					}
-					else
-					{
-						this.printer.setTestPrint(false);
-						super.actionPerformed(e);
+						int j = 0;
+						if (Config.getInstance().getSettlementAdmitTestSettlement())
+						{ // 10182
+							j = MessageDialog.showSimpleDialog(Frame.getMainFrame(), "Probeabschluss",
+											"Soll ein Probeabschluss vorgenommen werden?", 1);
+						} // 10182
+						if (j == MessageDialog.BUTTON_YES)
+						{
+							this.printer.setTestPrint(true);
+							super.actionPerformed(e);
+						}
+						else
+						{
+							this.printer.setTestPrint(false);
+							super.actionPerformed(e);
+						}
 					}
 				}
 			}
@@ -118,10 +137,11 @@ public class SettleDayAction extends Action implements ModeChangeRequest, IFailO
 	
 	public void fireModeChangeEvent(ModeChangeEvent e)
 	{
-		ModeChangeListener[] listeners = (ModeChangeListener[]) this.modeChangeListeners.toArray(new ModeChangeListener[0]);
-		for (int i = 0; i < listeners.length; i++)
+		ModeChangeListener[] listeners = (ModeChangeListener[]) this.modeChangeListeners
+						.toArray(new ModeChangeListener[0]);
+		for (ModeChangeListener listener : listeners)
 		{
-			listeners[i].modeChangePerformed(e);
+			listener.modeChangePerformed(e);
 		}
 	}
 	

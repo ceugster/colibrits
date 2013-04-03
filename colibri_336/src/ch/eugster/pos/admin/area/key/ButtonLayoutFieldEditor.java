@@ -86,7 +86,7 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 	
 	private SashForm controlContainer;
 	
-	//	
+	//
 	// private MenuItem item;
 	
 	/**
@@ -210,7 +210,6 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 	
 	public TreeViewer getTreeViewer()
 	{
-		assert this.tree != null;
 		return this.tree;
 	}
 	
@@ -323,7 +322,7 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 	// }
 	// }
 	// }
-	//		
+	//
 	// int rows = this.getStore().getInt(TabFieldEditorPage.KEY_ROWS)
 	// .intValue();
 	// int cols = this.getStore().getInt(TabFieldEditorPage.KEY_COLUMNS)
@@ -377,7 +376,7 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 	// * }); DragSource End
 	// */
 	// }
-	//				
+	//
 	// }
 	// }
 	// }
@@ -467,7 +466,7 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 	// ButtonLayoutFieldEditor.this.dragSourceItem[0]));
 	// }
 	// }
-	//				
+	//
 	// public void dragEnter(DropTargetEvent e)
 	// {
 	// if (ButtonLayoutFieldEditor.this.dragSource.getControl() instanceof
@@ -485,7 +484,7 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 	// }
 	// catch (SWTError e)
 	// {
-	//			
+	//
 	// }
 	// }
 	
@@ -554,7 +553,7 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 				 * DND.DROP_COPY; } } }); } catch (SWTError e) { } / DropTarget
 				 * End
 				 */
-
+				
 				if (this.oldKeys[i][j] != null)
 				{
 					this.fillLabel(this.labels[i][j], this.oldKeys[i][j]);
@@ -598,8 +597,8 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 												|| element instanceof TaxRate || element instanceof Option
 												|| element instanceof Function)
 								{
-									ButtonLayoutFieldEditor.this.fillLabel(lbl, ButtonLayoutFieldEditor.this.createKey(
-													lbl, element));
+									ButtonLayoutFieldEditor.this.fillLabel(lbl,
+													ButtonLayoutFieldEditor.this.createKey(lbl, element));
 								}
 							}
 						}
@@ -1090,14 +1089,12 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 						if (key.className.equals(PreDefinedDiscountAction.class.getName()))
 						{
 							val = NumberUtility.round(val * 100, .01d);
-							msg = Messages
-											.getString("ButtonLayoutFieldEditor.Geben_Sie_den_gew_u00FCnschten_Wert_in_Prozenten_(ohne_Prozentzeichen)_an._4"); //$NON-NLS-1$
+							msg = Messages.getString("ButtonLayoutFieldEditor.Geben_Sie_den_gew_u00FCnschten_Wert_in_Prozenten_(ohne_Prozentzeichen)_an._4"); //$NON-NLS-1$
 							div.setRange(0d, 100d);
 						}
 						else
 						{
-							msg = Messages
-											.getString("ButtonLayoutFieldEditor.Geben_Sie_den_gew_u00FCnschten_Wert_an._5"); //$NON-NLS-1$
+							msg = Messages.getString("ButtonLayoutFieldEditor.Geben_Sie_den_gew_u00FCnschten_Wert_an._5"); //$NON-NLS-1$
 							div.setRange(0d, 10000d);
 						}
 						DoubleInputDialog dlg = new DoubleInputDialog(
@@ -1194,12 +1191,12 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 		item.setData(label);
 		item.setText("Horizontale Ausrichtung"); //$NON-NLS-1$
 		Menu menuHorizontalAlign = new Menu(item);
-		this.addHorizontalAlignMenuItem(menuHorizontalAlign, label, 2, Messages
-						.getString("ButtonLayoutFieldEditor.Links_6")); //$NON-NLS-1$
-		this.addHorizontalAlignMenuItem(menuHorizontalAlign, label, 0, Messages
-						.getString("ButtonLayoutFieldEditor.Zentriert_7")); //$NON-NLS-1$
-		this.addHorizontalAlignMenuItem(menuHorizontalAlign, label, 4, Messages
-						.getString("ButtonLayoutFieldEditor.Rechts_8")); //$NON-NLS-1$
+		this.addHorizontalAlignMenuItem(menuHorizontalAlign, label, 2,
+						Messages.getString("ButtonLayoutFieldEditor.Links_6")); //$NON-NLS-1$
+		this.addHorizontalAlignMenuItem(menuHorizontalAlign, label, 0,
+						Messages.getString("ButtonLayoutFieldEditor.Zentriert_7")); //$NON-NLS-1$
+		this.addHorizontalAlignMenuItem(menuHorizontalAlign, label, 4,
+						Messages.getString("ButtonLayoutFieldEditor.Rechts_8")); //$NON-NLS-1$
 		item.setMenu(menuHorizontalAlign);
 		/*
 		 * Vertikale Ausrichtung
@@ -1208,13 +1205,11 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 		item.setData(label);
 		item.setText("Vertikale Ausrichtung"); //$NON-NLS-1$
 		Menu menuVerticalAlign = new Menu(item);
-		this
-						.addVerticalAlignMenuItem(menuVerticalAlign, label, 1, Messages
-										.getString("ButtonLayoutFieldEditor.Oben_9")); //$NON-NLS-1$
-		this.addVerticalAlignMenuItem(menuVerticalAlign, label, 0, Messages
-						.getString("ButtonLayoutFieldEditor.Mitte_10")); //$NON-NLS-1$
-		this.addVerticalAlignMenuItem(menuVerticalAlign, label, 3, Messages
-						.getString("ButtonLayoutFieldEditor.Unten_11")); //$NON-NLS-1$
+		this.addVerticalAlignMenuItem(menuVerticalAlign, label, 1, Messages.getString("ButtonLayoutFieldEditor.Oben_9")); //$NON-NLS-1$
+		this.addVerticalAlignMenuItem(menuVerticalAlign, label, 0,
+						Messages.getString("ButtonLayoutFieldEditor.Mitte_10")); //$NON-NLS-1$
+		this.addVerticalAlignMenuItem(menuVerticalAlign, label, 3,
+						Messages.getString("ButtonLayoutFieldEditor.Unten_11")); //$NON-NLS-1$
 		item.setMenu(menuVerticalAlign);
 		
 		item = new MenuItem(menu, SWT.CASCADE);
@@ -1284,10 +1279,9 @@ public class ButtonLayoutFieldEditor extends FieldEditor implements IPropertyCha
 			{
 				Label label = (Label) ((MenuItem) e.widget).getData();
 				FileDialog dlg = new FileDialog(ButtonLayoutFieldEditor.this.layoutContainer.getShell(), SWT.OPEN);
-				dlg
-								.setFilterExtensions(new String[]
-								{
-												Messages.getString("ButtonLayoutFieldEditor.*.gif_80"), Messages.getString("ButtonLayoutFieldEditor.*.jpg_81"), Messages.getString("ButtonLayoutFieldEditor.*.jpeg_82"), Messages.getString("ButtonLayoutFieldEditor.*.png_83") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				dlg.setFilterExtensions(new String[]
+				{
+								Messages.getString("ButtonLayoutFieldEditor.*.gif_80"), Messages.getString("ButtonLayoutFieldEditor.*.jpg_81"), Messages.getString("ButtonLayoutFieldEditor.*.jpeg_82"), Messages.getString("ButtonLayoutFieldEditor.*.png_83") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				dlg.setFilterPath("icons/"); //$NON-NLS-1$
 				dlg.setText(Messages.getString("ButtonLayoutFieldEditor.Auswahl_Bilddateien_85")); //$NON-NLS-1$
 				String path = dlg.open();

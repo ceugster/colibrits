@@ -21,7 +21,6 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
@@ -714,13 +713,17 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 				{
 					if (!file.mkdirs())
 					{
-						Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Das_Unterverzeichnis__54") + file.getName() + Messages.getString("App._fehlt._55")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+										.log(Level.INFO,
+														Messages.getString("App.Das_Unterverzeichnis__54") + file.getName() + Messages.getString("App._fehlt._55")); //$NON-NLS-1$ //$NON-NLS-2$ 
 						exists = false;
 					}
 				}
 				else
 				{
-					Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Das_Unterverzeichnis__57") + file.getName() + Messages.getString("App._fehlt._58")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+									.log(Level.INFO,
+													Messages.getString("App.Das_Unterverzeichnis__57") + file.getName() + Messages.getString("App._fehlt._58")); //$NON-NLS-1$ //$NON-NLS-2$ 
 					exists = false;
 				}
 			}
@@ -734,18 +737,18 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	
 	private static boolean initLogging()
 	{
-		File logFile = new File(Path.getInstance().logDir + "colibri.log"); //$NON-NLS-1$
-		if (logFile.exists() && logFile.isFile())
-		{
-			logFile.delete();
-		}
-		LogManager.getLogManager().addLogger(Logger.getLogger("colibri")); //$NON-NLS-1$
+		//		File logFile = new File(Path.getInstance().logDir + "colibri.log"); //$NON-NLS-1$
+		// if (logFile.exists() && logFile.isFile())
+		// {
+		// logFile.delete();
+		// }
+		// LogManager.getLogManager().addLogger(Logger.getLogger(Logger.GLOBAL_LOGGER_NAME));
 		try
 		{
-			FileHandler fh = new FileHandler(logFile.getAbsolutePath(), true);
+			FileHandler fh = new FileHandler(Path.getInstance().logDir.concat(Path.getInstance().FILE_LOG), true);
 			fh.setFormatter(new SimpleFormatter());
-			Logger.getLogger("colibri").addHandler(fh); //$NON-NLS-1$
-			Logger.getLogger("colibri").setLevel(Level.parse(Messages.getString("App.ALL_63"))); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).addHandler(fh);
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.parse(Messages.getString("App.ALL_63"))); //$NON-NLS-1$ 
 			return true;
 		}
 		catch (IOException e)
@@ -805,7 +808,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 							);
 			System.exit(-1);
 		}
-		Logger.getLogger("colibri").info("Verbindungsmethode wird verlassen..."); //$NON-NLS-1$ //$NON-NLS-2$ 
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Verbindungsmethode wird verlassen..."); //$NON-NLS-1$ 
 	}
 	
 	/**
@@ -815,7 +818,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	private static void setLocale(String language, String country)
 	{
 		Locale.setDefault(new Locale(language, country));
-		Logger.getLogger("colibri").info(Messages.getString("Main.Locale_ist_gesetzt_20")); //$NON-NLS-1$ //$NON-NLS-2$
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("Main.Locale_ist_gesetzt_20")); //$NON-NLS-1$ 
 	}
 	
 	/**
@@ -878,7 +881,8 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	{
 		if (Main.me == null)
 		{
-			Logger.getLogger("colibri").info(Messages.getString("Main.Hauptfenster_wird_instantiiert..._22")); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+							Messages.getString("Main.Hauptfenster_wird_instantiiert..._22")); //$NON-NLS-1$ 
 			Main.me = new Main(null);
 			Main.me.create();
 			Main.me.setBlockOnOpen(true);
@@ -926,12 +930,13 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	
 	public static boolean verifyUser()
 	{
-		Logger.getLogger("colibri").log(Level.INFO, "Applikation wird instantiiert."); //$NON-NLS-1$ //$NON-NLS-2$
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Applikation wird instantiiert."); //$NON-NLS-1$ 
 		Display display = new Display();
 		Shell shell = new Shell(display);
 		UserVerificationInputValidator validator = new UserVerificationInputValidator(new Integer[]
 		{ new Integer(0), new Integer(1) });
-		Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Start_Benutzerauthentifizierung..._4")); //$NON-NLS-1$ //$NON-NLS-2$
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,
+						Messages.getString("App.Start_Benutzerauthentifizierung..._4")); //$NON-NLS-1$ 
 		UserVerificationDialog getUser = new UserVerificationDialog(shell, Messages.getString("App.Benutzername_5"), //$NON-NLS-1$
 						Messages.getString("App.Geben_Sie_Benutzername_und_Passwort_ein__6"), //$NON-NLS-1$
 						Messages.getString("App._7"), //$NON-NLS-1$
@@ -942,8 +947,10 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 		{
 			if (User.getCurrentUser() != null)
 			{
-				Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Benutzerauthentifizierung_erfolgreich._9")); //$NON-NLS-1$ //$NON-NLS-2$
-				Logger.getLogger("colibri").log(Level.INFO, Messages.getString("App.Hauptfenster_wird_geladen..._11")); //$NON-NLS-1$ //$NON-NLS-2$
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,
+								Messages.getString("App.Benutzerauthentifizierung_erfolgreich._9")); //$NON-NLS-1$ 
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,
+								Messages.getString("App.Hauptfenster_wird_geladen..._11")); //$NON-NLS-1$ 
 				return true;
 			}
 		}

@@ -8,6 +8,7 @@ package ch.eugster.pos.printing;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Logger;
 
 import org.jdom.Element;
 
@@ -37,6 +38,7 @@ public class ReceiptPrinter
 	
 	private ReceiptPrinter()
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Belegdrucker wird konfiguriert.");
 		Element receipt = Config.getInstance().getDocument().getRootElement().getChild("receipt"); //$NON-NLS-1$
 		this.header = new ReceiptHeader(receipt.getChild("header"), receipt); //$NON-NLS-1$
 		this.position = new ReceiptPosition(receipt.getChild("position"), receipt); //$NON-NLS-1$
@@ -72,6 +74,7 @@ public class ReceiptPrinter
 	
 	private void loadPrinter(Element element)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Belegdruckerklasse wird instantiiert.");
 		this.printer = this.createPOSPrinter(element);
 	}
 	
@@ -96,27 +99,31 @@ public class ReceiptPrinter
 		catch (ClassNotFoundException e)
 		{
 			e.printStackTrace();
-			//			Logger.getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Klasse__16") + el.getAttributeValue("class") + Messages.getString("ReceiptPrinter._nicht_gefunden.__18") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Klasse__16") + el.getAttributeValue("class") + Messages.getString("ReceiptPrinter._nicht_gefunden.__18") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
 			System.exit(-22);
 		}
 		catch (NoSuchMethodException e)
 		{
-			//			Logger.getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Kein_entsprechender_Konstruktor_fuer_Klasse__20") + el.getAttributeValue("class") + ". " + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Kein_entsprechender_Konstruktor_fuer_Klasse__20") + el.getAttributeValue("class") + ". " + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
 			System.exit(-22);
 		}
 		catch (IllegalAccessException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage());
 			System.exit(-22);
 		}
 		catch (InvocationTargetException e)
 		{
-			//			Logger.getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Kein_entsprechender_Konstruktor_fuer_Klasse__25") + el.getAttributeValue("class") + ". " + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen__Kein_entsprechender_Konstruktor_fuer_Klasse__25") + el.getAttributeValue("class") + ". " + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
 			System.exit(-22);
 		}
 		catch (InstantiationException e)
 		{
-			//			Logger.getLogger("colibri").severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen___29") + e.getLocalizedMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.severe(Messages.getString("ReceiptPrinter.Instantiierung_fehlgeschlagen___29") + e.getLocalizedMessage()); //$NON-NLS-1$ 
 			System.exit(-22);
 		}
 		return pos;
@@ -150,20 +157,23 @@ public class ReceiptPrinter
 		// 10012
 		if (this.printer.isUsed())
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Belegdrucker-Port wird geschlossen.");
 			this.printer.closePort();
 		}
 	}
 	
 	public void print(POSPrinter printer, Receipt[] receipts)
 	{
-		for (int i = 0; i < receipts.length; i++)
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Belegdrucker druckt " + receipts.length + " Belege.");
+		for (Receipt receipt : receipts)
 		{
-			this.print(printer, receipts[i]);
+			this.print(printer, receipt);
 		}
 	}
 	
 	public void print(POSPrinter printer, Receipt receipt)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Belegdrucker druckt Beleg " + receipt.getNumber() + ".");
 		if (receipt.status == Receipt.RECEIPT_STATE_REVERSED)
 		{
 			String storno = Messages.getString("ReceiptPrinter._S_T_O_R_N_O__1"); //$NON-NLS-1$
@@ -199,9 +209,9 @@ public class ReceiptPrinter
 		// 10382 Build 312
 		boolean print = false;
 		Position[] positions = receipt.getPositionsAsArray();
-		for (int i = 0; i < positions.length; i++)
-			if (positions[i].getProductGroup().type != ProductGroup.TYPE_INPUT
-							&& positions[i].getProductGroup().type != ProductGroup.TYPE_WITHDRAW)
+		for (Position position2 : positions)
+			if (position2.getProductGroup().type != ProductGroup.TYPE_INPUT
+							&& position2.getProductGroup().type != ProductGroup.TYPE_WITHDRAW)
 			{
 				print = true;
 				break;
@@ -275,6 +285,7 @@ public class ReceiptPrinter
 	
 	public void printVoucher(POSPrinter printer, Receipt receipt)
 	{
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Belegdrucker druckt Gutschein.");
 		this.header.print(printer, receipt, this.voucherPrintLogo, this.voucherLogo, this.voucherLogoMode);
 		if (this.delimit)
 		{
@@ -309,6 +320,7 @@ public class ReceiptPrinter
 	{
 		if (this.printer.isUsed())
 		{
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Belegdrucker öffnet Schublade.");
 			this.printer.kickOutDrawer(drawer);
 		}
 	}

@@ -24,7 +24,7 @@ import ch.eugster.pos.events.StateChangeListener;
 import ch.eugster.pos.util.Config;
 import ch.eugster.pos.util.Serializer;
 
-import com.ibm.bridge2java.ComException;
+import com4j.ComException;
 
 /**
  * @author administrator
@@ -177,9 +177,10 @@ public class Database
 									0, receipts.length);
 					monitor.setProgress(0);
 					
-					Logger.getLogger("colibri").getLevel(); //$NON-NLS-1$
-					Logger.getLogger("colibri").setLevel(Level.INFO); //$NON-NLS-1$
-					Logger.getLogger("colibri").info(Messages.getString("Database.Start_transfer__22") + receipts.length + Messages.getString("Database._Receipts_from_temporary_database_to_standard_database..._23")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).getLevel();
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.INFO);
+					Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+									.info(Messages.getString("Database.Start_transfer__22") + receipts.length + Messages.getString("Database._Receipts_from_temporary_database_to_standard_database..._23")); //$NON-NLS-1$ //$NON-NLS-2$ 
 					DBResult[] saved = new DBResult[receipts.length];
 					DBResult[] removed = new DBResult[receipts.length];
 					
@@ -190,7 +191,7 @@ public class Database
 							monitor.setProgress(i + 1);
 							
 							// 10163
-							Logger.getLogger("colibri").info("Beleg wird eingelesen."); //$NON-NLS-1$ //$NON-NLS-2$
+							Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Beleg wird eingelesen."); //$NON-NLS-1$ 
 							Receipt copy = receipts[i].clone(false);
 							// 10163
 							
@@ -201,13 +202,14 @@ public class Database
 											|| receipts[i].status == Receipt.RECEIPT_STATE_REVERSED)
 							{
 								// 10164
-								Logger.getLogger("colibri").info(Messages.getString("Database.Galileodaten_werden_aktualisiert..._25")); //$NON-NLS-1$ //$NON-NLS-2$
+								Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+												Messages.getString("Database.Galileodaten_werden_aktualisiert..._25")); //$NON-NLS-1$ 
 								Database.setCurrent(Database.standard);
 								
 								// 10163
-								//								Logger.getLogger("colibri").info("Beleg wird in Galileo verbucht."); //$NON-NLS-1$ //$NON-NLS-2$
+								//								Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Beleg wird in Galileo verbucht."); //$NON-NLS-1$ //$NON-NLS-2$
 								// bookGalileo(copy, booksNotFound);
-								//								Logger.getLogger("colibri").info("Beleg wird in Standarddatenbank kopiert."); //$NON-NLS-1$ //$NON-NLS-2$
+								//								Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Beleg wird in Standarddatenbank kopiert."); //$NON-NLS-1$ //$NON-NLS-2$
 								saved[i] = Database.saveReceipt(copy);
 								error = saved[i].getErrorCode() == 0 ? error : false;
 								// 10163
@@ -219,7 +221,8 @@ public class Database
 								 */
 								if (saved[i].getErrorCode() == 0)
 								{
-									Logger.getLogger("colibri").info("Beleg wird in temporärer Datenbank gelöscht."); //$NON-NLS-1$ //$NON-NLS-2$
+									Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+													"Beleg wird in temporärer Datenbank gelöscht."); //$NON-NLS-1$ 
 									removed[i] = Database.removeReceipt(receipts[i]);
 									error = removed[i].getErrorCode() == 0 ? error : false;
 								}
@@ -228,7 +231,8 @@ public class Database
 							{
 								saved[i] = new DBResult(DBResult.NO_STORING_NEEDED, "");
 								// 10163
-								Logger.getLogger("colibri").info("Beleg wird in temporärer Datenbank gelöscht."); //$NON-NLS-1$ //$NON-NLS-2$
+								Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+												"Beleg wird in temporärer Datenbank gelöscht."); //$NON-NLS-1$ 
 								removed[i] = Database.removeReceipt(receipts[i]);
 								// error = removed[i].getErrorCode() == 0 ?
 								// error : false;
@@ -258,9 +262,9 @@ public class Database
 						else
 						{
 							// 10110
-							for (int i = 0; i < saved.length; i++)
+							for (DBResult element : saved)
 							{
-								if (saved[i] != null && saved[i].getErrorCode() == 0)
+								if (element != null && element.getErrorCode() == 0)
 								{
 									inserted++;
 								}
@@ -347,7 +351,8 @@ public class Database
 				Serializer.getInstance().deleteReceipt(file);
 			}
 			Serializer.getInstance().writeReceipt(receipt);
-			Logger.getLogger("colibri").info(Messages.getString("Database.Receipt_with_id______40") + receipt.getNumber() + Messages.getString("Database.___transferred._41")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.info(Messages.getString("Database.Receipt_with_id______40") + receipt.getNumber() + Messages.getString("Database.___transferred._41")); //$NON-NLS-1$ //$NON-NLS-2$ 
 		}
 		return result;
 	}
@@ -358,16 +363,18 @@ public class Database
 		DBResult result = receipt.remove();
 		if (result.getErrorCode() == 0)
 		{
-			Logger.getLogger("colibri").info(Messages.getString("Database.Receipt_with_id______49") + receipt.getNumber() + Messages.getString("Database.___in_temporary_database_removed._50")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.info(Messages.getString("Database.Receipt_with_id______49") + receipt.getNumber() + Messages.getString("Database.___in_temporary_database_removed._50")); //$NON-NLS-1$ //$NON-NLS-2$ 
 		}
 		else
 		{
-			Logger.getLogger("colibri").info(Messages.getString("Database.Problem_removing_Receipt_with_id______52") + receipt.getNumber() + Messages.getString("Database.___from_temporary_database..._53")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Logger.getLogger("colibri").info(result.getErrorText()); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+							.info(Messages.getString("Database.Problem_removing_Receipt_with_id______52") + receipt.getNumber() + Messages.getString("Database.___from_temporary_database..._53")); //$NON-NLS-1$ //$NON-NLS-2$ 
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(result.getErrorText());
 			if (result.getExternalErrorCode() != null && result.getExternalErrorCode().length() > 0)
 			{
-				Logger.getLogger("colibri").info(result.getExternalErrorCode()); //$NON-NLS-1$
-				Logger.getLogger("colibri").info(result.getExternalErrorText()); //$NON-NLS-1$
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(result.getExternalErrorCode());
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(result.getExternalErrorText());
 			}
 		}
 		return result;
@@ -397,9 +404,9 @@ public class Database
 	{
 		StateChangeListener[] listeners = (StateChangeListener[]) Database.stateChangeListeners
 						.toArray(new StateChangeListener[0]);
-		for (int i = 0; i < listeners.length; i++)
+		for (StateChangeListener listener : listeners)
 		{
-			listeners[i].updateStates();
+			listener.updateStates();
 		}
 	}
 	
@@ -428,9 +435,9 @@ public class Database
 	{
 		ShowMessageListener[] listeners = (ShowMessageListener[]) Database.messageListeners
 						.toArray(new ShowMessageListener[0]);
-		for (int i = 0; i < listeners.length; i++)
+		for (ShowMessageListener listener : listeners)
 		{
-			listeners[i].showMessage(event);
+			listener.showMessage(event);
 		}
 	}
 	

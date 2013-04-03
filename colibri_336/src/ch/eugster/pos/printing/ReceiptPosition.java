@@ -44,6 +44,7 @@ public class ReceiptPosition extends ReceiptSection
 	 * ch.eugster.pos.client.printing.IReceiptSection#print(ch.eugster.pos.devices
 	 * .printers.POSPrinter, ch.eugster.pos.db.Receipt)
 	 */
+	@Override
 	public void print(POSPrinter printer, Receipt receipt)
 	{
 		Position[] p = receipt.getPositionsAsArray();
@@ -51,9 +52,9 @@ public class ReceiptPosition extends ReceiptSection
 		
 		Arrays.sort(p);
 		
-		for (int i = 0; i < p.length; i++)
+		for (Position element : p)
 		{
-			this.printPosition(printer, p[i]);
+			this.printPosition(printer, element);
 		}
 	}
 	
@@ -65,14 +66,14 @@ public class ReceiptPosition extends ReceiptSection
 		Arrays.sort(p);
 		
 		Collection positions = new ArrayList();
-		for (int i = 0; i < p.length; i++)
+		for (Position element : p)
 		{
-			if (p[i].getQuantity() < 0)
+			if (element.getQuantity() < 0)
 			{
-				if (p[i].getProductGroup().type != ProductGroup.TYPE_INPUT
-								&& p[i].getProductGroup().type != ProductGroup.TYPE_WITHDRAW)
+				if (element.getProductGroup().type != ProductGroup.TYPE_INPUT
+								&& element.getProductGroup().type != ProductGroup.TYPE_WITHDRAW)
 				{
-					positions.add(p[i]);
+					positions.add(element);
 				}
 			}
 		}
@@ -82,9 +83,9 @@ public class ReceiptPosition extends ReceiptSection
 			printer.println("----------");
 			
 			Position[] r = (Position[]) positions.toArray(new Position[0]);
-			for (int i = 0; i < r.length; i++)
+			for (Position element : r)
 			{
-				this.printPosition(printer, r[i]);
+				this.printPosition(printer, element);
 			}
 			
 			printer.println("");
@@ -104,9 +105,9 @@ public class ReceiptPosition extends ReceiptSection
 		Position[] p = receipt.getPositionsAsArray();
 		Arrays.sort(p);
 		
-		for (int i = 0; i < p.length; i++)
+		for (Position element : p)
 		{
-			printOut = printOut.append(this.getText(p[i]));
+			printOut = printOut.append(this.getText(element));
 		}
 		return printOut.toString();
 	}
@@ -114,11 +115,11 @@ public class ReceiptPosition extends ReceiptSection
 	private String[][] formatPosition(Position p)
 	{
 		int max = 0;
-		for (int i = 0; i < this.rows.length; i++)
+		for (ReceiptRow row : this.rows)
 		{
-			if (this.rows[i].getColumns().length > max)
+			if (row.getColumns().length > max)
 			{
-				max = this.rows[i].getColumns().length;
+				max = row.getColumns().length;
 			}
 		}
 		
@@ -137,11 +138,12 @@ public class ReceiptPosition extends ReceiptSection
 					}
 					else if (columns[j].getValue().equals("position.productgroup")) { //$NON-NLS-1$
 						if (p.isPayedInvoice())
-							values[i][j] = "Rg." + p.getInvoiceNumber() + " bez.";
-						
-						else if (p.getProductGroup().isDefault && p.productId.length() > 0)
 						{
-							values[i][j] = p.productId;
+							values[i][j] = "Rg." + p.getInvoiceNumber() + " bez.";
+						}
+						else if (p.getProductGroup().isDefault && p.productNumber.length() > 0)
+						{
+							values[i][j] = p.productNumber;
 						}
 						else
 						{
@@ -201,8 +203,8 @@ public class ReceiptPosition extends ReceiptSection
 						DecimalFormat df = new DecimalFormat(columns[j].getPattern());
 						if (p.type == ProductGroup.TYPE_INPUT || p.type == ProductGroup.TYPE_WITHDRAW)
 						{
-							if (p.getProductGroup().getForeignCurrency().getId().equals(
-											ForeignCurrency.getDefaultCurrency().getId()))
+							if (p.getProductGroup().getForeignCurrency().getId()
+											.equals(ForeignCurrency.getDefaultCurrency().getId()))
 								values[i][j] = df.format(p.getPrice());
 							else
 								values[i][j] = df.format(p.amountFC);

@@ -12,7 +12,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import javax.swing.JTable;
 
@@ -46,7 +46,7 @@ import ch.eugster.pos.product.ProductServer;
 import ch.eugster.pos.util.Config;
 import ch.eugster.pos.util.NumberUtility;
 
-import com.ibm.bridge2java.ComException;
+import com4j.ComException;
 
 /**
  * @author administrator
@@ -79,6 +79,7 @@ public class PositionModel extends ReceiptChildModel
 		this.setPosition(position);
 	}
 	
+	@Override
 	protected void showPutCustomerMessage(ReceiptChangeEvent e)
 	{
 		if (this.getProductGroup().type != ProductGroup.TYPE_INPUT
@@ -105,11 +106,13 @@ public class PositionModel extends ReceiptChildModel
 		}
 	}
 	
+	@Override
 	public void setReceiptChild()
 	{
 		this.setPosition();
 	}
 	
+	@Override
 	public void setReceiptChild(ReceiptChild child)
 	{
 		this.setPosition((Position) child);
@@ -228,8 +231,8 @@ public class PositionModel extends ReceiptChildModel
 				{
 					ForeignCurrency currency = this.getPosition().getProductGroup().getForeignCurrency();
 					double priceFC = NumberUtility.round(amount, currency.roundFactor);
-					double price = NumberUtility.round(amount * currency.quotation, ForeignCurrency
-									.getDefaultCurrency().roundFactor);
+					double price = NumberUtility.round(amount * currency.quotation,
+									ForeignCurrency.getDefaultCurrency().roundFactor);
 					this.setPrice(price, priceFC);
 				}
 				else
@@ -298,12 +301,11 @@ public class PositionModel extends ReceiptChildModel
 						// {
 						if (pos.ordered && pos.orderId != null && pos.orderId.startsWith(EAN13.PRE_ORDERED))
 						{
-							MessageDialog
-											.showInformation(
-															Frame.getMainFrame(),
-															"Kein_Lagertitel",
-															"<HTML>Der gewählte Titel stammt aus einer Kundenbestellung. <br>Eine allfällige Rückbuchung in Galileo muss manuell vorgenommen werden.", //$NON-NLS-1$
-															0);
+							MessageDialog.showInformation(
+											Frame.getMainFrame(),
+											"Kein_Lagertitel",
+											"<HTML>Der gewählte Titel stammt aus einer Kundenbestellung. <br>Eine allfällige Rückbuchung in Galileo muss manuell vorgenommen werden.", //$NON-NLS-1$
+											0);
 							pos.galileoBook = true;
 						}
 						else
@@ -480,10 +482,7 @@ public class PositionModel extends ReceiptChildModel
 	
 	public boolean setData(String value)
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").log(Level.INFO, "Eingabewert: " + value); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Eingabewert: " + value); //$NON-NLS-1$ 
 		if (value.length() >= 7)
 		{
 			if (this.receiptModel.receiptHasInputPosition() || this.receiptModel.receiptHasWithdrawPosition())
@@ -598,6 +597,20 @@ public class PositionModel extends ReceiptChildModel
 		{ true, false };
 		// Vorhandene Bindestriche entfernen und String ggf. konvertieren
 		String v = PositionModel.convert(ISBN.removeHyphen(value));
+		if (v.startsWith(EAN13.PRE_EBOOK))
+		{
+			position.productId = v.substring(1);
+			position.productNumber = v;
+			result[0] = false;
+			result[1] = true;
+			position.galileoBook = true;
+			position.galileoBooked = false;
+			position.optCode = "L";
+			position.ordered = false;
+			position.setProductGroup(ProductGroup.getDefaultGroup());
+			position.setCurrentTax(Tax.getByCode("UN").getCurrentTax());
+			return result;
+		}
 		
 		if (ProductServer.isUsed())
 		{
@@ -623,11 +636,8 @@ public class PositionModel extends ReceiptChildModel
 						
 						if (v.startsWith(EAN13.PRE_ORDERED))
 						{
-							if (LogManager.getLogManager().getLogger("colibri") != null)
-							{
-								LogManager.getLogManager()
-												.getLogger("colibri").log(Level.INFO, "Bestellten Titel eingegeben"); //$NON-NLS-1$ //$NON-NLS-2$
-							} /*
+							Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Bestellten Titel eingegeben"); //$NON-NLS-1$ 
+							/*
 							 * Es handelt sich um einen bestellten Artikel
 							 */
 							if (position.getPositionState() == Position.STATE_TAKE_BACK)
@@ -659,11 +669,7 @@ public class PositionModel extends ReceiptChildModel
 						 */
 						if (!result[0])
 						{
-							if (LogManager.getLogManager().getLogger("colibri") != null)
-							{
-								LogManager.getLogManager()
-												.getLogger("colibri").log(Level.INFO, "Titel in Galileo suchen"); //$NON-NLS-1$ //$NON-NLS-2$
-							}
+							Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Titel in Galileo suchen"); //$NON-NLS-1$ 
 							result[0] = galileo.getItem(v);
 						}
 						
@@ -673,11 +679,8 @@ public class PositionModel extends ReceiptChildModel
 						 */
 						if (result[0])
 						{
-							if (LogManager.getLogManager().getLogger("colibri") != null)
-							{
-								LogManager.getLogManager()
-												.getLogger("colibri").log(Level.INFO, "Titeldaten aus Galileo füllen"); //$NON-NLS-1$ //$NON-NLS-2$
-							}
+							Logger.getLogger(Logger.GLOBAL_LOGGER_NAME)
+											.log(Level.INFO, "Titeldaten aus Galileo füllen"); //$NON-NLS-1$ 
 							position.productId = v;
 							position.productNumber = value;
 							result[1] = galileo.setData(position);
@@ -748,8 +751,8 @@ public class PositionModel extends ReceiptChildModel
 					}
 					else
 					{
-						MessageDialog.showInformation(Frame.getMainFrame(), Messages
-										.getString("PositionModel.Verbindungsfehler"), //$NON-NLS-1$
+						MessageDialog.showInformation(Frame.getMainFrame(),
+										Messages.getString("PositionModel.Verbindungsfehler"), //$NON-NLS-1$
 										Messages.getString("PositionModel.Die_Verbindung_zu_Galileo_ist_unterbrochen"), //$NON-NLS-1$
 										0);
 						result[0] = false;
@@ -883,10 +886,7 @@ public class PositionModel extends ReceiptChildModel
 		{
 			galileo.open();
 		}
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").log(Level.INFO, "Kunde mit Nummer " + value + " erfasst"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, "Kunde mit Nummer " + value + " erfasst"); //$NON-NLS-1$ //$NON-NLS-2$
 		PositionModel.chooseMessage = 1;
 		Integer tmp = new Integer(0);
 		try
@@ -898,12 +898,8 @@ public class PositionModel extends ReceiptChildModel
 		}
 		if (tmp != new Integer(0))
 		{
-			if (LogManager.getLogManager().getLogger("colibri") != null)
-			{
-				LogManager
-								.getLogManager()
-								.getLogger("colibri").log(Level.INFO, "Kunde mit Nummer " + value + " in Galileo suchen"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO,
+							"Kunde mit Nummer " + value + " in Galileo suchen"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (galileo.getCustomer(tmp))
 			{
 				Customer customer = galileo.getCustomerObject();

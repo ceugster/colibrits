@@ -81,14 +81,16 @@ public class Code128 implements ICode128
 	public double getOrdinalPrice(String code)
 	{
 		String value = code.substring(this.ordinalPricePart.start, this.ordinalPricePart.end);
-		value = value.substring(0, 4) + String.valueOf(new DecimalFormatSymbols().getDecimalSeparator()) + value.substring(4);
+		value = value.substring(0, 4) + String.valueOf(new DecimalFormatSymbols().getDecimalSeparator())
+						+ value.substring(4);
 		return Double.parseDouble(value);
 	}
 	
 	public double getNetPrice(String code)
 	{
 		String value = code.substring(this.netPricePart.start, this.netPricePart.end);
-		value = value.substring(0, 4) + String.valueOf(new DecimalFormatSymbols().getDecimalSeparator()) + value.substring(4);
+		value = value.substring(0, 4) + String.valueOf(new DecimalFormatSymbols().getDecimalSeparator())
+						+ value.substring(4);
 		return Double.parseDouble(value);
 	}
 	
@@ -210,23 +212,30 @@ public class Code128 implements ICode128
 				
 				code128.dayPart = new Code128Part(Integer.valueOf(properties[i].getProperty("day.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("day.end")).intValue()); //$NON-NLS-1$
-				code128.monthPart = new Code128Part(Integer.valueOf(properties[i].getProperty("month.start")).intValue(), //$NON-NLS-1$
+				code128.monthPart = new Code128Part(Integer
+								.valueOf(properties[i].getProperty("month.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("month.end")).intValue()); //$NON-NLS-1$
 				code128.yearPart = new Code128Part(Integer.valueOf(properties[i].getProperty("year.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("year.end")).intValue()); //$NON-NLS-1$
-				code128.supplierPart = new Code128Part(Integer.valueOf(properties[i].getProperty("supplier.start")).intValue(), //$NON-NLS-1$
+				code128.supplierPart = new Code128Part(Integer
+								.valueOf(properties[i].getProperty("supplier.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("supplier.end")).intValue()); //$NON-NLS-1$
 				code128.taxPart = new Code128Part(Integer.valueOf(properties[i].getProperty("tax.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("tax.end")).intValue()); //$NON-NLS-1$
-				code128.qualifierPart = new Code128Part(Integer.valueOf(properties[i].getProperty("qualifier.start")).intValue(), //$NON-NLS-1$
+				code128.qualifierPart = new Code128Part(Integer
+								.valueOf(properties[i].getProperty("qualifier.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("qualifier.end")).intValue()); //$NON-NLS-1$
-				code128.ordinalPricePart = new Code128Part(Integer.valueOf(properties[i].getProperty("price.start")).intValue(), //$NON-NLS-1$
+				code128.ordinalPricePart = new Code128Part(Integer
+								.valueOf(properties[i].getProperty("price.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("price.end")).intValue()); //$NON-NLS-1$
-				code128.netPricePart = new Code128Part(Integer.valueOf(properties[i].getProperty("net.start")).intValue(), //$NON-NLS-1$
+				code128.netPricePart = new Code128Part(Integer
+								.valueOf(properties[i].getProperty("net.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("net.end")).intValue()); //$NON-NLS-1$
-				code128.productGroupPart = new Code128Part(Integer.valueOf(properties[i].getProperty("group.start")).intValue(), //$NON-NLS-1$
+				code128.productGroupPart = new Code128Part(Integer
+								.valueOf(properties[i].getProperty("group.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("group.end")).intValue()); //$NON-NLS-1$
-				code128.articleCodePart = new Code128Part(Integer.valueOf(properties[i].getProperty("article.start")).intValue(), //$NON-NLS-1$
+				code128.articleCodePart = new Code128Part(Integer
+								.valueOf(properties[i].getProperty("article.start")).intValue(), //$NON-NLS-1$
 								Integer.valueOf(properties[i].getProperty("article.end")).intValue()); //$NON-NLS-1$
 				code128.length = new Integer(properties[i].getProperty("article.end")).intValue();
 				
@@ -251,23 +260,23 @@ public class Code128 implements ICode128
 		}
 		catch (ClassNotFoundException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (IllegalAccessException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (InstantiationException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (NoSuchMethodException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		catch (InvocationTargetException e)
 		{
-			//			Logger.getLogger("colibri").severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
 		}
 		return code;
 	}

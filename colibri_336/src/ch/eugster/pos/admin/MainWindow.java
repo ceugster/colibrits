@@ -19,7 +19,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -328,8 +328,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{ new Integer(this.properties.getProperty("productgroup.left")).intValue(),
 						new Integer(this.properties.getProperty("productgroup.right")).intValue() };
 		this.productGroupTableSash.setWeights(weights);
-		Page page = new ProductGroupFieldEditorPage(ProductGroup.class.getName(), Messages
-						.getString("MainWindow.Warengruppen_12"), FieldEditorPage.GRID, new ProductGroupStore()); //$NON-NLS-1$
+		Page page = new ProductGroupFieldEditorPage(ProductGroup.class.getName(),
+						Messages.getString("MainWindow.Warengruppen_12"), FieldEditorPage.GRID, new ProductGroupStore()); //$NON-NLS-1$
 		page.setContainer(this);
 		this.productGroupTableSash.addPage(ProductGroup.class.getName(), page);
 		this.productGroupTableSash.initialize(new ProductGroupTableContentProvider(),
@@ -348,8 +348,9 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{ new Integer(this.properties.getProperty("paymenttype.left")).intValue(),
 						new Integer(this.properties.getProperty("paymenttype.right")).intValue() };
 		this.paymentTypeTreeSash.setWeights(weights);
-		Page page1 = new PaymentTypeFieldEditorPage(PaymentType.class.getName(), Messages
-						.getString("MainWindow.Zahlungsarten_13"), FieldEditorPage.GRID, PaymentTypeStore.getInstance()); //$NON-NLS-1$
+		Page page1 = new PaymentTypeFieldEditorPage(
+						PaymentType.class.getName(),
+						Messages.getString("MainWindow.Zahlungsarten_13"), FieldEditorPage.GRID, PaymentTypeStore.getInstance()); //$NON-NLS-1$
 		page1.setContainer(this);
 		this.paymentTypeTreeSash.addPage(PaymentType.class.getName(), page1);
 		Page page2 = new PaymentTypeGroupFieldEditorPage(
@@ -373,8 +374,9 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{ new Integer(this.properties.getProperty("tax.left")).intValue(),
 						new Integer(this.properties.getProperty("tax.right")).intValue() };
 		this.taxTreeSash.setWeights(weights);
-		Page page1 = new CurrentTaxFieldEditorPage(CurrentTax.class.getName(), Messages
-						.getString("MainWindow.Mehrwertsteuerdetail_15"), FieldEditorPage.GRID, new CurrentTaxStore()); //$NON-NLS-1$
+		Page page1 = new CurrentTaxFieldEditorPage(
+						CurrentTax.class.getName(),
+						Messages.getString("MainWindow.Mehrwertsteuerdetail_15"), FieldEditorPage.GRID, new CurrentTaxStore()); //$NON-NLS-1$
 		page1.setContainer(this);
 		page1.isAddActive = false;
 		page1.isRemoveActive = false;
@@ -385,14 +387,15 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		page2.isAddActive = false;
 		page2.isRemoveActive = false;
 		this.taxTreeSash.addPage(Tax.class.getName(), page2);
-		Page page3 = new TaxRateFieldEditorPage(TaxRate.class.getName(), Messages
-						.getString("MainWindow.Mehrwertsteuergruppe_17"), FieldEditorPage.GRID, new TaxRateStore()); //$NON-NLS-1$
+		Page page3 = new TaxRateFieldEditorPage(
+						TaxRate.class.getName(),
+						Messages.getString("MainWindow.Mehrwertsteuergruppe_17"), FieldEditorPage.GRID, new TaxRateStore()); //$NON-NLS-1$
 		page3.setContainer(this);
 		page3.isAddActive = false;
 		page3.isRemoveActive = false;
 		this.taxTreeSash.addPage(TaxRate.class.getName(), page3);
-		Page page4 = new TaxTypeFieldEditorPage(TaxType.class.getName(), Messages
-						.getString("MainWindow.Mehrwertsteuerart_18"), FieldEditorPage.GRID, new TaxTypeStore()); //$NON-NLS-1$
+		Page page4 = new TaxTypeFieldEditorPage(TaxType.class.getName(),
+						Messages.getString("MainWindow.Mehrwertsteuerart_18"), FieldEditorPage.GRID, new TaxTypeStore()); //$NON-NLS-1$
 		page4.setContainer(this);
 		page4.isAddActive = false;
 		page4.isRemoveActive = false;
@@ -431,8 +434,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{ new Integer(this.properties.getProperty("salespoint.left")).intValue(),
 						new Integer(this.properties.getProperty("salespoint.right")).intValue() };
 		this.salespointTreeSash.setWeights(weights);
-		Page page1 = new SalespointFieldEditorPage(Salespoint.class.getName(), Messages
-						.getString("MainWindow.Kassen_20"), FieldEditorPage.GRID, new SalespointStore()); //$NON-NLS-1$
+		Page page1 = new SalespointFieldEditorPage(Salespoint.class.getName(),
+						Messages.getString("MainWindow.Kassen_20"), FieldEditorPage.GRID, new SalespointStore()); //$NON-NLS-1$
 		page1.setContainer(this);
 		page1.isAddActive = true;
 		page1.isRemoveActive = true;
@@ -496,8 +499,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{ new Integer(this.properties.getProperty("currency.left")).intValue(),
 						new Integer(this.properties.getProperty("currency.right")).intValue() };
 		this.currencyTableSash.setWeights(weights);
-		Page page = new CurrencyFieldEditorPage(ForeignCurrency.class.getName(), Messages
-						.getString("MainWindow.Waehrungen_22"), FieldEditorPage.GRID, new CurrencyStore()); //$NON-NLS-1$
+		Page page = new CurrencyFieldEditorPage(ForeignCurrency.class.getName(),
+						Messages.getString("MainWindow.Waehrungen_22"), FieldEditorPage.GRID, new CurrencyStore()); //$NON-NLS-1$
 		page.setContainer(this);
 		this.currencyTableSash.addPage(ForeignCurrency.class.getName(), page);
 		
@@ -527,8 +530,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{ new Integer(this.properties.getProperty("user.left")).intValue(),
 						new Integer(this.properties.getProperty("user.right")).intValue() };
 		this.userTableSash.setWeights(weights);
-		UserFieldEditorPage page = new UserFieldEditorPage(User.class.getName(), Messages
-						.getString("MainWindow.Benutzer_23"), FieldEditorPage.GRID, new UserStore()); //$NON-NLS-1$
+		UserFieldEditorPage page = new UserFieldEditorPage(User.class.getName(),
+						Messages.getString("MainWindow.Benutzer_23"), FieldEditorPage.GRID, new UserStore()); //$NON-NLS-1$
 		page.setContainer(this);
 		this.userTableSash.addPage(User.class.getName(), page);
 		this.userTableSash.initialize(new UserTableContentProvider(), new UserTableLabelProvider());
@@ -555,8 +558,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		int right = new Integer(this.properties.getProperty("key.detail.right")).intValue();
 		weights = new int[]
 		{ left, right };
-		this.tabFieldEditorPage = new TabFieldEditorPage(Tab.class.getName(), Messages
-						.getString("MainWindow.Register_25"), FieldEditorPage.GRID, new TabStore()); //$NON-NLS-1$
+		this.tabFieldEditorPage = new TabFieldEditorPage(Tab.class.getName(),
+						Messages.getString("MainWindow.Register_25"), FieldEditorPage.GRID, new TabStore()); //$NON-NLS-1$
 		this.tabFieldEditorPage.setContainer(this);
 		this.keyTreeSash.addPage(Tab.class.getName(), this.tabFieldEditorPage);
 		this.keyTreeSash.initialize(new KeyTreeContentProvider(), new KeyLabelProvider());
@@ -566,8 +569,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		Enumeration enumerationeration = this.senders.elements();
 		while (enumerationeration.hasMoreElements())
 		{
-			((SashForm) enumerationeration.nextElement()).addListener(SWT.Selection, this.tabFieldEditorPage
-							.getButtonLayoutFieldEditor());
+			((SashForm) enumerationeration.nextElement()).addListener(SWT.Selection,
+							this.tabFieldEditorPage.getButtonLayoutFieldEditor());
 		}
 		return this.keyTreeSash;
 	}
@@ -579,8 +582,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{ new Integer(this.properties.getProperty("fixkey.left")).intValue(),
 						new Integer(this.properties.getProperty("fixkey.right")).intValue() };
 		this.fixKeyTreeSash.setWeights(weights);
-		Page page1 = new FixKeyGroupFieldEditorPage(FixKeyGroup.class.getName(), Messages
-						.getString("MainWindow.Bereich_26"), FieldEditorPage.GRID, new FixKeyGroupStore()); //$NON-NLS-1$
+		Page page1 = new FixKeyGroupFieldEditorPage(FixKeyGroup.class.getName(),
+						Messages.getString("MainWindow.Bereich_26"), FieldEditorPage.GRID, new FixKeyGroupStore()); //$NON-NLS-1$
 		page1.isAddActive = false;
 		page1.isRemoveActive = false;
 		page1.setContainer(this);
@@ -644,8 +647,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{
 			public void handleEvent(Event e)
 			{
-				MessageDialog.openInformation(MainWindow.getInstance().getShell(), "Version", "Version: "
-								+ Version.version() + "\n" + "Datum: " + Version.getVersionDate());
+				MessageDialog.openInformation(MainWindow.getInstance().getShell(), "Version",
+								"Version: " + Version.version() + "\n" + "Datum: " + Version.getVersionDate());
 			}
 		});
 		
@@ -694,10 +697,9 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{
 			public void handleEvent(Event e)
 			{
-				if (MessageDialog
-								.openQuestion(
-												MainWindow.this.getShell(),
-												Messages.getString("MainWindow.Warengruppen_importieren_1"), Messages.getString("MainWindow.Wollen_Sie_die_Warengruppen_aus_Galileo_importieren__2"))) { //$NON-NLS-1$ //$NON-NLS-2$
+				if (MessageDialog.openQuestion(
+								MainWindow.this.getShell(),
+								Messages.getString("MainWindow.Warengruppen_importieren_1"), Messages.getString("MainWindow.Wollen_Sie_die_Warengruppen_aus_Galileo_importieren__2"))) { //$NON-NLS-1$ //$NON-NLS-2$
 					MainWindow.this.importProductGroups();
 				}
 			}
@@ -803,24 +805,18 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 				page = new ConnectionFieldEditorPreferencePage(
 								Messages.getString("MainWindow.Standarddatenbank_41"), 1, "standard"); //$NON-NLS-1$ //$NON-NLS-2$
 				page.setPreferenceStore(store);
-				dialog
-								.getPreferenceManager()
-								.addTo(
-												Messages.getString("MainWindow.Datenbankverbindung_42"), new PreferenceNode(Messages.getString("MainWindow.Standarddatenbank_43"), page)); //$NON-NLS-1$ //$NON-NLS-2$
+				dialog.getPreferenceManager()
+								.addTo(Messages.getString("MainWindow.Datenbankverbindung_42"), new PreferenceNode(Messages.getString("MainWindow.Standarddatenbank_43"), page)); //$NON-NLS-1$ //$NON-NLS-2$
 				page = new ConnectionFieldEditorPreferencePage(
 								Messages.getString("MainWindow.Temporaere_Datenbank_44"), 1, "temporary"); //$NON-NLS-1$ //$NON-NLS-2$
 				page.setPreferenceStore(store);
-				dialog
-								.getPreferenceManager()
-								.addTo(
-												Messages.getString("MainWindow.Datenbankverbindung_45"), new PreferenceNode(Messages.getString("MainWindow.Temporaere_Datenbank_46"), page)); //$NON-NLS-1$ //$NON-NLS-2$
+				dialog.getPreferenceManager()
+								.addTo(Messages.getString("MainWindow.Datenbankverbindung_45"), new PreferenceNode(Messages.getString("MainWindow.Temporaere_Datenbank_46"), page)); //$NON-NLS-1$ //$NON-NLS-2$
 				page = new ConnectionFieldEditorPreferencePage(
 								Messages.getString("MainWindow.Schulungsdatenbank_47"), 1, "tutorial"); //$NON-NLS-1$ //$NON-NLS-2$
 				page.setPreferenceStore(store);
-				dialog
-								.getPreferenceManager()
-								.addTo(
-												Messages.getString("MainWindow.Datenbankverbindung_48"), new PreferenceNode(Messages.getString("MainWindow.Schulungsdatenbank_49"), page)); //$NON-NLS-1$ //$NON-NLS-2$
+				dialog.getPreferenceManager()
+								.addTo(Messages.getString("MainWindow.Datenbankverbindung_48"), new PreferenceNode(Messages.getString("MainWindow.Schulungsdatenbank_49"), page)); //$NON-NLS-1$ //$NON-NLS-2$
 				/*
 				 * Auswahl Kassenstation
 				 */
@@ -880,10 +876,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 						p.load(new FileInputStream(files[i]));
 						page = new Code128DataFieldEditorPreferencePage(p.getProperty("name"), 1, files[i]); //$NON-NLS-1$
 						page.setPreferenceStore(store);
-						dialog
-										.getPreferenceManager()
-										.addTo(
-														Messages.getString("MainWindow.Code_128"), new PreferenceNode(Messages.getString("MainWindow.Positionen_60"), page)); //$NON-NLS-1$ //$NON-NLS-2$
+						dialog.getPreferenceManager()
+										.addTo(Messages.getString("MainWindow.Code_128"), new PreferenceNode(Messages.getString("MainWindow.Positionen_60"), page)); //$NON-NLS-1$ //$NON-NLS-2$
 						// galileoPage.addPropertyChangeListener(page);
 					}
 					catch (IOException io)
@@ -921,31 +915,23 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 				
 				page = new SummaryFieldEditorPreferencePage(Messages.getString("MainWindow.Summenanzeige_3"), 1); //$NON-NLS-1$
 				page.setPreferenceStore(store);
-				dialog
-								.getPreferenceManager()
-								.addTo(
-												Messages.getString("MainWindow.Erscheinungsbild_67"), new PreferenceNode(Messages.getString("MainWindow.Summenanzeige_4"), page)); //$NON-NLS-1$ //$NON-NLS-2$
+				dialog.getPreferenceManager()
+								.addTo(Messages.getString("MainWindow.Erscheinungsbild_67"), new PreferenceNode(Messages.getString("MainWindow.Summenanzeige_4"), page)); //$NON-NLS-1$ //$NON-NLS-2$
 				
 				page = new TabFieldEditorPreferencePage(Messages.getString("MainWindow.Registeranzeige_5"), 1); //$NON-NLS-1$
 				page.setPreferenceStore(store);
-				dialog
-								.getPreferenceManager()
-								.addTo(
-												Messages.getString("MainWindow.Erscheinungsbild_67"), new PreferenceNode(Messages.getString("MainWindow.Registeranzeige_6"), page)); //$NON-NLS-1$ //$NON-NLS-2$
+				dialog.getPreferenceManager()
+								.addTo(Messages.getString("MainWindow.Erscheinungsbild_67"), new PreferenceNode(Messages.getString("MainWindow.Registeranzeige_6"), page)); //$NON-NLS-1$ //$NON-NLS-2$
 				
 				page = new DetailBlockFieldEditorPreferencePage(Messages.getString("MainWindow.Detailanzeige_7"), 1); //$NON-NLS-1$
 				page.setPreferenceStore(store);
-				dialog
-								.getPreferenceManager()
-								.addTo(
-												Messages.getString("MainWindow.Erscheinungsbild_67"), new PreferenceNode(Messages.getString("MainWindow.Detailanzeige_8"), page)); //$NON-NLS-1$ //$NON-NLS-2$
+				dialog.getPreferenceManager()
+								.addTo(Messages.getString("MainWindow.Erscheinungsbild_67"), new PreferenceNode(Messages.getString("MainWindow.Detailanzeige_8"), page)); //$NON-NLS-1$ //$NON-NLS-2$
 				
 				page = new DisplayFieldEditorPreferencePage(Messages.getString("MainWindow.Displayanzeige_9"), 1); //$NON-NLS-1$
 				page.setPreferenceStore(store);
-				dialog
-								.getPreferenceManager()
-								.addTo(
-												Messages.getString("MainWindow.Erscheinungsbild_67"), new PreferenceNode(Messages.getString("MainWindow.Displayanzeige_10"), page)); //$NON-NLS-1$ //$NON-NLS-2$
+				dialog.getPreferenceManager()
+								.addTo(Messages.getString("MainWindow.Erscheinungsbild_67"), new PreferenceNode(Messages.getString("MainWindow.Displayanzeige_10"), page)); //$NON-NLS-1$ //$NON-NLS-2$
 				/*
 				 * Peripherie
 				 */
@@ -1003,8 +989,8 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		StructuredSelection sel = (StructuredSelection) this.productGroupTableSash.getViewer().getSelection();
 		if (!sel.isEmpty() && sel.size() == 1)
 		{
-			dialog = new WizardDialog(this.getShell(), new ProductGroupChangeWizard((ProductGroup) sel
-							.getFirstElement()));
+			dialog = new WizardDialog(this.getShell(), new ProductGroupChangeWizard(
+							(ProductGroup) sel.getFirstElement()));
 		}
 		else
 		{
@@ -1022,17 +1008,15 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{
 			this.productGroupTableSash.initializeContent();
 			this.keyTreeSash.initializeContent();
-			MessageDialog
-							.openInformation(
-											this.getShell(),
-											Messages.getString("MainWindow.Best_u00E4tigung_11"), Messages.getString("MainWindow.Die_Warengruppen_wurden_erfolgreich__u00FCbertragen._12")); //$NON-NLS-1$ //$NON-NLS-2$
+			MessageDialog.openInformation(
+							this.getShell(),
+							Messages.getString("MainWindow.Best_u00E4tigung_11"), Messages.getString("MainWindow.Die_Warengruppen_wurden_erfolgreich__u00FCbertragen._12")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		else
 		{
-			MessageDialog
-							.openError(
-											this.getShell(),
-											Messages.getString("MainWindow.Fehlermeldung_13"), Messages.getString("MainWindow.Die_Warengruppen_konnten_nicht_ordnungsgem_u00E4ss__u00FCbertragen_werden._14")); //$NON-NLS-1$ //$NON-NLS-2$
+			MessageDialog.openError(
+							this.getShell(),
+							Messages.getString("MainWindow.Fehlermeldung_13"), Messages.getString("MainWindow.Die_Warengruppen_konnten_nicht_ordnungsgem_u00E4ss__u00FCbertragen_werden._14")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 	
@@ -1042,27 +1026,21 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{
 			this.productGroupTableSash.initializeContent();
 			this.keyTreeSash.initializeContent();
-			MessageDialog
-							.openInformation(
-											this.getShell(),
-											Messages.getString("MainWindow.Best_u00E4tigung_11"), Messages.getString("MainWindow.Die_Warengruppen_wurden_erfolgreich__u00FCbertragen._12")); //$NON-NLS-1$ //$NON-NLS-2$
+			MessageDialog.openInformation(
+							this.getShell(),
+							Messages.getString("MainWindow.Best_u00E4tigung_11"), Messages.getString("MainWindow.Die_Warengruppen_wurden_erfolgreich__u00FCbertragen._12")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		else
 		{
-			MessageDialog
-							.openError(
-											this.getShell(),
-											Messages.getString("MainWindow.Fehlermeldung_13"), Messages.getString("MainWindow.Die_Warengruppen_konnten_nicht_ordnungsgem_u00E4ss__u00FCbertragen_werden._14")); //$NON-NLS-1$ //$NON-NLS-2$
+			MessageDialog.openError(
+							this.getShell(),
+							Messages.getString("MainWindow.Fehlermeldung_13"), Messages.getString("MainWindow.Die_Warengruppen_konnten_nicht_ordnungsgem_u00E4ss__u00FCbertragen_werden._14")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 	
 	private void updateGalileo()
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri")
-							.info("Dialog für Galileo-Aktualisierung wird instantiiert.");
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Dialog für Galileo-Aktualisierung wird instantiiert.");
 		UpdateGalileoDialog updateGalileoDialog = new UpdateGalileoDialog(this.getShell());
 		updateGalileoDialog.open();
 	}
@@ -1116,22 +1094,20 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 	{
 		this.properties.setProperty("window.width", new Integer(this.getShell().getSize().x).toString());
 		this.properties.setProperty("window.height", new Integer(this.getShell().getSize().y).toString());
-		this.properties.setProperty("productgroup.left", new Integer(this.productGroupTableSash.getWeights()[0])
-						.toString());
-		this.properties.setProperty("productgroup.right", new Integer(this.productGroupTableSash.getWeights()[1])
-						.toString());
-		this.properties.setProperty("paymenttype.left", new Integer(this.paymentTypeTreeSash.getWeights()[0])
-						.toString());
-		this.properties.setProperty("paymenttype.right", new Integer(this.paymentTypeTreeSash.getWeights()[1])
-						.toString());
+		this.properties.setProperty("productgroup.left",
+						new Integer(this.productGroupTableSash.getWeights()[0]).toString());
+		this.properties.setProperty("productgroup.right",
+						new Integer(this.productGroupTableSash.getWeights()[1]).toString());
+		this.properties.setProperty("paymenttype.left",
+						new Integer(this.paymentTypeTreeSash.getWeights()[0]).toString());
+		this.properties.setProperty("paymenttype.right",
+						new Integer(this.paymentTypeTreeSash.getWeights()[1]).toString());
 		this.properties.setProperty("tax.left", new Integer(this.taxTreeSash.getWeights()[0]).toString());
 		this.properties.setProperty("tax.right", new Integer(this.taxTreeSash.getWeights()[1]).toString());
 		this.properties.setProperty("option.left", new Integer(this.optionTableSash.getWeights()[0]).toString());
 		this.properties.setProperty("option.right", new Integer(this.optionTableSash.getWeights()[1]).toString());
 		this.properties.setProperty("salespoint.left", new Integer(this.salespointTreeSash.getWeights()[0]).toString());
-		this.properties
-						.setProperty("salespoint.right", new Integer(this.salespointTreeSash.getWeights()[1])
-										.toString());
+		this.properties.setProperty("salespoint.right", new Integer(this.salespointTreeSash.getWeights()[1]).toString());
 		this.properties.setProperty("coin.left", new Integer(this.coinTreeSash.getWeights()[0]).toString());
 		this.properties.setProperty("coin.right", new Integer(this.coinTreeSash.getWeights()[1]).toString());
 		this.properties.setProperty("currency.left", new Integer(this.currencyTableSash.getWeights()[0]).toString());
@@ -1141,9 +1117,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		this.properties.setProperty("key.left", new Integer(this.keyTreeSash.getWeights()[0]).toString());
 		this.properties.setProperty("key.right", new Integer(this.keyTreeSash.getWeights()[1]).toString());
 		this.properties.setProperty("key.detail.left", new Integer(this.tabFieldEditorPage.getWeights()[0]).toString());
-		this.properties
-						.setProperty("key.detail.right", new Integer(this.tabFieldEditorPage.getWeights()[1])
-										.toString());
+		this.properties.setProperty("key.detail.right", new Integer(this.tabFieldEditorPage.getWeights()[1]).toString());
 		this.properties.setProperty("fixkey.left", new Integer(this.fixKeyTreeSash.getWeights()[0]).toString());
 		this.properties.setProperty("fixkey.right", new Integer(this.fixKeyTreeSash.getWeights()[1]).toString());
 		
@@ -1386,7 +1360,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 	 * 
 	 * <pre>
 	 * Composite composite = (Composite) super.createDialogArea(parent);
-	 * //add controls to composite as necessary
+	 * // add controls to composite as necessary
 	 * return composite;
 	 * </pre>
 	 * 
@@ -1618,7 +1592,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 	
 	public boolean close()
 	{
-		//		LogManager.getLogManager().getLogger("colibri").info(Messages.getString("MainWindow.Hauptfenster_schliessen..._16")); //$NON-NLS-1$ //$NON-NLS-2$
+		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("MainWindow.Hauptfenster_schliessen..._16")); //$NON-NLS-1$ //$NON-NLS-2$
 		TabItem[] items = this.mainFolder.getItems();
 		for (int i = 0; i < items.length; i++)
 		{
@@ -1629,8 +1603,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 				if (pages[j].getStore().needsSaving())
 				{
 					if (MessageDialog
-									.openQuestion(
-													this.getShell(),
+									.openQuestion(this.getShell(),
 													Messages.getString("MainWindow.Nicht_gespeicherte_Elemente_69"), Messages.getString("MainWindow.Sie_haben_noch_nicht_alle_vorgenommenen__Aenderungen_gespeichert._Wollen_Sie_die__Aenderungen_speichern__70"))) { //$NON-NLS-1$ //$NON-NLS-2$
 						this.mainFolder.setSelection(i);
 						this.setCurrentTabItem(items[i]);
@@ -1648,8 +1621,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 			{
 				messagePart.append("-> Der Pfad zum Datenverzeichnis von Galileo ist ungültig.\n");
 				if (!MessageDialog
-								.openQuestion(
-												this.getShell(),
+								.openQuestion(this.getShell(),
 												"Ungültiger Pfad", "Der Pfad zum Datenverzeichnis von Galileo ist ungültig. Wollen Sie den Administrator trotzdem verlassen?")) { //$NON-NLS-1$ //$NON-NLS-2$
 					return false;
 				}
@@ -1668,8 +1640,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 				// 10190
 				if (Config.getInstance().getGalileoUpdate() == 2)
 				{
-					messagePart
-									.append("-> Der COM-Server ist deaktiviert, die Warenbewirtschaftung ist aber aktiviert.\n");
+					messagePart.append("-> Der COM-Server ist deaktiviert, die Warenbewirtschaftung ist aber aktiviert.\n");
 				}
 				Code128.initialize();
 				Iterator iter = Code128.codes.values().iterator();
@@ -1681,8 +1652,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 				}
 				if (useGalileo)
 				{
-					messagePart
-									.append("-> Der COM-Server ist deaktiviert, der Code128 versucht aber auf die Titeldaten zuzugreifen.\n");
+					messagePart.append("-> Der COM-Server ist deaktiviert, der Code128 versucht aber auf die Titeldaten zuzugreifen.\n");
 				}
 			}
 			if (messagePart.length() > 0)
@@ -1702,11 +1672,9 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 	
 	public void updateTitle()
 	{
-		this
-						.getShell()
-						.setText(
-										MainWindow.TITLE
-														+ " - " + this.mainFolder.getSelection()[0].getText() + " - Benutzer: " + User.getCurrentUser().username); //$NON-NLS-1$
+		this.getShell()
+						.setText(MainWindow.TITLE
+										+ " - " + this.mainFolder.getSelection()[0].getText() + " - Benutzer: " + User.getCurrentUser().username); //$NON-NLS-1$
 	}
 	
 	public void updateButtons()
@@ -1811,11 +1779,11 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 	{
 		if (MainWindow.me == null)
 		{
-			//			LogManager.getLogManager().getLogger("colibri").log(Level.INFO, Messages.getString("MainWindow.Hauptfenster_wird_instantiiert..._73")); //$NON-NLS-1$ //$NON-NLS-2$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, Messages.getString("MainWindow.Hauptfenster_wird_instantiiert..._73")); //$NON-NLS-1$ //$NON-NLS-2$
 			MainWindow.me = new MainWindow(null);
 			MainWindow.me.create();
 			MainWindow.me.setBlockOnOpen(true);
-			//			LogManager.getLogManager().getLogger("colibri").log(Level.INFO, Messages.getString("MainWindow.Hauptfenster_wird_geoeffnet..._75")); //$NON-NLS-1$ //$NON-NLS-2$
+			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.INFO, Messages.getString("MainWindow.Hauptfenster_wird_geoeffnet..._75")); //$NON-NLS-1$ //$NON-NLS-2$
 			MainWindow.me.open();
 		}
 		return MainWindow.me;

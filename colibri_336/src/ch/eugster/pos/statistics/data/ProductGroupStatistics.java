@@ -139,12 +139,12 @@ public class ProductGroupStatistics extends Statistics
 	{
 		if (this.pgc.getType().equals(ProductGroupComposite.TYPE[1][2]))
 		{
-			Logger.getLogger("colibri").info("Entering ProductGroupStatistics.computeStockOrderComparison");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Entering ProductGroupStatistics.computeStockOrderComparison");
 			return this.computeStockOrderComparison(itr);
 		}
 		else
 		{
-			Logger.getLogger("colibri").info("Entering ProductGroupStatistics.computeProductGroups");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Entering ProductGroupStatistics.computeProductGroups");
 			return this.computeProductGroups(itr);
 		}
 	}
@@ -204,7 +204,7 @@ public class ProductGroupStatistics extends Statistics
 		while (itr.hasNext())
 		{
 			p++;
-			// Logger.getLogger("colibri").info("Rufe ProductGroupStatistics.convertResults");
+			// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Rufe ProductGroupStatistics.convertResults");
 			Object[] results = (Object[]) itr.next();
 			// Object[] results = convertResults((Object[])itr.next());
 			
@@ -216,16 +216,16 @@ public class ProductGroupStatistics extends Statistics
 				/*
 				 * Record initialisieren...
 				 */
-				// Logger.getLogger("colibri").info("SortMap initialisieren");
+				// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("SortMap initialisieren");
 				map = this.initRecord(results);
 			}
 			/*
 			 * Aus Datenbank übernommene Daten einlesen...
 			 */
-			// Logger.getLogger("colibri").info("Daten in SortMap abfüllen");
+			// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Daten in SortMap abfüllen");
 			map = this.putBasisData(results, map);
 			
-			// Logger.getLogger("colibri").info("SortMap in die Liste eintragen");
+			// Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("SortMap in die Liste eintragen");
 			records.put(key, map);
 		}
 		
@@ -242,7 +242,7 @@ public class ProductGroupStatistics extends Statistics
 		/*
 		 * Nun die Totale berechnen...
 		 */
-		Logger.getLogger("colibri").info("Totale berechnen");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Totale berechnen");
 		Iterator listIter = list.iterator();
 		while (listIter.hasNext())
 		{
@@ -258,7 +258,7 @@ public class ProductGroupStatistics extends Statistics
 		listIter = list.iterator();
 		while (listIter.hasNext())
 		{
-			Logger.getLogger("colibri").info("Statistik berechnen");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Statistik berechnen");
 			if (this.pgc.getType().equals(ProductGroupComposite.TYPE[1][0]))
 			{
 				this.computeStatistics(totals, (SortMap) listIter.next());
@@ -272,7 +272,7 @@ public class ProductGroupStatistics extends Statistics
 		Object[] array;
 		if (this.noEmptyLines)
 		{
-			Logger.getLogger("colibri").info("In ArrayList übertragen");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("In ArrayList übertragen");
 			ArrayList al = new ArrayList();
 			Iterator i = list.iterator();
 			while (i.hasNext())
@@ -289,7 +289,7 @@ public class ProductGroupStatistics extends Statistics
 			array = list.toArray(new Object[0]);
 		}
 		
-		Logger.getLogger("colibri").info("Daten sortieren");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Daten sortieren");
 		Arrays.sort(array);
 		
 		return new JRMapArrayDataSource(array);
@@ -428,64 +428,64 @@ public class ProductGroupStatistics extends Statistics
 	private void computeStatistics(Double[] totals, SortMap map)
 	{
 		Double zero = new Double(0d);
-		Logger.getLogger("colibri").info("l_quantity" + map.get("l_quantity").getClass().getName());
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("l_quantity" + map.get("l_quantity").getClass().getName());
 		Long qtyL = (Long) map.get("l_quantity"); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("l_amount");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("l_amount");
 		Double valueL = (Double) map.get("l_amount"); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("l_amount_prev_year");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("l_amount_prev_year");
 		Double valuePrevYearL = (Double) map.get("l_amount_prev_year"); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("l_change_percents");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("l_change_percents");
 		Double changePercentsL = valuePrevYearL.equals(zero) ? zero : new Double(NumberUtility.round(
 						valueL.doubleValue() / valuePrevYearL.doubleValue() - 1, .0001));
 		map.put("l_change_percents", changePercentsL); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("l_proportion_group");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("l_proportion_group");
 		Double portionTurnoverGroup = totals[0].equals(zero) ? zero : new Double(NumberUtility.round(
 						valueL.doubleValue() / totals[0].doubleValue(), .0001));
 		map.put("l_proportion_group", portionTurnoverGroup); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("l_proportion");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("l_proportion");
 		Double portionTurnover = totals[2].equals(zero) ? zero : new Double(NumberUtility.round(valueL.doubleValue()
 						/ totals[2].doubleValue(), .0001));
 		map.put("l_proportion", portionTurnover); //$NON-NLS-1$
 		
-		Logger.getLogger("colibri").info("b_quantity");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("b_quantity");
 		Long qtyB = (Long) map.get("b_quantity"); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("b_amount");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("b_amount");
 		Double valueB = (Double) map.get("b_amount"); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("b_amount_prev_year");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("b_amount_prev_year");
 		Double valuePrevYearB = (Double) map.get("b_amount_prev_year"); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("b_change_percents");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("b_change_percents");
 		Double changePercentsB = valuePrevYearB.equals(zero) ? zero : new Double(NumberUtility.round(
 						valueB.doubleValue() / valuePrevYearB.doubleValue() - 1, .0001));
 		map.put("b_change_percents", changePercentsB); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("b_proportion_group");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("b_proportion_group");
 		portionTurnoverGroup = totals[1].equals(zero) ? zero : new Double(NumberUtility.round(valueB.doubleValue()
 						/ totals[1].doubleValue(), .0001));
 		map.put("b_proportion_group", portionTurnoverGroup); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("b_proportion");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("b_proportion");
 		portionTurnover = totals[2].equals(zero) ? zero : new Double(NumberUtility.round(valueB.doubleValue()
 						/ totals[2].doubleValue(), .0001));
 		map.put("b_proportion", portionTurnover); //$NON-NLS-1$
 		
-		Logger.getLogger("colibri").info("t_amount");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("t_amount");
 		Double valueT = new Double(NumberUtility.round(valueL.doubleValue() + valueB.doubleValue(), .01));
 		map.put("t_amount", valueT); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("t_amount_prev_year");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("t_amount_prev_year");
 		Double valuePrevYearT = new Double(NumberUtility.round(
 						valuePrevYearL.doubleValue() + valuePrevYearB.doubleValue(), .01));
 		map.put("t_amount_prev_year", valuePrevYearT); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("t_change_percents");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("t_change_percents");
 		Double changePercentsT = valuePrevYearT.equals(zero) ? zero : new Double(NumberUtility.round(
 						valueT.doubleValue() / valuePrevYearT.doubleValue() - 1, .01));
 		map.put("t_change_percents", changePercentsT); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("t_proportion");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("t_proportion");
 		portionTurnover = totals[2].equals(zero) ? zero : new Double(NumberUtility.round(valueT.doubleValue()
 						/ totals[2].doubleValue(), .0001));
 		map.put("t_proportion", portionTurnover); //$NON-NLS-1$
 		
-		Logger.getLogger("colibri").info("t_quantity");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("t_quantity");
 		Long quantity = new Long(qtyL.longValue() + qtyB.longValue());
 		map.put("t_quantity", quantity); //$NON-NLS-1$
-		Logger.getLogger("colibri").info("section_per_item");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("section_per_item");
 		Double price = quantity.equals(zero) ? zero : new Double(NumberUtility.round(
 						valueT.doubleValue() / quantity.doubleValue(), .01d));
 		map.put("section_per_item", price); //$NON-NLS-1$

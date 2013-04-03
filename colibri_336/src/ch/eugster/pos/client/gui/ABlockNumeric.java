@@ -178,7 +178,7 @@ public class ABlockNumeric extends ABlock implements ActionListener, ReceiptChil
 	
 	public void keyPressed(KeyEvent e)
 	{
-		if ("0123456789.".indexOf(String.valueOf(e.getKeyChar())) > -1) { //$NON-NLS-1$
+		if ("E0123456789.".indexOf(String.valueOf(e.getKeyChar())) > -1) { //$NON-NLS-1$
 			this.calculateValue(String.valueOf(e.getKeyChar()), true);
 			return;
 		}
@@ -204,10 +204,8 @@ public class ABlockNumeric extends ABlock implements ActionListener, ReceiptChil
 		{
 			this.clearAll.doClick();
 		}
-		this
-						.fireModeChangeEvent(new ModeChangeEvent(ModeChangeEvent.KEY_NUMERIC_BLOCK, this
-										.valueIsInteger() ? ModeChangeEvent.VALUE_IS_INTEGER
-										: ModeChangeEvent.VALUE_IS_NOT_INTEGER));
+		this.fireModeChangeEvent(new ModeChangeEvent(ModeChangeEvent.KEY_NUMERIC_BLOCK,
+						this.valueIsInteger() ? ModeChangeEvent.VALUE_IS_INTEGER : ModeChangeEvent.VALUE_IS_NOT_INTEGER));
 		
 		this.initValue();
 	}
@@ -340,10 +338,8 @@ public class ABlockNumeric extends ABlock implements ActionListener, ReceiptChil
 			this.display.setText(this.comment + this.value);
 			((EnterAction) this.enter.getAction()).setState(this.context.getReceiptModel().getPaymentModel());
 		}
-		this
-						.fireModeChangeEvent(new ModeChangeEvent(ModeChangeEvent.KEY_NUMERIC_BLOCK, this
-										.valueIsInteger() ? ModeChangeEvent.VALUE_IS_INTEGER
-										: ModeChangeEvent.VALUE_IS_NOT_INTEGER));
+		this.fireModeChangeEvent(new ModeChangeEvent(ModeChangeEvent.KEY_NUMERIC_BLOCK,
+						this.valueIsInteger() ? ModeChangeEvent.VALUE_IS_INTEGER : ModeChangeEvent.VALUE_IS_NOT_INTEGER));
 	}
 	
 	public String moveValue()

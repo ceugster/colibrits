@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -63,11 +63,7 @@ public class UpdateGalileoDialog extends TitleAreaDialog implements IRunnableCon
 	
 	protected Control createDialogArea(Composite parent)
 	{
-		if (LogManager.getLogManager().getLogger("colibri") != null)
-		{
-			LogManager.getLogManager().getLogger("colibri").info(
-							"Dialog für Galileo-Aktualisierung wird initialisiert.");
-		}
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Dialog für Galileo-Aktualisierung wird initialisiert.");
 		this.setTitle("Galileo aktualisieren");
 		
 		Composite composite = (Composite) super.createDialogArea(parent);
@@ -197,10 +193,7 @@ public class UpdateGalileoDialog extends TitleAreaDialog implements IRunnableCon
 			
 			try
 			{
-				if (LogManager.getLogManager().getLogger("colibri") != null)
-				{
-					LogManager.getLogManager().getLogger("colibri").info("Taste 'Starten' gedrückt...");
-				}
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Taste 'Starten' gedrückt...");
 				this.runnable = new UpdateGalileoRunnableWithProgress(from, to, new UpdateGalileoProgressMonitor(this));
 				this.run(true, true, this.runnable);
 			}

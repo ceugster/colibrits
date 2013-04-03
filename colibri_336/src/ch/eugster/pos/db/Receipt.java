@@ -39,7 +39,7 @@ import ch.eugster.pos.util.Config;
 import ch.eugster.pos.util.NumberUtility;
 import ch.eugster.pos.util.XMLLoader;
 
-import com.ibm.bridge2java.ComException;
+import com4j.ComException;
 
 /**
  * @author administrator
@@ -115,6 +115,7 @@ public class Receipt extends Table
 		this.setCustomer();
 	}
 	
+	@Override
 	public void setId(Long id)
 	{
 		super.setId(id);
@@ -323,9 +324,9 @@ public class Receipt extends Table
 	{
 		double a = 0d;
 		Position[] p = (Position[]) this.positions.toArray(new Position[0]);
-		for (int i = 0; i < p.length; i++)
+		for (Position element : p)
 		{
-			a += p[i].getAmount();
+			a += element.getAmount();
 		}
 		return NumberUtility.round(a, ForeignCurrency.getDefaultCurrency().roundFactor);
 	}
@@ -339,15 +340,15 @@ public class Receipt extends Table
 	{
 		double amount = 0d;
 		Position[] p = (Position[]) this.positions.toArray(new Position[0]);
-		for (int i = 0; i < p.length; i++)
+		for (Position element : p)
 		{
-			if (p[i].getProductGroup().type == ProductGroup.TYPE_INPUT)
+			if (element.getProductGroup().type == ProductGroup.TYPE_INPUT)
 			{
-				amount += p[i].amountFC * p[i].getQuantity();
+				amount += element.amountFC * element.getQuantity();
 			}
-			else if (p[i].getProductGroup().type == ProductGroup.TYPE_WITHDRAW)
+			else if (element.getProductGroup().type == ProductGroup.TYPE_WITHDRAW)
 			{
-				amount += p[i].amountFC * p[i].getQuantity();
+				amount += element.amountFC * element.getQuantity();
 			}
 			else
 			{
@@ -898,6 +899,7 @@ public class Receipt extends Table
 		return this.payments.size();
 	}
 	
+	@Override
 	public boolean isRemovable()
 	{
 		return true;
@@ -924,20 +926,20 @@ public class Receipt extends Table
 		}
 		
 		Payment[] p = this.getPaymentsAsArray();
-		for (int i = 0; i < p.length; i++)
+		for (Payment element : p)
 		{
 			if (currency.length() == 0)
 			{
-				if (p[i].getQuotation() != 1d)
+				if (element.getQuotation() != 1d)
 				{
-					return p[i].getForeignCurrency();
+					return element.getForeignCurrency();
 				}
 			}
 			else
 			{
-				if (p[i].getForeignCurrency().code.equals(currency))
+				if (element.getForeignCurrency().code.equals(currency))
 				{
-					return p[i].getForeignCurrency();
+					return element.getForeignCurrency();
 				}
 			}
 		}
@@ -946,7 +948,7 @@ public class Receipt extends Table
 	
 	public DBResult store(boolean updateNumber, boolean updateTimestamp)
 	{
-		Logger.getLogger("colibri").info("Entered: Receipt.store()");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Entered: Receipt.store()");
 		this.setNumber(this.extractNumber(updateNumber));
 		
 		// 10205
@@ -1224,20 +1226,21 @@ public class Receipt extends Table
 			statusCriteria.addOrCriteria(reversedCriteria);
 		}
 		
-		Logger.getLogger("colibri").info("Statuskriterium als Kriterium in Abfrage einfügen...");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Statuskriterium als Kriterium in Abfrage einfügen...");
 		criteria.addAndCriteria(statusCriteria);
 		
-		Logger.getLogger("colibri").info("Abfrage wird aufgebaut...");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Abfrage wird aufgebaut...");
 		ReportQueryByCriteria query = new ReportQueryByCriteria(Receipt.class, fields, criteria);
 		
 		long items = 0;
-		Logger.getLogger("colibri").info("Ergebnismenge wird in der Datenbank abgefragt...");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Ergebnismenge wird in der Datenbank abgefragt...");
 		Iterator iter = Database.getCurrent().getBroker().getReportQueryIteratorByQuery(query);
 		if (iter != null && iter.hasNext())
 		{
-			Logger.getLogger("colibri").info("Das Resultat wird umgewandelt...");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Das Resultat wird umgewandelt...");
 			Object[] count = (Object[]) iter.next();
-			Logger.getLogger("colibri").info("Datentyp der Variablen ist " + count[0].getClass().getName());
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+							"Datentyp der Variablen ist " + count[0].getClass().getName());
 			// 10088
 			if (count[0] instanceof Long)
 			{
@@ -1249,7 +1252,8 @@ public class Receipt extends Table
 			}
 			// 10088
 		}
-		Logger.getLogger("colibri").info("Rückgabewert an aufrufende Methode zurückgeben und Methode verlassen...");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+						"Rückgabewert an aufrufende Methode zurückgeben und Methode verlassen...");
 		return items;
 	}
 	
@@ -1273,7 +1277,7 @@ public class Receipt extends Table
 			statusCriteria.addOrCriteria(reversedCriteria);
 		}
 		
-		Logger.getLogger("colibri").info("Statuskriterium als Kriterium in Abfrage einfügen...");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Statuskriterium als Kriterium in Abfrage einfügen...");
 		criteria.addAndCriteria(statusCriteria);
 		
 		QueryByCriteria query = new QueryByCriteria(Receipt.class, criteria);
@@ -1301,7 +1305,7 @@ public class Receipt extends Table
 			statusCriteria.addOrCriteria(reversedCriteria);
 		}
 		
-		Logger.getLogger("colibri").info("Statuskriterium als Kriterium in Abfrage einfügen...");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Statuskriterium als Kriterium in Abfrage einfügen...");
 		criteria.addAndCriteria(statusCriteria);
 		
 		QueryByCriteria query = new QueryByCriteria(Receipt.class, criteria);
@@ -1334,7 +1338,7 @@ public class Receipt extends Table
 			statusCriteria.addOrCriteria(reversedCriteria);
 		}
 		
-		Logger.getLogger("colibri").info("Statuskriterium als Kriterium in Abfrage einfügen...");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Statuskriterium als Kriterium in Abfrage einfügen...");
 		criteria.addAndCriteria(statusCriteria);
 		
 		QueryByCriteria query = new QueryByCriteria(Receipt.class, criteria);
@@ -1788,10 +1792,10 @@ public class Receipt extends Table
 				Criteria salespointCriteria = new Criteria();
 				salespointCriteria.addEqualTo("salespointId", salespoints[0].getId()); //$NON-NLS-1$
 				// for (int i = 1; i < salespoints.length; i++) // 10441
-				for (int i = 0; i < salespoints.length; i++) // 10441
+				for (Salespoint salespoint2 : salespoints)
 				{
 					Criteria orCriteria = new Criteria();
-					orCriteria.addEqualTo("salespointId", salespoints[i].getId()); //$NON-NLS-1$
+					orCriteria.addEqualTo("salespointId", salespoint2.getId()); //$NON-NLS-1$
 					salespointCriteria.addOrCriteria(orCriteria);
 				}
 				criteria.addAndCriteria(salespointCriteria);
@@ -2347,11 +2351,11 @@ public class Receipt extends Table
 		{
 			Receipt receipt = (Receipt) iter.next();
 			Position[] positions = receipt.getPositionsAsArray();
-			for (int i = 0; i < positions.length; i++)
+			for (Position position : positions)
 			{
-				if (positions[i].getProductGroup().type == ProductGroup.TYPE_INCOME)
+				if (position.getProductGroup().type == ProductGroup.TYPE_INCOME)
 				{
-					amount = amount + positions[i].getAmount();
+					amount = amount + position.getAmount();
 				}
 			}
 		}
@@ -2383,11 +2387,11 @@ public class Receipt extends Table
 		{
 			Receipt receipt = (Receipt) iter.next();
 			Position[] positions = receipt.getPositionsAsArray();
-			for (int i = 0; i < positions.length; i++)
+			for (Position position : positions)
 			{
-				if (positions[i].getProductGroup().type == ProductGroup.TYPE_INCOME)
+				if (position.getProductGroup().type == ProductGroup.TYPE_INCOME)
 				{
-					amount = amount + positions[i].getAmount();
+					amount = amount + position.getAmount();
 				}
 			}
 		}
@@ -2586,14 +2590,14 @@ public class Receipt extends Table
 		copy.setTransferred(true);
 		
 		Position[] positions = this.getPositionsAsArray();
-		for (int i = 0; i < positions.length; i++)
+		for (Position position : positions)
 		{
-			copy.addPosition(positions[i].clone(copy, cloneId));
+			copy.addPosition(position.clone(copy, cloneId));
 		}
 		Payment[] payments = this.getPaymentsAsArray();
-		for (int i = 0; i < payments.length; i++)
+		for (Payment payment : payments)
 		{
-			copy.addPayment(payments[i].clone(copy, cloneId));
+			copy.addPayment(payment.clone(copy, cloneId));
 		}
 		return copy;
 	}
@@ -2777,15 +2781,15 @@ public class Receipt extends Table
 	{
 		Element e = this.getJDOMRecordAttributes(setIds, true);
 		Position[] po = this.getPositionsAsArray();
-		for (int i = 0; i < po.length; i++)
+		for (Position element : po)
 		{
-			Element pe = po[i].getJDOMRecordAttributes(setIds, true);
+			Element pe = element.getJDOMRecordAttributes(setIds, true);
 			e.addContent(pe);
 		}
 		Payment[] pa = this.getPaymentsAsArray();
-		for (int i = 0; i < pa.length; i++)
+		for (Payment element : pa)
 		{
-			Element pe = pa[i].getJDOMRecordAttributes(setIds, true);
+			Element pe = element.getJDOMRecordAttributes(setIds, true);
 			e.addContent(pe);
 		}
 		return e;
@@ -2825,32 +2829,32 @@ public class Receipt extends Table
 	
 	public void bookGalileo(boolean ignoreIsBooked)
 	{
-		Logger.getLogger("colibri").info("Entered: Receipt.bookGalileo()");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Entered: Receipt.bookGalileo()");
 		boolean isOpen = false;
 		/*
 		 * Die Positionen, die aus Galileo geholt wurden werden in Galileo
 		 * verbucht. Wenn Galileo ohne Warenbewirtschaftung ist, geschieht hier
 		 * nichts...
 		 */
-		Logger.getLogger("colibri").info("Auf aktuelle Datenbank testen (muss Standard sein)...");
+		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Auf aktuelle Datenbank testen (muss Standard sein)...");
 		
 		if (Database.getCurrent().equals(Database.getStandard()))
 		{
-			Logger.getLogger("colibri").info("Prüfen, ob Galileo angeschlossen ist...");
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Prüfen, ob Galileo angeschlossen ist...");
 			
 			if (ProductServer.isUsed() && ProductServer.getInstance() != null)
 			{
-				Logger.getLogger("colibri").info("Galileo läuft...");
+				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Galileo läuft...");
 				
 				if (ProductServer.getInstance() instanceof GalileoServer)
 				{
 					if (ProductServer.getInstance().isActive())
 					{
-						Logger.getLogger("colibri").info("...und ist aktiv...");
+						Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("...und ist aktiv...");
 						
 						boolean galileoBooked = true;
 						Position[] positions = this.getPositionsAsArray();
-						Logger.getLogger("colibri").info("Positionen des Belegs extrahieren...");
+						Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Positionen des Belegs extrahieren...");
 						
 						try
 						{
@@ -2859,12 +2863,13 @@ public class Receipt extends Table
 							{
 								ProductServer.getInstance().open();
 							}
-							Logger.getLogger("colibri").info(
+							Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
 											"Verbindung zu Galileo öffnen und die Positionen verbuchen...");
 							
 							for (int i = 0; i < positions.length; i++)
 							{
-								Logger.getLogger("colibri").info("Prüfen, ob Position zu verbuchen ist...");
+								Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+												"Prüfen, ob Position zu verbuchen ist...");
 								
 								if (positions[i].galileoBook)
 								{
@@ -2889,17 +2894,19 @@ public class Receipt extends Table
 										// positions[i].galileoBooked = false;
 										// 10428
 										
-										Logger.getLogger("colibri").info("Start: Verbuchung Position in Galileo...");
+										Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+														"Start: Verbuchung Position in Galileo...");
 										
 										galileoBooked = ProductServer.getInstance().update(this.status, positions[i]);
 										
-										Logger.getLogger("colibri").info("Ende: Verbuchung Position in Galileo...");
+										Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
+														"Ende: Verbuchung Position in Galileo...");
 										
 										positions[i].galileoBooked = this.status == Receipt.RECEIPT_STATE_SERIALIZED ? galileoBooked
 														: false;
 										
 										this.setPosition(i, positions[i]);
-										Logger.getLogger("colibri").info(
+										Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(
 														"Verbuchung war "
 																		+ (positions[i].galileoBooked ? "" : "nicht ")
 																		+ "erfolgreich!");
