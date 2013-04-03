@@ -65,7 +65,7 @@ public class ReceiptPosition extends ReceiptSection
 		
 		Arrays.sort(p);
 		
-		Collection positions = new ArrayList();
+		Collection<Position> positions = new ArrayList<Position>();
 		for (Position element : p)
 		{
 			if (element.getQuantity() < 0)
@@ -82,7 +82,7 @@ public class ReceiptPosition extends ReceiptSection
 			printer.println("Rücknahmen");
 			printer.println("----------");
 			
-			Position[] r = (Position[]) positions.toArray(new Position[0]);
+			Position[] r = positions.toArray(new Position[0]);
 			for (Position element : r)
 			{
 				this.printPosition(printer, element);
@@ -160,9 +160,9 @@ public class ReceiptPosition extends ReceiptSection
 							{
 								values[i][j] = p.getProductGroup().galileoId;
 							}
-							else if (!p.productId.equals(""))
+							else if (!p.productNumber.equals(""))
 							{
-								values[i][j] = p.productId;
+								values[i][j] = p.productNumber;
 							}
 							else
 							{
