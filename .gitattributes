@@ -365,6 +365,8 @@ colibri_336/lib/aspectjrt.jar -text
 colibri_336/lib/boot.jar -text
 colibri_336/lib/bridge2java.jar -text
 colibri_336/lib/cdromsucheBridge.jar -text
+colibri_336/lib/com4j-x86.dll -text
+colibri_336/lib/com4j.jar -text
 colibri_336/lib/comm.jar -text
 colibri_336/lib/commons-beanutils-1.7.0.jar -text
 colibri_336/lib/commons-betwixt-0.8.jar -text
