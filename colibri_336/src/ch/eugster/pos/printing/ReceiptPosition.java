@@ -172,11 +172,12 @@ public class ReceiptPosition extends ReceiptSection
 					}
 					else if (columns[j].getValue().equals("position.productid")) { //$NON-NLS-1$
 						if (p.isPayedInvoice())
-							values[i][j] = "Rg." + p.getInvoiceNumber() + " bez.";
-						
-						else if (p.productId.length() > 0)
 						{
-							values[i][j] = p.productId;
+							values[i][j] = "Rg." + p.getInvoiceNumber() + " bez.";
+						}
+						else if (p.productNumber.length() > 0)
+						{
+							values[i][j] = p.productNumber;
 						}
 						else
 						{
