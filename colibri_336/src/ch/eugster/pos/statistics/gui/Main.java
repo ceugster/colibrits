@@ -97,6 +97,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 		this.addStatusLine();
 	}
 	
+	@Override
 	protected Control createContents(Composite parent)
 	{
 		this.getShell().setText("ColibriTS Auswertungen");
@@ -326,6 +327,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	 * 
 	 * @return the initial size of the shell
 	 */
+	@Override
 	protected Point getInitialSize()
 	{
 		// 10108
@@ -349,6 +351,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 	}
 	
 	// 10108
+	@Override
 	protected Point getInitialLocation(Point initialSize)
 	{
 		int displayWidth = Display.getCurrent().getClientArea().width;
@@ -957,6 +960,7 @@ public class Main extends ApplicationWindow implements Listener, ISelectionChang
 		return false;
 	}
 	
+	@Override
 	public boolean close()
 	{
 		if (org.eclipse.jface.dialogs.MessageDialog
