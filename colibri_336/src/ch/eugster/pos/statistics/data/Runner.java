@@ -39,6 +39,11 @@ public abstract class Runner
 		return salespoints;
 	}
 	
+	protected Salespoint[] getSelectedSalespoint()
+	{
+		return this.sc.getSelectedSalespoints();
+	}
+	
 	protected void defineDateRange()
 	{
 		this.from = this.drg.getFromDate();
@@ -53,33 +58,33 @@ public abstract class Runner
 	// return null;
 	// }
 	// }
-	//	
+	//
 	// protected void startMonitorUnknownLength(String text) {
 	// monitor = createMonitor();
 	// if (monitor != null) {
 	// monitor.beginTask(text, IProgressMonitor.UNKNOWN);
 	// }
 	// }
-	//	
+	//
 	// protected void startMonitor(String text, int length) {
 	// monitor = createMonitor();
 	// if (monitor != null) {
 	// monitor.beginTask(text, length);
 	// }
 	// }
-	//	
+	//
 	// protected void updateMonitor(int i) {
 	// if (monitor != null) {
 	// monitor.worked(i);
 	// }
 	// }
-	//	
+	//
 	// protected void monitorSubTask(String text) {
 	// if (monitor != null) {
 	// monitor.subTask(text);
 	// }
 	// }
-	//	
+	//
 	// protected void endMonitor() {
 	// if (monitor != null) {
 	// monitor.done();
@@ -100,16 +105,14 @@ public abstract class Runner
 			if (file.createNewFile())
 			{
 				this.writer = new FileWriter(file);
-				this
-								.writeLog(fileName
-												+ Messages.getString("Runner._vom__2") + new Date().toString() + System.getProperty("line.separator")); //$NON-NLS-1$ //$NON-NLS-2$
+				this.writeLog(fileName
+								+ Messages.getString("Runner._vom__2") + new Date().toString() + System.getProperty("line.separator")); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		catch (IOException e)
 		{
 			org.eclipse.jface.dialogs.MessageDialog
-							.openError(
-											Main.getInstance().getShell(),
+							.openError(Main.getInstance().getShell(),
 											Messages.getString("Runner.Protokoll_4"), Messages.getString("Runner.Das_Protokoll_f_u00FCr_die_Verarbeitung_der_Belege_konnte_nicht_initialisiert_werden._Der_Lauf_wird_beendet._5")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}

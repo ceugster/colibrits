@@ -46,6 +46,7 @@ import ch.eugster.pos.db.PaymentType;
 import ch.eugster.pos.db.Position;
 import ch.eugster.pos.db.ProductGroup;
 import ch.eugster.pos.db.Receipt;
+import ch.eugster.pos.db.Salespoint;
 import ch.eugster.pos.db.Tax;
 import ch.eugster.pos.statistics.gui.ColibriNewExportFileFilter;
 import ch.eugster.pos.statistics.gui.ColibriOldExportFileFilter;
@@ -90,7 +91,6 @@ public class ReceiptTransfer extends Transfer
 	{
 		if (this.receiptComposite.getTransferIndex() == 0)
 		{
-			monitor.beginTask("Datenimport wird durchgeführt...", IProgressMonitor.UNKNOWN);
 			this.filesRead = 0;
 			this.recordsRead = 0;
 			this.filesSkipped = 0;
@@ -119,9 +119,8 @@ public class ReceiptTransfer extends Transfer
 			File path = new File(this.receiptComposite.getExportPath());
 			if (path.exists() && path.isDirectory())
 			{
-				monitor.beginTask("Datenexport wird durchgeführt...", IProgressMonitor.UNKNOWN);
 				this.setupLogWriter(Messages.getString("ReceiptTransfer.Export_24")); //$NON-NLS-1$
-				long done = this.doExport();
+				long done = this.doExport(monitor);
 				this.closeLog();
 				org.eclipse.jface.dialogs.MessageDialog.openInformation(this.receiptComposite.getShell(),
 								"Export beendet", "Es wurden " + done + " Belege exportiert.");
@@ -132,7 +131,6 @@ public class ReceiptTransfer extends Transfer
 								"Ungültiger Exportpfad", "Der Exportpfad ist ungültig. Der Vorgang wird abgebrochen.");
 			}
 		}
-		monitor.done();
 		return;
 	}
 	
@@ -147,7 +145,7 @@ public class ReceiptTransfer extends Transfer
 		FileFilter oldFileFilter = new ColibriOldExportFileFilter();
 		FileFilter newFileFilter = new ColibriNewExportFileFilter();
 		
-		// boolean ok = false;
+		monitor.beginTask("Datenimport wird durchgeführt...", files.length);
 		monitor.worked(0);
 		for (int i = 0; i < files.length; i++)
 		{
@@ -167,10 +165,10 @@ public class ReceiptTransfer extends Transfer
 					this.saveFile(files[i]);
 				}
 			}
-			monitor.worked(100 / files.length * i);
+			monitor.worked(i);
 			this.writeLog(Messages.getString("ReceiptTransfer.Ende_Import_Datei__28") + files[i].getName()); //$NON-NLS-1$
 		}
-		
+		monitor.done();
 		return true;
 	}
 	
@@ -282,9 +280,9 @@ public class ReceiptTransfer extends Transfer
 		String[] receiptHeaders = String.valueOf(r).split(System.getProperty("line.separator")); //$NON-NLS-1$
 		this.writeLog(Messages.getString("ReceiptTransfer.Belegdatei___36") + parent.getName() + Messages.getString("ReceiptTransfer.__eingelesen___37") + receiptHeaders.length + Messages.getString("ReceiptTransfer._Datens_u00E4tze._38")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		Hashtable headers = new Hashtable();
-		for (int i = 0; i < receiptHeaders.length; i++)
+		for (String receiptHeader : receiptHeaders)
 		{
-			String header = receiptHeaders[i].replaceAll("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			String header = receiptHeader.replaceAll("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			String[] fields = header.split("\t"); //$NON-NLS-1$
 			if (fields.length != 21)
 			{
@@ -319,17 +317,17 @@ public class ReceiptTransfer extends Transfer
 			}
 		}
 		
-		for (int i = 0; i < details.length; i++)
+		for (Element detail : details)
 		{
-			Element header = (Element) headers.get(details[i].getAttributeValue("receipt-id")); //$NON-NLS-1$
+			Element header = (Element) headers.get(detail.getAttributeValue("receipt-id")); //$NON-NLS-1$
 			if (header == null)
 			{
 				this.writeLog(Messages.getString("ReceiptTransfer.Datenfehler__Positionsdatei___56") + child.getName() + Messages.getString("ReceiptTransfer.___Datensatz_ohne_g_u00FCltige_Referenz_zu_Belegdatensatz._Datenimport_wird__u00FCbersprungen._57")); //$NON-NLS-1$ //$NON-NLS-2$
 				this.filesSkipped++;
 				return false;
 			}
-			if (details[i].getName().equals("position") || details[i].getName().equals("payment")) { //$NON-NLS-1$ //$NON-NLS-2$
-				header.addContent(details[i]);
+			if (detail.getName().equals("position") || detail.getName().equals("payment")) { //$NON-NLS-1$ //$NON-NLS-2$
+				header.addContent(detail);
 			}
 			else
 			{
@@ -593,7 +591,7 @@ public class ReceiptTransfer extends Transfer
 		
 		PersistenceBroker broker = Database.getCurrent().getBroker();
 		broker.beginTransaction();
-		for (int i = 0; i < receipts.length; i++)
+		for (Receipt receipt : receipts)
 		{
 			/*
 			 * count wurde ergänzt mit der SalespointId, weil number die id der
@@ -602,9 +600,9 @@ public class ReceiptTransfer extends Transfer
 			 * 
 			 * 10439 weitere Ergänzung mit der Timestamp
 			 */
-			if (Receipt.count(receipts[i].timestamp, receipts[i].getSalespointId(), receipts[i].getNumber()) == 0)
+			if (Receipt.count(receipt.timestamp, receipt.getSalespointId(), receipt.getNumber()) == 0)
 			{
-				DBResult result = receipts[i].store(false);
+				DBResult result = receipt.store(false);
 				if (result.getErrorCode() == 0)
 				{
 					this.recordsRead++;
@@ -621,7 +619,7 @@ public class ReceiptTransfer extends Transfer
 			}
 			else
 			{
-				this.writeLog("Beleg mit der Nummer " + receipts[i].getNumber() + " ist bereits vorhanden."); //$NON-NLS-1$ //$NON-NLS-2$
+				this.writeLog("Beleg mit der Nummer " + receipt.getNumber() + " ist bereits vorhanden."); //$NON-NLS-1$ //$NON-NLS-2$
 				this.recordsSkipped++;
 				skipped++;
 			}
@@ -645,22 +643,29 @@ public class ReceiptTransfer extends Transfer
 		return p;
 	}
 	
-	public long doExport()
+	public long doExport(IProgressMonitor monitor)
 	{
 		long count = Receipt.countSettled(this.sc.getSelectedSalespoints(), this.drg.getFromDate(),
 						this.drg.getToDate(), true);
 		if (count > 0)
 		{
+			int i = 0;
+			int max = Long.valueOf(count).intValue();
 			Element root = this.prepareExport(count);
 			
 			Iterator iter = Receipt.selectSettled(this.sc.getSelectedSalespoints(), this.drg.getFromDate(),
 							this.drg.getToDate(), true);
+			monitor.beginTask("Datenexport wird durchgeführt...", max);
+			monitor.worked(0);
 			while (iter.hasNext())
 			{
 				this.updateReceipt((Receipt) iter.next(), root);
+				monitor.worked(++i / max);
 			}
-			
+			monitor.done();
+			monitor.beginTask("Datei wird gespeichert...", IProgressMonitor.UNKNOWN);
 			this.saveExport(root);
+			monitor.done();
 		}
 		return count;
 	}
@@ -668,8 +673,8 @@ public class ReceiptTransfer extends Transfer
 	private Element prepareExport(long count)
 	{
 		Element root = new Element("transfer"); //$NON-NLS-1$
-		root.setAttribute(
-						"salespoint", this.getSalespoints() == null ? "" : this.getSalespoints()[0].getId().toString()); //$NON-NLS-1$
+		Salespoint salespoint = this.getSelectedSalespoint()[0];
+		root.setAttribute("salespoint", salespoint.getId().toString()); //$NON-NLS-1$
 		root.setAttribute("date", new Long(new Date().getTime()).toString());
 		root.setAttribute("count", new Long(count).toString());
 		return root;
@@ -685,7 +690,11 @@ public class ReceiptTransfer extends Transfer
 	{
 		if (root instanceof Element)
 		{
-			String path = Config.getInstance().getSalespointExportPath();
+			String path = this.receiptComposite.getExportPath();
+			if (path.isEmpty())
+			{
+				path = Config.getInstance().getSalespointExportPath();
+			}
 			File dir = new File(path);
 			if (dir.exists() && dir.isDirectory())
 			{
@@ -717,9 +726,16 @@ public class ReceiptTransfer extends Transfer
 																	+ " konnte nicht gespeichert werden. Stellen Sie sicher, dass Sie über die notwendigen Berechtigungen zum Schreiben in das Dateisystem verfügen und dass eine Datei gleichen Namens nicht bereits vorhanden ist.");
 				}
 			}
+			else
+			{
+				org.eclipse.jface.dialogs.MessageDialog
+								.openInformation(this.receiptComposite.getShell(), "Fehler beim Schreiben der Datei",
+												"Die Exportdatei konnte nicht gespeichert werden. Das angegebene Zielverzeichnis ist ungültig.");
+			}
 		}
 	}
 	
+	@Override
 	protected String getLogfileName()
 	{
 		if (this.receiptComposite.getTransferIndex() == 0)
@@ -735,6 +751,7 @@ public class ReceiptTransfer extends Transfer
 	
 	public class RootFilterImpl extends XMLFilterImpl
 	{
+		@Override
 		public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException
 		{
 			if (localName.equals("transfer"))
