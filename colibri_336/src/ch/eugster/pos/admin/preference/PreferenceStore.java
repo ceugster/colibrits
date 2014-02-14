@@ -449,6 +449,7 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		
 		this.setDefault("salespoint.id", cfg.getSalespointId()); //$NON-NLS-1$
 		this.setDefault("salespoint.force-settlement", cfg.getSalespointForceSettlement()); //$NON-NLS-1$
+		this.setDefault("salespoint.force-stock-count", cfg.getSalespointForceStockCount()); //$NON-NLS-1$
 		this.setDefault("salespoint.export", cfg.getSalespointExport()); //$NON-NLS-1$
 		this.setDefault("salespoint.export.path", cfg.getSalespointExportPath()); //$NON-NLS-1$
 		
@@ -818,6 +819,8 @@ public class PreferenceStore implements IPersistentPreferenceStore
 		cfg.setSalespointId(this.getInt("salespoint.id")); //$NON-NLS-1$
 		cfg.getSalespoint().setAttribute(
 						"force-settlement", String.valueOf(this.getBoolean("salespoint.force-settlement"))); //$NON-NLS-1$ //$NON-NLS-2$
+		cfg.getSalespoint().setAttribute(
+						"force-stock-count", String.valueOf(this.getBoolean("salespoint.force-stock-count"))); //$NON-NLS-1$ //$NON-NLS-2$
 		cfg.getSalespoint().setAttribute("export", String.valueOf(this.getBoolean("salespoint.export"))); //$NON-NLS-1$ //$NON-NLS-2$
 		cfg.getSalespoint().setAttribute("path", this.getString("salespoint.export.path")); //$NON-NLS-1$ //$NON-NLS-2$
 		
