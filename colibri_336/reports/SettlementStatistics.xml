@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created using JasperAssistant (http://www.jasperassistant.com) -->
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="SettlementStatistics" language="java" pageWidth="595" pageHeight="842" columnWidth="519" leftMargin="38" rightMargin="38" topMargin="30" bottomMargin="30">
+	<parameter name="printTime" class="java.lang.String" isForPrompting="false">
+	</parameter>
+	<parameter name="salespoints" class="java.lang.String" isForPrompting="false">
+	</parameter>
+	<parameter name="dateRange" class="java.lang.String" isForPrompting="false">
+	</parameter>
+	<parameter name="settlements" class="java.lang.String">
+	</parameter>
+	<parameter name="receiptCount" class="java.lang.String">
+	</parameter>
+	<parameter name="header" class="java.lang.String" isForPrompting="false">
+	</parameter>
+	<field name="text" class="java.lang.String">
+	</field>
+	<field name="quantity" class="java.lang.Integer">
+	</field>
+	<field name="amount1" class="java.lang.Double">
+	</field>
+	<field name="amount2" class="java.lang.Double">
+	</field>
+	<field name="summaryKey" class="java.lang.String">
+	</field>
+	<field name="key" class="java.lang.String">
+	</field>
+	<variable name="quantity11" class="java.lang.Integer" resetType="Group" resetGroup="Summary" calculation="Sum">
+		<variableExpression><![CDATA[$F{quantity}]]></variableExpression>
+		<initialValueExpression><![CDATA[null]]></initialValueExpression>
+	</variable>
+	<variable name="amount11" class="java.lang.Double" resetType="Group" resetGroup="Summary" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount1}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0d)]]></initialValueExpression>
+	</variable>
+	<variable name="amount12" class="java.lang.Double" resetType="Group" resetGroup="Summary" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount2}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0d)]]></initialValueExpression>
+	</variable>
+	<variable name="quantity01" class="java.lang.Integer" resetType="Group" resetGroup="Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{quantity}]]></variableExpression>
+		<initialValueExpression><![CDATA[null]]></initialValueExpression>
+	</variable>
+	<variable name="amount01" class="java.lang.Double" resetType="Group" resetGroup="Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount1}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0d)]]></initialValueExpression>
+	</variable>
+	<variable name="amount02" class="java.lang.Double" resetType="Group" resetGroup="Group" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount2}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0d)]]></initialValueExpression>
+	</variable>
+	<variable name="summary" class="java.lang.Double" resetType="Group" resetGroup="Summary">
+		<variableExpression><![CDATA[$V{amount11}]]></variableExpression>
+	</variable>
+	<group name="Summary">
+		<groupExpression><![CDATA[$F{summaryKey}]]></groupExpression>
+		<groupFooter>
+		<band height="40">
+			<printWhenExpression><![CDATA[new Boolean($F{summaryKey}.equals("1") || $F{summaryKey}.equals("2"))]]></printWhenExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="0" y="21" width="264" height="19" backcolor="#c0c0c0"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{summaryKey}.equals("1") ? "Total Bewegungen" : 
+$F{summaryKey}.equals("2") ? "Total Zahlungen" : 
+$F{summaryKey}.equals("4") ? "Total Einlagen/Entnahmen" : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="424" y="21" width="96" height="19" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{summaryKey}.equals("1") ? $V{amount12} : 
+$F{summaryKey}.equals("2") ? $V{amount12} : 
+null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="264" y="21" width="64" height="19" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{quantity11}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="328" y="21" width="96" height="19" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{summaryKey}.equals("1") ? $V{amount11} : 
+$F{summaryKey}.equals("2") ? $V{amount11} : 
+$F{summaryKey}.equals("4") ? $V{amount11} : 
+null]]></textFieldExpression>
+			</textField>
+		</band>
+		</groupFooter>
+	</group>
+	<group name="Group">
+		<groupExpression><![CDATA[$F{key}]]></groupExpression>
+		<groupHeader>
+		<band height="40">
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="424" y="21" width="96" height="19" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{key}.equals("a") ? "Mwst-Betrag" : 
+$F{key}.equals("b") ? "Mwst-Betrag" : 
+$F{key}.equals("e") ? "Mwst-Betrag" : 
+$F{key}.equals("p") ? "Betrag" :
+$F{key}.equals("q") ? "Betrag" :
+$F{key}.equals("t") ? "Mwst-Betrag" : 
+$F{key}.equals("u") ? "Betrag FW" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="328" y="21" width="96" height="19" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{key}.equals("a") ? "Betrag inkl. MwSt." : 
+$F{key}.equals("b") ? "Betrag inkl. MwSt." : 
+$F{key}.equals("e") ? "Betrag inkl. MwSt." : 
+$F{key}.equals("p") ? "" :
+$F{key}.equals("q") ? "Betrag FW" :
+$F{key}.equals("t") ? "Betrag inkl. MwSt." : 
+$F{key}.equals("u") ? "Betrag" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="264" y="21" width="64" height="19" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{key}.equals("a") ? "Menge" : 
+ $F{key}.equals("b") ? "Menge" : 
+$F{key}.equals("e") ? "Menge" : 
+$F{key}.equals("p") ? "Menge" :
+$F{key}.equals("q") ? "Menge" :
+$F{key}.equals("t") ? "Menge" : 
+$F{key}.equals("u") ? "Menge" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="21" width="264" height="19" backcolor="#c0c0c0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{key}.equals("a") ? "Warengruppen (umsatzwirksam)" : 
+$F{key}.equals("b") ? "Sonstige Leistungen (umsatzneutral)" : 
+$F{key}.equals("e") ? "Ausgaben" : 
+$F{key}.equals("p") ? "Zahlungsarten" :
+$F{key}.equals("q") ? "Fremdwaehrungen" :
+$F{key}.equals("t") ? "Mehrwertsteuern" :
+$F{key}.equals("u") ? "Einlagen/Entnahmen" : 
+$F{key}.equals("z") ? "Stornierte Belege" : ""]]></textFieldExpression>
+			</textField>
+		</band>
+		</groupHeader>
+		<groupFooter>
+		<band height="19">
+			<printWhenExpression><![CDATA[new Boolean(!$V{quantity01}.equals(new Integer(0)))]]></printWhenExpression>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="264" y="0" width="64" height="19" isRemoveLineWhenBlank="true" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{quantity01}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="328" y="0" width="96" height="19" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{amount01}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="424" y="0" width="96" height="19" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{amount02}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="264" height="19" backcolor="#c0c0c0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{key}.equals("a") ? "Total Warengruppen" : 
+$F{key}.equals("b") ? "Total Sonstige Leistungen" : 
+$F{key}.equals("e") ? "Total Ausgaben" : 
+$F{key}.equals("p") ? "Total Zahlungsarten" :
+$F{key}.equals("q") ? "Total Fremdwaehrungen" :
+$F{key}.equals("t") ? "Total Mehrwertsteuern" :
+$F{key}.equals("u") ? "Total Einlagen/Entnahmen" : 
+$F{key}.equals("z") ? "Stornierte Belege" : ""]]></textFieldExpression>
+			</textField>
+		</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="119">
+			<staticText>
+				<reportElement x="0" y="47" width="228" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kassenabschlüsse]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="282" y="0" width="238" height="14"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{printTime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="68" width="500" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{salespoints}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="80" width="500" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dateRange}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="92" width="500" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{receiptCount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="104" width="500" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{settlements}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="1" width="283" height="47" isRemoveLineWhenBlank="true"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{header}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="13">
+			<textField>
+				<reportElement positionType="Float" x="0" y="2" width="264" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{text}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="264" y="2" width="64" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="328" y="2" width="96" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{amount1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="424" y="2" width="96" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{amount2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="28">
+			<textField>
+				<reportElement x="270" y="6" width="238" height="16"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
