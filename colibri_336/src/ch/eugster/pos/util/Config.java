@@ -237,18 +237,18 @@ public class Config
 				Element newChild = new Element("galileo");
 				
 				Element[] comServers = (Element[]) galileo.getChildren("com-server").toArray(new Element[0]);
-				for (int i = 0; i < comServers.length; i++)
+				for (Element comServer : comServers)
 				{
-					if (comServers[i].getAttributeValue("id").equals("galserve"))
+					if (comServer.getAttributeValue("id").equals("galserve"))
 					{
 						newChild.setAttribute("update", new Integer(galileo.getAttributeValue("update")).toString());
 						newChild.setAttribute("path", galileo.getAttributeValue("path"));
 						newChild.setAttribute("show-add-customer-message",
 										new Boolean(galileo.getAttributeValue("show-add-customer-message")).toString());
 						newChild.setAttribute("search-cd",
-										new Boolean(comServers[i].getAttributeValue("search-cd")).toString());
-						newChild.setAttribute("cd-path", comServers[i].getAttributeValue("cd-path"));
-						galileo.setAttribute("use", new Boolean(comServers[i].getAttributeValue("use")).toString());
+										new Boolean(comServer.getAttributeValue("search-cd")).toString());
+						newChild.setAttribute("cd-path", comServer.getAttributeValue("cd-path"));
+						galileo.setAttribute("use", new Boolean(comServer.getAttributeValue("use")).toString());
 					}
 				}
 				galileo.removeChildren("com-server");
@@ -501,6 +501,17 @@ public class Config
 				doSave = true;
 			}
 			// Build 309
+			// Build 381
+			if (new Integer(doc.getRootElement().getChild("version").getText()).intValue() < 381)
+			{
+				Element versionElement = doc.getRootElement().getChild("version");
+				versionElement.setText("381");
+				
+				doc.getRootElement().getChild("salespoint").setAttribute("force-stock-count", "false");
+				
+				doSave = true;
+			}
+			// Build 381
 		}
 		
 		Config.doc = doc;
@@ -690,6 +701,11 @@ public class Config
 	public boolean getSalespointForceSettlement()
 	{
 		return new Boolean(this.getSalespoint().getAttributeValue("force-settlement")).booleanValue(); //$NON-NLS-1$
+	}
+	
+	public boolean getSalespointForceStockCount()
+	{
+		return new Boolean(this.getSalespoint().getAttributeValue("force-stock-count")).booleanValue(); //$NON-NLS-1$
 	}
 	
 	public String getSalespointExportPath()
@@ -1110,10 +1126,10 @@ public class Config
 	public Element getCustomerDisplayTextElement(String id)
 	{
 		Element[] elements = (Element[]) this.getCustomerDisplay().getChildren("text").toArray(new Element[0]); //$NON-NLS-1$
-		for (int i = 0; i < elements.length; i++)
+		for (Element element : elements)
 		{
-			if (elements[i].getAttributeValue("id").equals(id)) { //$NON-NLS-1$
-				return elements[i];
+			if (element.getAttributeValue("id").equals(id)) { //$NON-NLS-1$
+				return element;
 			}
 		}
 		return null;

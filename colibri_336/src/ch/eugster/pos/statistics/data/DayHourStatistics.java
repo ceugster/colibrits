@@ -62,6 +62,7 @@ public class DayHourStatistics extends Statistics
 	 * 
 	 * @see ch.eugster.pos.statistics.data.Statistics#setOptions()
 	 */
+	@Override
 	protected void setOptions()
 	{
 		this.weekday = this.dhc.getDayOfWeek();
@@ -72,6 +73,7 @@ public class DayHourStatistics extends Statistics
 	 * 
 	 * @see ch.eugster.pos.statistics.data.Statistics#setReport()
 	 */
+	@Override
 	protected void setReport()
 	{
 		int i = this.pdg.getDestination();
@@ -101,6 +103,7 @@ public class DayHourStatistics extends Statistics
 		}
 	}
 	
+	@Override
 	protected boolean configureReport()
 	{
 		int columnCount = new Long(this.endHour - this.startHour + 1).intValue();
@@ -234,6 +237,7 @@ public class DayHourStatistics extends Statistics
 	 * 
 	 * @see ch.eugster.pos.statistics.data.Statistics#selectData()
 	 */
+	@Override
 	protected Iterator selectData()
 	{
 		Salespoint[] salespoints = null;
@@ -241,7 +245,7 @@ public class DayHourStatistics extends Statistics
 		{
 			salespoints = this.sc.getSelectedSalespoints();
 		}
-		return Receipt.selectDayHourStatisticsRange(salespoints, this.from, this.to, this.weekday);
+		return Receipt.selectDayHourStatisticsRangeFromPayment(salespoints, this.from, this.to, this.weekday);
 	}
 	
 	/*
@@ -251,6 +255,7 @@ public class DayHourStatistics extends Statistics
 	 * ch.eugster.pos.statistics.data.Statistics#computeOutput(java.util.Iterator
 	 * )
 	 */
+	@Override
 	protected JRDataSource computeOutput(Iterator iterator)
 	{
 		Hashtable records = new Hashtable();
@@ -303,6 +308,7 @@ public class DayHourStatistics extends Statistics
 	 * 
 	 * @see ch.eugster.pos.statistics.data.Statistics#getParameters()
 	 */
+	@Override
 	protected Hashtable getMoreParameters(Hashtable ht)
 	{
 		ht.put("weekday", this.getOptionTextDayOfWeek()); //$NON-NLS-1$

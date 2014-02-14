@@ -82,9 +82,11 @@ public class SettleDayAction extends Action implements ModeChangeRequest, IFailO
 		}
 		else
 		{
+			boolean forceSettlement = Config.getInstance().getSalespointForceSettlement();
+			boolean forceStockCount = Config.getInstance().getSalespointForceStockCount();
 			Coin[] countedCurrencies = this.printer.getCountedCurrencies();
 			if (this.printer.receiptsToSettle() && !Salespoint.getCurrent().variableStock
-							&& countedCurrencies.length == 0)
+							&& countedCurrencies.length == 0 && forceStockCount)
 			{
 				MessageDialog.showSimpleDialog(
 								Frame.getMainFrame(),

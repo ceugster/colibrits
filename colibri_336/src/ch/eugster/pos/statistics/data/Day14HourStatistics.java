@@ -56,11 +56,13 @@ public class Day14HourStatistics extends Statistics
 	 * 
 	 * @see ch.eugster.pos.statistics.data.Statistics#setOptions()
 	 */
+	@Override
 	protected void setOptions()
 	{
 		this.weekday = this.dhc.getDayOfWeek();
 	}
 	
+	@Override
 	protected void setReport()
 	{
 		String reportName = this.dhc.getReportName();
@@ -68,6 +70,7 @@ public class Day14HourStatistics extends Statistics
 		this.reportDesignName = reportName;
 	}
 	
+	@Override
 	protected boolean configureReport()
 	{
 		return false;
@@ -78,6 +81,7 @@ public class Day14HourStatistics extends Statistics
 	 * 
 	 * @see ch.eugster.pos.statistics.data.Statistics#selectData()
 	 */
+	@Override
 	protected Iterator selectData()
 	{
 		Salespoint[] salespoints = null;
@@ -85,7 +89,7 @@ public class Day14HourStatistics extends Statistics
 		{
 			salespoints = this.sc.getSelectedSalespoints();
 		}
-		return Receipt.selectDayHourStatisticsRange(salespoints, this.from, this.to, this.weekday);
+		return Receipt.selectDayHourStatisticsRangeFromPayment(salespoints, this.from, this.to, this.weekday);
 	}
 	
 	/*
@@ -95,6 +99,7 @@ public class Day14HourStatistics extends Statistics
 	 * ch.eugster.pos.statistics.data.Statistics#computeOutput(java.util.Iterator
 	 * )
 	 */
+	@Override
 	protected JRDataSource computeOutput(Iterator iterator)
 	{
 		Hashtable records = new Hashtable();
@@ -178,6 +183,7 @@ public class Day14HourStatistics extends Statistics
 	 * 
 	 * @see ch.eugster.pos.statistics.data.Statistics#getParameters()
 	 */
+	@Override
 	protected Hashtable getMoreParameters(Hashtable ht)
 	{
 		ht.put("weekday", this.getOptionTextDayOfWeek()); //$NON-NLS-1$
