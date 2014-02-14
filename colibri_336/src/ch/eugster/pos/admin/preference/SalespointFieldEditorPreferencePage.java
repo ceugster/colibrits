@@ -55,6 +55,7 @@ public class SalespointFieldEditorPreferencePage extends FieldEditorPreferencePa
 	 * org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors
 	 * ()
 	 */
+	@Override
 	protected void createFieldEditors()
 	{
 		Salespoint[] sp = Salespoint.selectAll(false);
@@ -73,10 +74,15 @@ public class SalespointFieldEditorPreferencePage extends FieldEditorPreferencePa
 		SpacerFieldEditor space = new SpacerFieldEditor(this.getFieldEditorParent());
 		this.addField(space);
 		
-		BooleanFieldEditor forceEditor = new BooleanFieldEditor(
+		BooleanFieldEditor forceSettlementEditor = new BooleanFieldEditor(
 						"salespoint.force-settlement", "Tagesabschluss erzwingen", this.getFieldEditorParent()); //$NON-NLS-1$ //$NON-NLS-2$
 		// forceEditor.setPropertyChangeListener(this);
-		this.addField(forceEditor);
+		this.addField(forceSettlementEditor);
+		
+		BooleanFieldEditor forceStockCountEditor = new BooleanFieldEditor(
+						"salespoint.force-stock-count", "Kassensturz erzwingen", this.getFieldEditorParent()); //$NON-NLS-1$ //$NON-NLS-2$
+		// forceEditor.setPropertyChangeListener(this);
+		this.addField(forceStockCountEditor);
 		
 		this.exportEditor = new BooleanFieldEditor(
 						"salespoint.export", Messages.getString("SalespointFieldEditorPreferencePage.Belege_beim_Kassenabschluss_zus_u00E4tzlich_exportieren_2"), this.getFieldEditorParent()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -90,6 +96,7 @@ public class SalespointFieldEditorPreferencePage extends FieldEditorPreferencePa
 		this.addField(this.pathEditor);
 	}
 	
+	@Override
 	public void propertyChange(PropertyChangeEvent e)
 	{
 		if (e.getSource().equals(this.exportEditor))
