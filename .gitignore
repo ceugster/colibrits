@@ -51,3 +51,7 @@ colibri_336/doc/Zusammenstellung[!!-~]Erweiterungen[!!-~]Kasse[!!-~]ColibriTS[!!
 colibri_336/doc/code128.txt
 colibri_336/doc/colibri_untertor_20041027.zip
 colibri_336/src/ch/eugster/pos/product/package.html
+colibri_336/win32/galileo/SQL
+colibri_336/win32/galileo/VFP
+colibri_336/win32/galileo/galserver1.dll
+colibri_336/win32/galileo/wgserver1.dll
