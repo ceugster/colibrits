@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!ELEMENT colibri (version,data-version,logging,database,salespoint,input-default,com-server,look-and-feel,layout,locale,currency,tab-panel,total-block,detail-block,detail-block-list,display,periphery,voucher,settlement,receipt)
+>
+
+<!ELEMENT version 				(#PCDATA)>
+
+<!ELEMENT data-version          (#PCDATA)>
+
+<!ELEMENT logging 				(#PCDATA)>
+<!ATTLIST logging
+			level				(ALL|INFO|WARNING|SEVERE|OFF) 	#REQUIRED
+			max					CDATA			#REQUIRED
+			trace				(true|false)	#REQUIRED
+			receipts			(true|false)	#REQUIRED
+			compress			(true|false)	#REQUIRED
+>
+
+<!ELEMENT database	 			(standard,temporary,tutorial)>
+<!ATTLIST database
+			default				(standard|
+								temporary|
+								tutorial)	 	#REQUIRED
+>
+
+<!ELEMENT standard 				(connection)>
+<!ATTLIST standard
+			name 				CDATA 			#REQUIRED
+			active				(true|false)	#REQUIRED
+>
+
+<!ELEMENT temporary				(connection)>
+<!ATTLIST temporary
+			name 				CDATA 			#REQUIRED
+			active				(true|false)	#REQUIRED
+>
+
+<!ELEMENT tutorial				(connection)>
+<!ATTLIST tutorial
+			name 				CDATA 			#REQUIRED
+			active				(true|false)	#REQUIRED
+>
+
+<!ELEMENT connection 			(#PCDATA)>
+<!ATTLIST connection
+			jcd-alias			CDATA 			#REQUIRED
+			default-connection	(false|true)	#REQUIRED
+			platform			(Db2|
+								Hsqldb|
+								Informix|
+								MsAccess|
+								MsSQLServer|
+								mySQL|
+								Oracle|
+								PostgreSQL|
+								Sybase|
+								SybaseASE|
+								SybaseASA|
+								Sapdb)			#REQUIRED
+			jdbc-level			CDATA			#REQUIRED
+			driver	 			CDATA 			#REQUIRED
+			protocol			CDATA 			#REQUIRED
+   			subprotocol			CDATA 			#REQUIRED
+   			host				CDATA			#REQUIRED
+   			port				CDATA			#REQUIRED
+   			database			CDATA			#REQUIRED
+   			options				CDATA			#REQUIRED
+   			username	 		CDATA 			#REQUIRED
+   			password	 		CDATA 			#REQUIRED
+			batch-mode			(false|true)	#REQUIRED
+   			use-auto-commit		(0|1|2)			#REQUIRED
+   			heartbeat           CDATA           #IMPLIED
+>
+
+<!ELEMENT salespoint	 		(#PCDATA)>
+<!ATTLIST salespoint
+			id					CDATA			#REQUIRED
+			force-settlement	(true|false)	#REQUIRED
+            force-stock-count   (true|false)    #REQUIRED
+			export				(true|false)	#REQUIRED
+			path				CDATA			#REQUIRED
+>
+
+<!ELEMENT input-default 		(#PCDATA)>
+<!ATTLIST input-default
+			quantity			CDATA			#REQUIRED
+			tax					CDATA			#REQUIRED
+			option				CDATA			#REQUIRED
+			max-price-range		CDATA			#REQUIRED
+			max-price-amount	CDATA			#REQUIRED
+			max-payment-range	CDATA			#REQUIRED
+			max-payment-amount	CDATA			#REQUIRED
+			clear-price		(true|false)	"false"
+			max-quantity-range	CDATA			#REQUIRED
+			max-quantity-amount CDATA			#REQUIRED
+>
+
+<!ELEMENT com-server					(galileo)>
+<!ATTLIST com-server
+			use						(false|true)						#REQUIRED
+			class				(ch.eugster.pos.product.GalileoServer
+								|ch.eugster.pos.product.OctoServer)		#REQUIRED
+			hold					(false|true)						#REQUIRED
+>
+
+<!ELEMENT galileo					(#PCDATA)>
+<!ATTLIST galileo
+			update						(0|1|2)			#REQUIRED
+			path						CDATA			#REQUIRED
+			show-add-customer-message	(true|false)	#REQUIRED
+			search-cd					(false|true)	#REQUIRED
+			cd-path						CDATA			#REQUIRED
+>
+
+<!ELEMENT fgcolor				(#PCDATA)>
+<!ATTLIST fgcolor
+			red					CDATA			#REQUIRED
+			green				CDATA			#REQUIRED
+			blue				CDATA			#REQUIRED
+>
+
+<!ELEMENT bgcolor				(#PCDATA)>
+<!ATTLIST bgcolor
+			red					CDATA			#REQUIRED
+			green				CDATA			#REQUIRED
+			blue				CDATA			#REQUIRED
+>
+
+<!ELEMENT font					(#PCDATA)>
+<!ATTLIST font
+			name				CDATA			#REQUIRED
+			size				CDATA			#REQUIRED
+			style				CDATA			#REQUIRED
+>
+
+<!ELEMENT look-and-feel			(#PCDATA)>
+<!ATTLIST look-and-feel
+			class				CDATA			#REQUIRED
+>
+
+
+<!ELEMENT layout				(#PCDATA)>
+<!ATTLIST layout
+			left				CDATA			#REQUIRED
+			total-block			(top|bottom)	#REQUIRED
+			top-left			(children-block|
+								 function-block|
+								 numeric-block|
+								 receipt-block)	#REQUIRED
+			top-right			(children-block|
+								 function-block|
+								 numeric-block|
+								 receipt-block)	#REQUIRED
+			bottom-left			(children-block|
+								 function-block|
+								 numeric-block|
+								 receipt-block)	#REQUIRED
+			bottom-right		(children-block|
+								 function-block|
+								 numeric-block|
+								 receipt-block)	#REQUIRED
+>
+
+<!ELEMENT locale				(#PCDATA)>
+<!ATTLIST locale
+			language			CDATA			#REQUIRED
+			country				CDATA			#REQUIRED
+>
+
+<!ELEMENT currency				(roundfactor)>
+<!ATTLIST currency
+			default				CDATA			#REQUIRED
+>
+
+
+<!ELEMENT roundfactor			(#PCDATA)>
+<!ATTLIST roundfactor
+			amount				CDATA			#REQUIRED
+			tax					CDATA			#REQUIRED
+>
+
+<!ELEMENT tab-panel				(font,fgcolor,bgcolor)>
+
+<!ELEMENT total-block			(font,fgcolor,bgcolor)>
+<!ATTLIST total-block
+			show-always			(true|false)	#REQUIRED
+			hold-values			(true|false)	#REQUIRED
+>
+
+<!ELEMENT detail-block			(font,fgcolor,bgcolor)>
+
+<!ELEMENT detail-block-list		(font,normal-color,back-color,expense-color)>
+
+<!ELEMENT normal-color			(fgcolor)>
+
+<!ELEMENT back-color			(fgcolor)>
+
+<!ELEMENT expense-color			(fgcolor)>
+
+<!ELEMENT display				(font,fgcolor,bgcolor)>
+
+<!ELEMENT periphery				(pos-printer,customer-display)>
+
+<!ELEMENT serial				(#PCDATA)>
+<!ATTLIST serial
+			baudrate			(600|
+								1200|
+								2400|
+								4800|
+								9600|
+								14400|
+								19200|
+								38400|
+								57600|
+								115200|
+								128000)			#REQUIRED
+			flowcontrolin		CDATA			#REQUIRED
+			flowcontrolout		CDATA			#REQUIRED
+			databits			CDATA			#REQUIRED
+			stopbits			CDATA			#REQUIRED
+			parity				CDATA			#REQUIRED
+>
+
+<!ELEMENT device				(serial)>
+<!ATTLIST device
+			port				(COM1|
+								 COM2|
+								 COM3|
+								 COM4|
+								 COM5)			#REQUIRED
+			alias				CDATA			#REQUIRED
+			charset				CDATA			#REQUIRED
+			charactertable		CDATA			#REQUIRED
+>
+			
+<!ELEMENT pos-printer			(device,cashdrawer*)>
+<!ATTLIST pos-printer
+			id					CDATA			#REQUIRED
+			use					(true|false)	#REQUIRED
+			name				CDATA			#REQUIRED
+			class				CDATA			#REQUIRED
+>
+
+<!ELEMENT cashdrawer			(#PCDATA)>
+<!ATTLIST cashdrawer
+			id					CDATA			#REQUIRED
+			use					(true|false)	#REQUIRED
+			pin					CDATA			#REQUIRED
+			pulseon				CDATA			#REQUIRED
+			pulseoff			CDATA			#REQUIRED
+			currency			CDATA			#REQUIRED
+>
+
+<!ELEMENT customer-display		(device,text*)>
+<!ATTLIST customer-display
+			id					CDATA			#REQUIRED
+			use					(true|false)	#REQUIRED
+			name				CDATA			#REQUIRED
+			class				CDATA			#REQUIRED
+			emulation			CDATA			#REQUIRED
+			line-count			CDATA			#REQUIRED
+			line-length			CDATA			#REQUIRED
+			timer				(true|false)	#REQUIRED
+			seconds				CDATA			#REQUIRED
+>
+
+<!ELEMENT text					(#PCDATA)>
+<!ATTLIST text
+			id					CDATA			#REQUIRED
+			scroll				(true|false)	#REQUIRED
+>
+
+<!ELEMENT voucher				(#PCDATA)>
+<!ATTLIST voucher
+			printlogo			(true|false)	#REQUIRED
+			logo				CDATA			#REQUIRED
+			logomode			CDATA			#REQUIRED
+>
+
+<!ELEMENT settlement			(#PCDATA)>
+<!ATTLIST settlement
+			print-payment-quantity	(true|false)	#REQUIRED
+			admit-test-settlement	(true|false)	#REQUIRED
+>
+
+<!ELEMENT receipt				(header,position,subtotal,payment,total,tax,footer,customer)>
+<!ATTLIST receipt
+			default-font		(0|1)			#REQUIRED
+			cut					(true|false)	#REQUIRED
+			cut-type			(full|partial)	#REQUIRED
+			lfbeforecut			CDATA			#REQUIRED
+			delimit				(true|false)	#REQUIRED
+			delimiter			CDATA			#REQUIRED
+			emphasized			(true|false)	#REQUIRED
+			automatic-print		(true|false)	#REQUIRED
+			take-back-print-twice (true|false)    #REQUIRED
+            take-back-print-signature (true|false)    #REQUIRED
+>
+
+<!ELEMENT header				(row+)>
+<!ATTLIST header
+			printlogo			(true|false)	#REQUIRED
+			logo				CDATA			#REQUIRED
+			logomode			CDATA			#REQUIRED
+			rows				CDATA			#REQUIRED
+			font				CDATA			#IMPLIED
+			printmode			CDATA			#IMPLIED
+			text				CDATA			#IMPLIED
+            number-length       CDATA           #IMPLIED
+>
+
+<!ELEMENT position				(row+)>
+<!ATTLIST position
+			rows				CDATA			#REQUIRED
+			print-second-line	(true|false)	#REQUIRED
+			font				(0|1)			#IMPLIED
+>
+
+<!ELEMENT subtotal				(row+)>
+<!ATTLIST subtotal
+			rows				CDATA			#REQUIRED
+			font				(0|1)			#IMPLIED
+>
+
+<!ELEMENT payment				(row+)>
+<!ATTLIST payment
+			rows				CDATA			#REQUIRED
+			font				(0|1)			#IMPLIED
+>
+
+<!ELEMENT total					(row+)>
+<!ATTLIST total
+			rows				CDATA			#REQUIRED
+			font				(0|1)			#IMPLIED
+>
+
+<!ELEMENT tax					(row+)>
+<!ATTLIST tax
+			rows				CDATA			#REQUIRED
+			font				(0|1)			#IMPLIED
+>
+
+<!ELEMENT footer				(row+)>
+<!ATTLIST footer
+			rows				CDATA			#REQUIRED
+			font				(0|1)			#IMPLIED
+			text				CDATA			#IMPLIED
+>
+
+<!ELEMENT customer				(row+)>
+<!ATTLIST customer
+			rows				CDATA			#REQUIRED
+			font				(0|1)			#IMPLIED
+			text				CDATA			#IMPLIED
+>
+
+<!ELEMENT row					(col+)>
+<!ATTLIST row
+			id					CDATA			#REQUIRED
+			cols				CDATA			#REQUIRED
+			font				(0|1)			#IMPLIED
+>
+
+<!ELEMENT col					(#PCDATA)>
+<!ATTLIST col
+			id					CDATA				#REQUIRED
+			width				CDATA				#REQUIRED
+			align				(left|center|right)	#REQUIRED
+			pattern				CDATA				#IMPLIED
+>
+
+
+

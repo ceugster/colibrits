@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!ELEMENT data (table*)>
+<!ATTLIST data
+>
+
+<!ELEMENT table (record*)>
+<!ATTLIST table
+	name		CDATA	#REQUIRED
+>
+
+
+<!ELEMENT record (field+)>
+<!ATTLIST record
+	id			CDATA	#REQUIRED
+	timestamp	CDATA 	#REQUIRED
+	deleted		CDATA 	#REQUIRED
+>
+
+<!ELEMENT field (#PCDATA)>
+<!ATTLIST field
+	name		CDATA	#REQUIRED
+	value		CDATA	#REQUIRED
+>
+

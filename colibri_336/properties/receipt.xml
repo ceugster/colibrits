@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<receipt default-font="0" cut="true" cut-type="partial" lfbeforecut="6" delimit="true" delimiter="-" emphasized="false" automatic-print="true" take-back-print-twice="true" take-back-print-signature="true">
+   <header printlogo="true" logo="1" logomode="0" rows="4" text="Buecher Doppler|Buch Shopping AG|Badstrasse 23|5400 Baden| |ÄÖÜ äöü @|Telefon 056 222 53 47|Fax 056 221 65 15" number-length="5">
+      <row id="0" cols="1">
+         <col id="0" width="0" align="left">receipt.header.text</col>
+      </row>
+      <row id="1" cols="1">
+         <col id="0" width="0" align="left" />
+      </row>
+      <row id="2" cols="1">
+         <col id="0" width="0" align="left">receipt.header.salespoint</col>
+      </row>
+      <row id="3" cols="3">
+         <col id="0" width="0" align="left">receipt.number</col>
+         <col id="1" width="10" align="left" pattern="dd.MM.yyyy">receipt.date</col>
+         <col id="2" width="10" align="right" pattern="HH:mm">receipt.time</col>
+      </row>
+   </header>
+   <position rows="4" print-second-line="true">
+      <row id="0" cols="6">
+         <!-- <col id="0" width="4" align="left">position.galileoid</col> -->
+         <col id="0" width="0" align="left">position.productid</col>
+         <col id="1" width="7" align="right" pattern="#,##0.00">position.price</col>
+         <col id="2" width="3" align="right" pattern="##0">position.quantity</col>
+         <col id="3" width="9" align="right" pattern="#,##0.00">position.amount</col>
+         <col id="4" width="2" align="right">position.tax</col>
+         <col id="5" width="1" align="left">position.optcode</col>
+      </row>
+      <row id="1" cols="2">
+         <col id="0" width="4" align="left" />
+         <col id="1" width="0" align="left">position.author</col>
+      </row>
+      <row id="2" cols="3">
+         <col id="0" width="4" align="left" />
+         <col id="1" width="14" align="left">Bestellnummer</col>
+         <col id="2" width="0" align="left">position.orderid</col>
+      </row>
+      <row id="3" cols="7">
+         <col id="0" width="4" align="left" />
+         <col id="1" width="7" align="left">Rabatt</col>
+         <col id="2" width="0" align="left" pattern="#,##0.00%">position.discount</col>
+         <col id="3" width="7" align="right" pattern="#,##0.00">position.discountamount</col>
+         <col id="4" width="3" align="left" />
+         <col id="5" width="9" align="right" pattern="#,##0.00">position.netamount</col>
+         <col id="6" width="3" align="left" />
+      </row>
+   </position>
+   <subtotal rows="3">
+      <row id="0" cols="3">
+         <col id="0" width="19" align="left">Subtotal</col>
+         <col id="1" width="20" align="right" pattern="#,##0.00">receipt.total</col>
+         <col id="2" width="3" align="left" />
+      </row>
+      <row id="1" cols="3">
+         <col id="0" width="19" align="left">Rabatt</col>
+         <col id="1" width="20" align="right" pattern="#,##0.00">receipt.discount</col>
+         <col id="2" width="3" align="left" />
+      </row>
+      <row id="2" cols="6">
+         <col id="0" width="6" align="left">Total</col>
+         <col id="1" width="3" align="right">receipt.fc</col>
+         <col id="2" width="13" align="right" pattern="#,##0.00">receipt.fc.amount</col>
+         <col id="3" width="4" align="right">receipt.dc</col>
+         <col id="4" width="13" align="right" pattern="#,##0.00">receipt.dc.amount</col>
+         <col id="5" width="3" align="left" />
+      </row>
+   </subtotal>
+   <payment rows="4">
+      <row id="0" cols="1">
+         <col id="0" width="42" align="left">Bezahlt</col>
+      </row>
+      <row id="1" cols="3">
+         <col id="0" width="0" align="left">payment.code</col>
+         <col id="1" width="9" align="right" pattern="#,##0.00">payment.amount</col>
+         <col id="2" width="1" align="left" />
+      </row>
+      <row id="2" cols="5">
+         <col id="0" width="0" align="left">payment.code</col>
+         <col id="1" width="11" align="right" pattern="#,##0.00">payment.foreigncurrencyamount</col>
+         <col id="2" width="8" align="right" pattern="##.####">payment.quotation</col>
+         <col id="3" width="9" align="right" pattern="#,##0.00">payment.amount</col>
+         <col id="4" width="1" align="left" />
+      </row>
+      <row id="3" cols="6">
+         <col id="0" width="0" align="left">back.money</col>
+         <col id="1" width="9" align="right" pattern="#,##0.00">payment.foreigncurrencyamount</col>
+         <col id="2" width="2" align="left" />
+         <col id="3" width="6" align="left">back.currency</col>
+         <col id="4" width="9" align="right" pattern="#,##0.00">payment.amount</col>
+         <col id="5" width="1" align="left" />
+      </row>
+   </payment>
+   <total rows="1">
+      <row id="0" cols="3">
+         <col id="0" width="0" align="left">Erhalten</col>
+         <col id="1" width="9" align="right" pattern="#,##0.00">receipt.payment</col>
+         <col id="2" width="1" align="left" />
+      </row>
+   </total>
+   <tax rows="1">
+      <row id="0" cols="5">
+         <col id="0" width="0" align="left">tax.name</col>
+         <col id="1" width="7" align="right" pattern="##.##%">tax.percentage</col>
+         <col id="2" width="4" align="right">von</col>
+         <col id="3" width="8" align="right" pattern="#,##0.00">tax.baseamount</col>
+         <col id="4" width="7" align="right" pattern="#,##0.00">tax.amount</col>
+         <col id="5" width="3" align="right">tax.code</col>
+      </row>
+   </tax>
+   <footer rows="2" text="MWST-Nr.: 252 607|Vielen Dank">
+      <row id="0" cols="1">
+         <col id="0" width="0" align="center">receipt.footer.text</col>
+      </row>
+      <row id="1" cols="1">
+         <col id="0" width="0" align="center" />
+      </row>
+   </footer>
+   <customer rows="2" text="Kundenkarte: &lt;Nummer&gt;|Kontostand: &lt;Konto&gt;">
+      <row id="0" cols="1">
+         <col id="0" width="0" align="left">receipt.customer.text</col>
+      </row>
+      <row id="1" cols="1">
+         <col id="0" width="0" align="left" />
+      </row>
+   </customer>
+</receipt>
+

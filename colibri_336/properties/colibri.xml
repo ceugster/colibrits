@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE colibri SYSTEM "colibri.dtd" [
+<!ENTITY receipt SYSTEM "receipt.xml">]>
+<colibri>
+   <version>381</version>
+   <data-version>34</data-version>
+   <logging level="ALL" max="0" trace="true" receipts="true" compress="false" />
+   <database default="standard">
+      <standard name="Colibri Datenbank (Hauptdatenbank)" active="true">
+         <connection jcd-alias="standard" default-connection="true" platform="mySQL" jdbc-level="3.0" driver="com.mysql.jdbc.Driver" protocol="jdbc" subprotocol="mysql" host="localhost" port="3306" database="colibri" options="" username="colibri" password="colibri" batch-mode="false" use-auto-commit="2" heartbeat="5" />
+      </standard>
+      <temporary name="Lokale Ersatzdatenbank (temporäre Datenbank)" active="true">
+         <connection jcd-alias="temporary" default-connection="false" platform="mySQL" jdbc-level="3.0" driver="com.mysql.jdbc.Driver" protocol="jdbc" subprotocol="mysql" host="localhost" port="3306" database="temp" options="" username="colibri" password="colibri" batch-mode="false" use-auto-commit="2" heartbeat="0" />
+      </temporary>
+      <tutorial name="Schulungsdatenbank" active="false">
+         <connection jcd-alias="tutorial" default-connection="false" platform="mySQL" jdbc-level="3.0" driver="com.mysql.jdbc.Driver" protocol="jdbc" subprotocol="mysql" host="localhost" port="3306" database="schulung" options="" username="colibri" password="colibri" batch-mode="false" use-auto-commit="2" heartbeat="0" />
+      </tutorial>
+   </database>
+   <salespoint id="1" force-settlement="true" export="false" path="U:\Projekte\ColibriTS\colibri_336\export" force-stock-count="true" />
+   <input-default quantity="1" tax="4" option="L" max-price-range="10000.0" max-price-amount="1000.0" max-payment-range="10000.0" max-payment-amount="1000.0" clear-price="false" max-quantity-range="1000" max-quantity-amount="1000" />
+   <com-server use="false" class="ch.eugster.pos.product.GalileoServer" hold="false">
+      <galileo update="0" path="\\Linda\Comeliv\Galileo\Data\galidata.dbc" show-add-customer-message="true" search-cd="false" cd-path="C:\Programme\bibwin\bibwin.ini" />
+   </com-server>
+   <look-and-feel class="javax.swing.plaf.metal.MetalLookAndFeel" />
+   <layout left="60" total-block="top" top-left="children-block" top-right="receipt-block" bottom-left="numeric-block" bottom-right="function-block" />
+   <locale language="de" country="CH" />
+   <currency default="CHF">
+      <roundfactor amount="0.05" tax="0.01" />
+   </currency>
+   <tab-panel>
+      <font name="" size="16.0" style="1" />
+      <fgcolor red="255" green="0" blue="0" />
+      <bgcolor red="0" green="255" blue="0" />
+   </tab-panel>
+   <total-block show-always="true" hold-values="true">
+      <font name="" size="20.0" style="1" />
+      <fgcolor red="0" green="255" blue="255" />
+      <bgcolor red="0" green="0" blue="0" />
+   </total-block>
+   <detail-block>
+      <font name="" size="16.0" style="1" />
+      <fgcolor red="0" green="0" blue="255" />
+      <bgcolor red="255" green="128" blue="255" />
+   </detail-block>
+   <detail-block-list>
+      <font name="" size="16.0" style="1" />
+      <normal-color>
+         <fgcolor red="0" green="0" blue="0" />
+      </normal-color>
+      <back-color>
+         <fgcolor red="255" green="0" blue="0" />
+      </back-color>
+      <expense-color>
+         <fgcolor red="0" green="128" blue="0" />
+      </expense-color>
+   </detail-block-list>
+   <display>
+      <font name="" size="20.0" style="2" />
+      <fgcolor red="0" green="0" blue="0" />
+      <bgcolor red="128" green="255" blue="255" />
+   </display>
+   <periphery>
+      <pos-printer id="1" use="true" name="Epson TMT88II" class="ch.eugster.pos.devices.printers.POSPrinterEpsonTMT88II">
+         <device port="COM2" alias="posprinter" charset="printer.cvt" charactertable="0">
+            <serial baudrate="9600" flowcontrolin="0" flowcontrolout="0" databits="8" stopbits="1" parity="0" />
+         </device>
+         <cashdrawer id="1" use="false" pin="48" pulseon="125" pulseoff="125" currency="CHF" />
+         <cashdrawer id="2" use="false" pin="49" pulseon="125" pulseoff="125" currency="EUR" />
+      </pos-printer>
+      <customer-display id="ch.eugster.pos.devices.displays.Cd7220Display" use="true" name="Display Cd7720" class="ch.eugster.pos.devices.displays.Cd7220Display" emulation="7" line-count="2" line-length="20" timer="true" seconds="5">
+         <device port="COM3" alias="customerdisplay" charset="display.cvt" charactertable="0">
+            <serial baudrate="9600" flowcontrolin="0" flowcontrolout="0" databits="8" stopbits="1" parity="0" />
+         </device>
+         <text id="welcome" scroll="false">Herzlich willkommen</text>
+         <text id="closed" scroll="false">Kasse nicht bedient</text>
+      </customer-display>
+   </periphery>
+   <voucher printlogo="true" logo="1" logomode="0" />
+   <settlement print-payment-quantity="true" admit-test-settlement="true" />
+   &receipt;
+</colibri>
+

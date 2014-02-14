@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!ELEMENT jdbc (platform*,jdbc-levels)
+>
+
+<!ELEMENT platform 				(#PCDATA)>
+<!ATTLIST platform
+			id					(Db2|
+								Hsqldb|
+								Informix|
+								MsAccess|
+								MsSQLServer|
+								mySQL|
+								Oracle|
+								PostgreSQL|
+								Sybase|
+								SybaseASE|
+								SybaseASA|
+								Sapdb)			#REQUIRED
+			jdbc-level			CDATA			#REQUIRED
+			driver	 			CDATA 			#REQUIRED
+			protocol			CDATA 			#REQUIRED
+   			subprotocol			CDATA 			#REQUIRED
+			port	 			CDATA 			#REQUIRED
+			options	 			CDATA 			#REQUIRED
+>
+
+<!ELEMENT jdbc-levels			(#PCDATA)>
+<!ATTLIST jdbc-levels
+			levels				CDATA			#REQUIRED
+>
