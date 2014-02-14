@@ -358,13 +358,10 @@ colibri_336/icons/states/red.gif -text
 colibri_336/icons/states/yellow.gif -text
 colibri_336/icons/tax2.jpg -text
 colibri_336/icons/title.gif -text
-colibri_336/lib/GalserveBridge.dll -text
 colibri_336/lib/access-bridge.jar -text
 colibri_336/lib/accessibility.properties -text
 colibri_336/lib/aspectjrt.jar -text
 colibri_336/lib/boot.jar -text
-colibri_336/lib/bridge2java.jar -text
-colibri_336/lib/cdromsucheBridge.jar -text
 colibri_336/lib/com4j-x86.dll -text
 colibri_336/lib/com4j.jar -text
 colibri_336/lib/comm.jar -text
@@ -381,7 +378,6 @@ colibri_336/lib/commons-pool-1.2.jar -text
 colibri_336/lib/commons-transaction-1.1.jar -text
 colibri_336/lib/db-ojb-1.0.4-tools.jar -text
 colibri_336/lib/db-ojb-1.0.4.jar -text
-colibri_336/lib/galserveBridge.jar -text
 colibri_336/lib/gface_0.9.1.jar -text
 colibri_336/lib/itext-1.3.1.jar -text
 colibri_336/lib/jaccess-1_4.jar -text
