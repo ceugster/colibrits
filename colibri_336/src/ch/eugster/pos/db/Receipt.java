@@ -1929,6 +1929,66 @@ public class Receipt extends Table
 		return Database.getCurrent().getBroker().getReportQueryIteratorByQuery(report);
 	}
 	
+	public static Iterator selectDayHourStatisticsRangeFromPayment(Salespoint[] salespoints, Date from, Date to,
+					int weekday)
+	{
+		String[] fields = new String[]
+		{ /* 0 */"receipt.salespoint.name", //$NON-NLS-1$
+						/* 1 */"hour(timestamp)", //$NON-NLS-1$
+						/* 2 */"weekday(timestamp)", //$NON-NLS-1$
+						/* 3 */"sum(amount)", //$NON-NLS-1$
+						/* 4 */"receiptId" //$NON-NLS-1$
+		};
+		int[] types = new int[]
+		{ Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.DOUBLE, Types.BIGINT };
+		
+		Criteria criteria = new Criteria();
+		
+		if (salespoints != null)
+		{
+			if (salespoints.length > 0)
+			{
+				Criteria salespointCriteria = new Criteria();
+				salespointCriteria.addEqualTo("receipt.salespointId", salespoints[0].getId()); //$NON-NLS-1$
+				for (int i = 1; i < salespoints.length; i++)
+				{
+					Criteria orCriteria = new Criteria();
+					orCriteria.addEqualTo("receipt.salespointId", salespoints[i].getId()); //$NON-NLS-1$
+					salespointCriteria.addOrCriteria(orCriteria);
+				}
+				criteria.addAndCriteria(salespointCriteria);
+			}
+		}
+		
+		Timestamp ts1 = new Timestamp(from.getTime());
+		Timestamp ts2 = new Timestamp(to.getTime());
+		criteria.addBetween("receipt.timestamp", ts1, ts2); //$NON-NLS-1$
+		
+		criteria.addNotNull("receipt.settlement"); //$NON-NLS-1$
+		criteria.addEqualTo("receipt.status", new Integer(Receipt.RECEIPT_STATE_SERIALIZED)); //$NON-NLS-1$
+		
+		criteria.addEqualTo("isInputOrWithdraw", false);
+		
+		ReportQueryByCriteria report = new ReportQueryByCriteria(Payment.class, fields, criteria);
+		report.setJdbcTypes(types);
+		
+		report.addOrderBy("receipt.salespoint.name", true);
+		report.addOrderBy(fields[2], true);
+		report.addOrderBy(fields[1], true);
+		
+		report.addGroupBy("receipt.salespoint.name");
+		report.addGroupBy(fields[2]);
+		report.addGroupBy(fields[1]);
+		
+		Iterator iterator = Database.getCurrent().getBroker().getReportQueryIteratorByQuery(report);
+		// while (iterator.hasNext())
+		// {
+		// Object object = iterator.next();
+		// System.out.println(object);
+		// }
+		return iterator;
+	}
+	
 	public static Iterator selectReversed(Salespoint[] salespoints, Date from, Date to)
 	{
 		String[] fields = new String[]

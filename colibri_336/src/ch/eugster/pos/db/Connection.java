@@ -101,7 +101,7 @@ public abstract class Connection
 		{
 			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(Messages.getString("Connection.Broker_f_u00FCr_38") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__41")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			String[] msg = e.getMessages();
-			for (int i = 0; i < msg.length; i++)
+			for (String element : msg)
 			{
 				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(msg[i]); //$NON-NLS-1$
 			}
@@ -113,7 +113,7 @@ public abstract class Connection
 			if (this.broker.isInTransaction()) this.broker.abortTransaction();
 			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(Messages.getString("Connection.Broker_f_u00FCr_44") + " " + getName() + " " + Messages.getString("Connection.konnte_nicht_initialisiert_werden__47")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			String[] msg = e.getMessages();
-			for (int i = 0; i < msg.length; i++)
+			for (String element : msg)
 			{
 				//				Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(msg[i]); //$NON-NLS-1$
 			}
@@ -1510,6 +1510,7 @@ public abstract class Connection
 			Timer timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask()
 			{
+				@Override
 				public void run()
 				{
 					Version.select(Connection.this);
@@ -1638,12 +1639,12 @@ public abstract class Connection
 				StringBuffer newClassName = new StringBuffer();
 				String oldClassName = rs.getString(columnName);
 				String[] parts = oldClassName.split("[.]");
-				for (int i = 0; i < parts.length; i++)
+				for (String part : parts)
 				{
-					if (parts[i].equals("client"))
+					if (part.equals("client"))
 					{
 					}
-					else if (parts[i].equals("event"))
+					else if (part.equals("event"))
 					{
 						if (newClassName.toString().equals(""))
 						{
@@ -1658,11 +1659,11 @@ public abstract class Connection
 					{
 						if (newClassName.toString().equals(""))
 						{
-							newClassName.append(parts[i]);
+							newClassName.append(part);
 						}
 						else
 						{
-							newClassName.append("." + parts[i]);
+							newClassName.append("." + part);
 						}
 					}
 				}
@@ -1691,9 +1692,9 @@ public abstract class Connection
 	{
 		InitializationListener[] l = (InitializationListener[]) Connection.initializationListeners
 						.toArray(new InitializationListener[0]);
-		for (int i = 0; i < l.length; i++)
+		for (InitializationListener element : l)
 		{
-			l[i].initialized(value, text);
+			element.initialized(value, text);
 		}
 	}
 	
@@ -1701,9 +1702,9 @@ public abstract class Connection
 	{
 		InitializationListener[] l = (InitializationListener[]) Connection.initializationListeners
 						.toArray(new InitializationListener[0]);
-		for (int i = 0; i < l.length; i++)
+		for (InitializationListener element : l)
 		{
-			l[i].initialized(text);
+			element.initialized(text);
 		}
 	}
 	

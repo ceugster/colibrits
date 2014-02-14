@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
@@ -38,8 +39,8 @@ public class Version
 	private static int major = 1;
 	private static int minor = 6;
 	private static int service = 0;
-	private static int build = 376;
-	private static String date = "30.04.2013";
+	private static int build = 382;
+	private static String date = "06.08.2013";
 	
 	private String connectionId = ""; //$NON-NLS-1$
 	private static int runningProgram = -1;
@@ -134,11 +135,11 @@ public class Version
 		}
 		catch (Error e)
 		{
-			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage());
 		}
 		catch (Exception e)
 		{
-			//			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage()); //$NON-NLS-1$
+			Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).severe(e.getLocalizedMessage());
 		}
 		// v = new Version();
 		Query query = QueryFactory.newQuery(Version.class, new Criteria());
