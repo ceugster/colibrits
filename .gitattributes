@@ -442,6 +442,9 @@ colibri_336/properties/sqlerrors -text
 colibri_336/properties/statistics.properties -text
 colibri_336/properties/transfer.dtd -text
 colibri_336/properties/translator.data -text
+colibri_336/readme/import.readme -text
+colibri_336/readme/readme.txt -text
+colibri_336/readme/wgtrans.readme -text
 colibri_336/reports/Day14HourStatistics.jasper -text
 colibri_336/reports/Day14HourStatistics.xml -text
 colibri_336/reports/Day24HourStatistics.jasper -text
