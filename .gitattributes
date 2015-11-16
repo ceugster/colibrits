@@ -1019,6 +1019,9 @@ colibri_336/win32/galileo/galserve.VBR -text
 colibri_336/win32/galileo/galserve.dll -text
 colibri_336/win32/galileo/galserve.ini -text
 colibri_336/win32/galileo/galserve.tlb -text
+colibri_336/win32/galileo/kundenserver.VBR -text
+colibri_336/win32/galileo/kundenserver.exe -text
+colibri_336/win32/galileo/kundenserver.tlb -text
 colibri_336/win32/galileo/msvcr70.dll -text
 colibri_336/win32/galileo/register.cmd -text
 colibri_336/win32/galileo/unregister.cmd -text
