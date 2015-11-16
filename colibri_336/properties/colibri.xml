@@ -19,7 +19,7 @@
    <salespoint id="1" force-settlement="true" export="false" path="U:\Projekte\ColibriTS\colibri_336\export" force-stock-count="true" />
    <input-default quantity="1" tax="4" option="L" max-price-range="10000.0" max-price-amount="1000.0" max-payment-range="10000.0" max-payment-amount="1000.0" clear-price="false" max-quantity-range="1000" max-quantity-amount="1000" />
    <com-server use="false" class="ch.eugster.pos.product.GalileoServer" hold="false">
-      <galileo update="0" path="\\Linda\Comeliv\Galileo\Data\galidata.dbc" show-add-customer-message="true" search-cd="false" cd-path="C:\Programme\bibwin\bibwin.ini" />
+      <galileo update="0" path="D:\Comeliv\Galileo\data\galidata.dbc" show-add-customer-message="true" search-cd="false" cd-path="C:\Programme\bibwin\bibwin.ini" />
    </com-server>
    <look-and-feel class="javax.swing.plaf.metal.MetalLookAndFeel" />
    <layout left="60" total-block="top" top-left="children-block" top-right="receipt-block" bottom-left="numeric-block" bottom-right="function-block" />
