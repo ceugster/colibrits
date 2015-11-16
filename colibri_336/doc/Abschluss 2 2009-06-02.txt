@@ -1,0 +1,92 @@
+Buecher Doppler
+Buch Shopping AG
+Badstrasse 23
+5400 Baden
+ 
+Telefon 056 222 53 47
+Fax 056 221 65 15
+
+Tagesabschluss
+
+Kasse 1
+
+1243956304796             02.06.2009 17:25
+Anzahl Kunden: 2
+------------------------------------------
+Warengruppen        M      Betrag     MwSt
+Geelhaar E         -1      -59.00     1.38
+------------------------------------------
+Total Warengru...  -1      -59.00     1.38
+------------------------------------------
+Sonstiges           M      Betrag     MwSt
+Rg. bez.            1       54.25     0.00
+------------------------------------------
+Total Sonstiges     1       54.25     0.00
+------------------------------------------
+Ausgaben            M      Betrag     MwSt
+Total Ausgaben      0        0.00     0.00
+------------------------------------------
+Total Bewegungen    0       -4.75     1.38
+------------------------------------------
+Zahlungsarten            FW  M          LW
+Rückgeld Guts...             0      -59.00
+BAR                          1       54.25
+------------------------------------------
+Total Zahlungsarten          1       -4.75
+------------------------------------------
+Zusammenfassung
+------------------------------------------
+Total Bewegungen             0       -4.75
+Total Zahlungen              1       -4.75
+------------------------------------------
+Mehrwertsteuer      M      Betrag     MwSt
+Umsatzsteuer 0.0    1       54.25     0.00
+Umsatzsteuer 2.4   -1      -59.00     1.38
+------------------------------------------
+Total Mehrwert...   0       -4.75     1.38
+------------------------------------------
+Rücknahmen
+------------------------------------------
+Geelhaar E                         -118.00
+------------------------------------------
+Rechnungen an der Kasse bezahlt
+------------------------------------------
+Rg. bez. 1000344 02.06.09           108.50
+------------------------------------------
+CHF Tagesabschluss CHF
+CHF Anfangsbestand (var.)         7'110.50
+CHF Kassenbestand SOLL            7'164.75
+CHF Kassenbestand IST             7'164.75
+CHF Bareinnahmen SOLL                54.25
+CHF Bareinnahmen IST              7'164.75
+CHF Differenz                         0.00
+
+CHF Kassensturz
+CHF CHF 200.00          35        7'000.00
+CHF CHF 100.00           1          100.00
+CHF CHF 20.00            3           60.00
+CHF CHF 2.00             2            4.00
+CHF CHF 0.50             1            0.50
+CHF CHF 0.20             1            0.20
+CHF CHF 0.05             1            0.05
+                          ----------------
+CHF Total Kassensturz             7'164.75
+                          ================
+------------------------------------------
+EUR Tagesabschluss EUR
+EUR Anfangsbestand (var.)           250.05
+EUR Kassenbestand SOLL              250.05
+EUR Kassenbestand IST               250.05
+EUR Bareinnahmen SOLL                 0.00
+EUR Bareinnahmen IST                250.05
+EUR Differenz                         0.00
+
+EUR Kassensturz
+EUR EUR 200.00           1          200.00
+EUR EUR 50.00            1           50.00
+EUR EUR 0.05             1            0.05
+                          ----------------
+EUR Total Kassensturz               250.05
+                          ================
+------------------------------------------
+

@@ -1,0 +1,11 @@
+- Ich habe Belege mit SchweizerBücherBon abgeschlossen, wenn ich aber den Tagesabschluss anschaue (im ColibriTS Auswertungen), sehe ich keine Positionen mit SchweizerBücherBon
+
+Also ich habe drei Belege getippt mit verschiedenen Zahlungsarten und auf dem Tagesabschluss (im ColibriTS Auswertungen) zeigt er mir nur eine an. (Vermutlich die mit dem grössten Betrag)
+
+
+- Wenn ich etwas für Fr.50.- tippe, dann steigt der Umsatz um Fr.2.-, tippe ich jedoch etwas für Fr.100.-, dann steigt er um Fr.5.-….Der „Umsatz Benutzer“ zeigt immer Fr. 0.- an.
+
+
+- Im ColibriTS Auswertungen. Wenn Du in der Belegliste die Belege anschaust, sind diese komisch sortiert (nicht nach Zeit und auch nicht nach Belegnummer)
+
+- Im ColibriTS Auswertungen. In der Belegliste hat es eine Spalte Buchung. Was ist diese Spalte und wieso ist bei vier verschiedenen Belegen die Buchungsnummer gleich? (Trotz verschiedener User)
