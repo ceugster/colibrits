@@ -12903,3 +12903,55 @@
 05.12.13 15:38:13 Koupon-Nr.: 6
 05.12.13 15:38:13 WG-Transaktion geschrieben
 05.12.13 15:38:14 Neue Kassen-WG angelegt: Taschenbuch Taschenbuch
+
+05.08.14 15:44:46 Do_Verkauf aufgerufen
+05.08.14 15:44:47 Übergebene Nummer: D:\Comeliv\Galileo\Data\galidata.dbc
+05.08.14 15:44:47 Errechnete Nummer: D:\Comeliv\Galileo\Data\galidata.dbc
+05.08.14 15:44:47 Verkaufte Menge: 0
+05.08.14 15:44:47 Verkaufs-Preis: 0.00
+05.08.14 15:44:47 Rabatt: 0.00
+05.08.14 15:44:47 MwSt.:
+05.08.14 15:44:47 Warengruppe:
+05.08.14 15:44:47 Kunden-Nr.: 0
+05.08.14 15:44:47 Koupon-Nr.: 
+05.08.14 15:44:47 Kein E-Book-Flag
+05.08.14 15:44:47 Lagerbuchung soll erfolgen
+
+05.08.14 15:47:02 Do_Verkauf aufgerufen
+05.08.14 15:47:02 Übergebene Nummer: D:\Comeliv\Galileo\Data\galidata.dbc
+05.08.14 15:47:02 Errechnete Nummer: D:\Comeliv\Galileo\Data\galidata.dbc
+05.08.14 15:47:02 Verkaufte Menge: 0
+05.08.14 15:47:02 Verkaufs-Preis: 0.00
+05.08.14 15:47:02 Rabatt: 0.00
+05.08.14 15:47:02 MwSt.:
+05.08.14 15:47:02 Warengruppe:
+05.08.14 15:47:02 Kunden-Nr.: 0
+05.08.14 15:47:02 Koupon-Nr.: 
+05.08.14 15:47:02 Kein E-Book-Flag
+05.08.14 15:47:02 Lagerbuchung soll erfolgen
+
+05.08.14 15:47:11 Do_Verkauf aufgerufen
+05.08.14 15:47:11 Übergebene Nummer: D:\Comeliv\Galileo\Data\galidata.dbc
+05.08.14 15:47:11 Errechnete Nummer: D:\Comeliv\Galileo\Data\galidata.dbc
+05.08.14 15:47:11 Verkaufte Menge: 0
+05.08.14 15:47:11 Verkaufs-Preis: 0.00
+05.08.14 15:47:11 Rabatt: 0.00
+05.08.14 15:47:11 MwSt.:
+05.08.14 15:47:11 Warengruppe:
+05.08.14 15:47:11 Kunden-Nr.: 0
+05.08.14 15:47:11 Koupon-Nr.: 
+05.08.14 15:47:11 Kein E-Book-Flag
+05.08.14 15:47:11 Lagerbuchung soll erfolgen
+
+05.08.14 15:50:18 Do_Verkauf aufgerufen
+05.08.14 15:50:18 Übergebene Nummer: D:\Comeliv\Galileo\Data\galidata.dbc
+05.08.14 15:50:18 Errechnete Nummer: D:\Comeliv\Galileo\Data\galidata.dbc
+05.08.14 15:50:18 Verkaufte Menge: 0
+05.08.14 15:50:18 Verkaufs-Preis: 0.00
+05.08.14 15:50:18 Rabatt: 0.00
+05.08.14 15:50:18 MwSt.:
+05.08.14 15:50:18 Warengruppe:
+05.08.14 15:50:18 Kunden-Nr.: 0
+05.08.14 15:50:18 Koupon-Nr.: 
+05.08.14 15:50:18 Kein E-Book-Flag
+05.08.14 15:50:18 Lagerbuchung soll erfolgen
