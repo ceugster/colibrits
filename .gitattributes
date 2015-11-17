@@ -1,4 +1,6 @@
 * text=auto !eol
+colibri_336/build.properties -text
+colibri_336/build.xml -text
 colibri_336/doc/2008-05-15_neuer_galserve.txt -text
 colibri_336/doc/Abschluss[!!-~]1[!!-~]2.6.2009.pdf -text
 colibri_336/doc/Abschluss[!!-~]1[!!-~]2009-06-02.txt -text
@@ -409,6 +411,8 @@ colibri_336/icons/states/red.gif -text
 colibri_336/icons/states/yellow.gif -text
 colibri_336/icons/tax2.jpg -text
 colibri_336/icons/title.gif -text
+colibri_336/javac.exe -text
+colibri_336/javax.comm.properties -text
 colibri_336/lib/access-bridge.jar -text
 colibri_336/lib/accessibility.properties -text
 colibri_336/lib/aspectjrt.jar -text
@@ -527,6 +531,7 @@ colibri_336/reports/SettlementStatistics2.jasper -text
 colibri_336/reports/SettlementStatistics2.xml -text
 colibri_336/reports/TaxAccounting.jasper -text
 colibri_336/reports/TaxAccounting.xml -text
+colibri_336/spy.properties -text
 colibri_336/src/ch/eugster/pos/Constants.java -text
 colibri_336/src/ch/eugster/pos/ExceptionThrownDelegate.java -text
 colibri_336/src/ch/eugster/pos/ExceptionThrownEvent.java -text
@@ -1068,6 +1073,8 @@ colibri_336/src/ch/eugster/pos/util/OjbRepositoryHandler.java -text
 colibri_336/src/ch/eugster/pos/util/Path.java -text
 colibri_336/src/ch/eugster/pos/util/Serializer.java -text
 colibri_336/src/ch/eugster/pos/util/XMLLoader.java -text
+colibri_336/swt-win32-2136.dll -text
+colibri_336/swt-win32-3139.dll -text
 colibri_336/win32/com4j-x86.dll -text
 colibri_336/win32/galileo/FOXUSER.DBF -text
 colibri_336/win32/galileo/FOXUSER.FPT -text
@@ -1095,3 +1102,4 @@ colibri_336/win32/galileo/wwsliz.dat -text
 colibri_336/win32/swt-win32-2136.dll -text
 colibri_336/win32/swt-win32-3139.dll -text
 colibri_336/win32/win32com.dll -text
+colibri_336/win32com.dll -text
