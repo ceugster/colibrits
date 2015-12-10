@@ -1078,7 +1078,6 @@ colibri_336/swt-win32-3139.dll -text
 colibri_336/win32/com4j-x86.dll -text
 colibri_336/win32/galileo/FOXUSER.DBF -text
 colibri_336/win32/galileo/FOXUSER.FPT -text
-colibri_336/win32/galileo/GalSvLog.TXT -text
 colibri_336/win32/galileo/GdiPlus.dll -text
 colibri_336/win32/galileo/VFP8RENU.DLL -text
 colibri_336/win32/galileo/galileo.cmd -text

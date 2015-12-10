@@ -1,3 +1,4 @@
+colibri_336/build
 colibri_336/doc/2008-05-15_neuer_galserve.txt
 colibri_336/doc/Abschluss[!!-~]1[!!-~]2.6.2009.pdf
 colibri_336/doc/Abschluss[!!-~]1[!!-~]2009-06-02.txt
@@ -54,7 +55,16 @@ colibri_336/doc/Was[!!-~]ist[!!-~]neu[!!-~]in[!!-~]ColibriTS[!!-~]Version[!!-~]1
 colibri_336/doc/Zusammenstellung[!!-~]Erweiterungen[!!-~]Kasse[!!-~]ColibriTS[!!-~]Build[!!-~]316[!!-~]und[!!-~]Galileo[!!-~]1_7_6.pdf
 colibri_336/doc/code128.txt
 colibri_336/doc/colibri_untertor_20041027.zip
+colibri_336/export
+colibri_336/import
+colibri_336/lock
+colibri_336/log
+colibri_336/old
+colibri_336/queries
+colibri_336/runtime
+colibri_336/save
 colibri_336/src/ch/eugster/pos/product/package.html
+colibri_336/templates
 colibri_336/win32/galileo/SQL
 colibri_336/win32/galileo/VFP
 colibri_336/win32/galileo/galserver1.dll
