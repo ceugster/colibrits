@@ -509,10 +509,13 @@ colibri_336/reports/DayHourStatisticsGrid.xml -text
 colibri_336/reports/DayHourStatisticsTemplate.xml -text
 colibri_336/reports/ProductGroupStatistics.jasper -text
 colibri_336/reports/ProductGroupStatistics.xml -text
+colibri_336/reports/ProductGroupStatisticsEach.jasper -text
 colibri_336/reports/ProductGroupStatisticsEach.xml -text
+colibri_336/reports/ProductGroupStatisticsEachWithPreviousYear.jasper -text
 colibri_336/reports/ProductGroupStatisticsEachWithPreviousYear.xml -text
 colibri_336/reports/ProductGroupStatisticsWithPreviousYear.jasper -text
 colibri_336/reports/ProductGroupStatisticsWithPreviousYear.xml -text
+colibri_336/reports/ProductGroupStockOrderStatistics.jasper -text
 colibri_336/reports/ProductGroupStockOrderStatistics.xml -text
 colibri_336/reports/ReceiptList.jasper -text
 colibri_336/reports/ReceiptList.xml -text
