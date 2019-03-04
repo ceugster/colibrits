@@ -1,0 +1,54 @@
+Inhalt
+******
+
+Version 0.6 06.05.2007 1
+Version 0.7 08.05.2007 1
+Version 0.8 21.05.2007 2
+Version 0.9 22.05.2007 4
+
+
+Version 0.6 06.05.2007 1
+----------------------
+
+
+Version 0.7 08.05.2007 1
+----------------------
+
+
+Version 0.8 21.05.2007 2
+----------------------
+
+
+Version 0.6 06.05.2007
+----------------------
+Datenbankabfrage ergänzt
+
+
+Version 0.7 08.05.2007
+----------------------
+Minuswerte in Preis und Menge auf Pluswerte konvertieren
+
+
+Version 0.8 21.05.2007
+----------------------
+Rabatt als Betrag ausgeben
+
+
+Version 0.9 22.05.2007
+----------------------
+Zusammenfassung eingebaut
+
+
+Version 0.92 04.06.2007
+----------------------
+Zusammenfassung geordnet
+Resultat mit ColibriTS abgeglichen
+
+
+Version 0.93 14.06.2007
+----------------------
+Neues Argument a, all eingebaut. Das Argument entscheidet, ob
+alle Datensätze, unabhängig, ob sie bereits in Galileo verbucht
+sind, exportiert werden sollen oder nicht.
+
+

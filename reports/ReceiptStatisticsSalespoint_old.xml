@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created using an evaluation version of JasperAssistant (http://www.jasperassistant.com) -->
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="ReceiptStatisticsSalespoint" language="java" pageWidth="595" pageHeight="842" columnWidth="520" leftMargin="48" rightMargin="27" topMargin="30" bottomMargin="30">
+	<parameter name="printTime" class="java.lang.String" isForPrompting="false">
+	</parameter>
+	<parameter name="salespoints" class="java.lang.String" isForPrompting="false">
+	</parameter>
+	<parameter name="dateRange" class="java.lang.String" isForPrompting="false">
+	</parameter>
+	<field name="salespoint" class="java.lang.String">
+	</field>
+	<field name="year" class="java.lang.Long">
+	</field>
+	<field name="count" class="java.lang.Long">
+	</field>
+	<field name="amount" class="java.lang.Double">
+	</field>
+	<variable name="average" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{amount}.doubleValue()/$F{count}.longValue())]]></variableExpression>
+	</variable>
+	<variable name="v_count" class="java.lang.Long" resetType="Group" resetGroup="salespoint_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{count}]]></variableExpression>
+	</variable>
+	<variable name="v_amount" class="java.lang.Double" resetType="Group" resetGroup="salespoint_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<variable name="v_average" class="java.lang.Double" calculation="Average">
+		<variableExpression><![CDATA[$V{average}]]></variableExpression>
+	</variable>
+	<group name="salespoint_group">
+		<groupExpression><![CDATA[$F{year}]]></groupExpression>
+		<groupHeader>
+		<band height="14">
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="280" height="14" backcolor="#c0c0c0"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Jahr " + $F{year}.toString()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="280" y="0" width="80" height="14" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Belege]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="360" y="0" width="80" height="14" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Umsatz]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="440" y="0" width="80" height="14" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Umsatz/Beleg]]></text>
+			</staticText>
+		</band>
+		</groupHeader>
+		<groupFooter>
+		<band height="27">
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="280" y="0" width="80" height="12" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$V{v_count}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="360" y="0" width="80" height="12" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{v_amount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="280" height="12" backcolor="#c0c0c0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="440" y="0" width="80" height="12" backcolor="#c0c0c0"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{v_amount}]]></textFieldExpression>
+			</textField>
+		</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="56">
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="400" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Belegstatistik]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="400" y="0" width="120" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{printTime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="24" width="480" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{salespoints}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="36" width="480" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{dateRange}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="0" y="52" width="520" height="1"/>
+				<graphicElement pen="Thin"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="12">
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="280" y="0" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{count}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="360" y="0" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="440" y="0" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{average}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0000" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="0" width="280" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{salespoint}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<textField>
+				<reportElement x="0" y="10" width="520" height="12"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jdbc SYSTEM "jdbc.dtd">
+<jdbc>
+	<platform 
+		id="mySQL"
+		jdbc-level="3.0"
+		driver="com.mysql.jdbc.Driver"
+		protocol="jdbc"
+   		subprotocol="mysql"
+		port="3306"
+		options=""
+	/>
+
+	<platform 
+		id="MsSQLServer"
+		jdbc-level="3.0"
+		driver="com.microsoft.jdbc.sqlserver.SQLServerDriver"
+		protocol="jdbc"
+   		subprotocol="microsoft:sqlserver"
+		port="1433"
+		options=";Database=temp;SelectMethod=cursor"
+	/>
+		
+<!--	<platform 
+		id="PostgreSQL"
+		jdbc-level="1.0"
+		driver="org.postgresql.Driver"
+		protocol="jdbc"
+   		subprotocol="postgresql"
+		port="5432"
+		options=""
+	/> -->
+	<jdbc-levels 
+		levels="1.0,1.2,2.0,3.0"
+	/>
+</jdbc>

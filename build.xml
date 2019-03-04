@@ -1,0 +1,84 @@
+<?xml version="1.0" ?>
+<project name="JAR Builder" default="jarBuilder" basedir=".">
+
+	<target name="jarBuilder" depends="delete,copy,admin,colibri,statistics,importtool,wgtrans,viewer,savereceipts,property,zip" description="Kreieren der JAR-Archive administrator.jar, colibri.jar und statistics.jar">
+	</target>
+
+	<target name="property">
+		<property file="build.properties"/>
+	</target>
+	
+	<target name="delete" description="Bestehende JAR-Dateien loeschen">
+		<delete>
+			<fileset dir="./build/source">
+				<include name="*.*"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="copy" description="Readme-Datei kopieren" depends="delete">
+  		<copy file="./readme/readme.txt" tofile="./build/source/readme.txt"/>	
+  	</target>
+
+	<target name="admin" description="Erstellen des JAR-Archives admin.jar" depends="delete">
+		<jar destfile="./build/source/admin.jar" 
+			 includes="ch/eugster/pos/*.class ch/eugster/pos/admin/**/*.class ch/eugster/pos/client/**/*.class ch/eugster/pos/db/*.class ch/eugster/pos/devices/**/*.class ch/eugster/pos/events/*.class ch/eugster/pos/printing/*.class ch/eugster/pos/product/*.class ch/eugster/pos/serial/*.class ch/eugster/pos/swt/*.class ch/eugster/pos/util/*.class ch/eugster/pos/*.properties"
+			 manifest="./manifest/admin/MANIFEST.MF"
+			 basedir="./bin">
+		</jar>
+	</target>
+
+	<target name="colibri" description="Erstellen des JAR-Archivs colibri.jar" depends="delete">
+		<jar destfile="./build/source/colibri.jar" 
+			 includes="ch/eugster/pos/*.class ch/eugster/pos/client/**/*.class ch/eugster/pos/db/*.class ch/eugster/pos/devices/**/*.class ch/eugster/pos/events/*.class ch/eugster/pos/printing/*.class ch/eugster/pos/product/*.class ch/eugster/pos/serial/*.class ch/eugster/pos/util/*.class ch/eugster/pos/*.properties"
+			 manifest="./manifest/colibri/MANIFEST.MF"
+			 basedir="./bin">
+		</jar>
+	</target>
+
+	<target name="statistics" description="Erstellen des JAR-Archives statistics.jar" depends="delete">
+		<jar destfile="./build/source/statistics.jar" 
+			 includes="ch/eugster/pos/*.class ch/eugster/pos/statistics/**/*.class ch/eugster/pos/db/*.class ch/eugster/pos/devices/**/*.class ch/eugster/pos/events/*.class ch/eugster/pos/printing/*.class ch/eugster/pos/product/*.class ch/eugster/pos/serial/*.class ch/eugster/pos/swt/*.class ch/eugster/pos/util/*.class ch/eugster/pos/*.properties"
+			 manifest="./manifest/statistics/MANIFEST.MF"
+			 basedir="./bin">
+		</jar>
+	</target>
+
+	<target name="importtool" description="Erstellen des JAR-Archives importtool.jar" depends="delete">
+		<jar destfile="./build/source/importtool.jar" 
+			 includes="ch/eugster/pos/*.class ch/eugster/pos/tools/*.class ch/eugster/pos/db/*.class ch/eugster/pos/devices/**/*.class ch/eugster/pos/events/*.class ch/eugster/pos/printing/*.class ch/eugster/pos/product/*.class ch/eugster/pos/serial/*.class ch/eugster/pos/swt/*.class ch/eugster/pos/util/*.class ch/eugster/pos/*.properties"
+			 manifest="./manifest/importtool/MANIFEST.MF"
+			 basedir="./bin">
+		</jar>
+	</target>
+
+	<target name="wgtrans" description="Erstellen des JAR-Archives wgtrans.jar" depends="delete">
+		<jar destfile="./build/source/wgtrans.jar" 
+			 manifest="./manifest/wgtrans/MANIFEST.MF"
+			 basedir="./bin">
+		</jar>
+	</target>
+
+	<target name="viewer" description="Erstellen des JAR-Archives viewer.jar" depends="delete">
+		<jar destfile="./build/source/viewer.jar" 
+			 includes="ch/eugster/pos/*.class ch/eugster/pos/**/*.class ch/eugster/pos/db/*.class ch/eugster/pos/devices/**/*.class ch/eugster/pos/events/*.class ch/eugster/pos/printing/*.class ch/eugster/pos/product/*.class ch/eugster/pos/serial/*.class ch/eugster/pos/swt/*.class ch/eugster/pos/tools/*.class ch/eugster/pos/util/*.class ch/eugster/pos/*.properties"
+			 manifest="./manifest/viewer/MANIFEST.MF"
+			 basedir="./bin">
+		</jar>
+	</target>
+
+	<target name="savereceipts" description="Erstellen des JAR-Archives savereceipts.jar" depends="delete">
+		<jar destfile="./build/source/savereceipts.jar" 
+			 includes="ch/eugster/pos/*.class ch/eugster/pos/**/*.class ch/eugster/pos/db/*.class ch/eugster/pos/devices/**/*.class ch/eugster/pos/events/*.class ch/eugster/pos/printing/*.class ch/eugster/pos/product/*.class ch/eugster/pos/serial/*.class ch/eugster/pos/swt/*.class ch/eugster/pos/tools/*.class ch/eugster/pos/util/*.class ch/eugster/pos/*.properties"
+			 manifest="./manifest/savereceipts/MANIFEST.MF"
+			 basedir="./bin">
+		</jar>
+	</target>
+
+	<target name="zip" description="JAR-Archive zippen" depends="copy,admin,colibri,statistics,importtool,wgtrans,property">
+		<zip basedir="./build/source" 
+			 destfile="./build/archive/colibrits-${build.version}_${build.number}.zip"
+			 includes="admin.jar colibri.jar statistics.jar importtool.jar wgtrans.jar viewer.jar **/*.*" whenempty="fail" >
+		</zip>
+	</target>
+</project>
