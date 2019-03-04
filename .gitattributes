@@ -1,6 +1,8 @@
 * text=auto !eol
 colibri_336/build.properties -text
 colibri_336/build.xml -text
+colibri_336/db/colibri.sql -text
+colibri_336/db/temp.sql -text
 colibri_336/doc/2008-05-15_neuer_galserve.txt -text
 colibri_336/doc/Abschluss[!!-~]1[!!-~]2.6.2009.pdf -text
 colibri_336/doc/Abschluss[!!-~]1[!!-~]2009-06-02.txt -text
