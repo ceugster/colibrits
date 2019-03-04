@@ -220,7 +220,7 @@ public interface Iwgserve extends Com4jObject {
 
   /**
    * <p>
-   * Getter method for the COM property "GEFUNDEN"
+   * Getter method for the COM property "gefunden"
    * </p>
    * @return  Returns a value of type java.lang.Object
    */
@@ -233,7 +233,7 @@ public interface Iwgserve extends Com4jObject {
 
   /**
    * <p>
-   * Setter method for the COM property "GEFUNDEN"
+   * Setter method for the COM property "gefunden"
    * </p>
    * @param gefunden Mandatory java.lang.Object parameter.
    */
@@ -271,23 +271,75 @@ public interface Iwgserve extends Com4jObject {
 
 
   /**
-   * @param cDatabase Mandatory java.lang.Object parameter.
+   * <p>
+   * Getter method for the COM property "CVERSION"
+   * </p>
    * @return  Returns a value of type java.lang.Object
    */
 
   @DISPID(20) //= 0x14. The runtime will prefer the VTID if present
   @VTID(27)
   @ReturnValue(type=NativeType.VARIANT)
+  java.lang.Object cversion();
+
+
+  /**
+   * <p>
+   * Setter method for the COM property "CVERSION"
+   * </p>
+   * @param cversion Mandatory java.lang.Object parameter.
+   */
+
+  @DISPID(20) //= 0x14. The runtime will prefer the VTID if present
+  @VTID(28)
+  void cversion(
+    @MarshalAs(NativeType.VARIANT) java.lang.Object cversion);
+
+
+  /**
+   * <p>
+   * Getter method for the COM property "CVERSIONSNR"
+   * </p>
+   * @return  Returns a value of type java.lang.Object
+   */
+
+  @DISPID(22) //= 0x16. The runtime will prefer the VTID if present
+  @VTID(29)
+  @ReturnValue(type=NativeType.VARIANT)
+  java.lang.Object cversionsnr();
+
+
+  /**
+   * <p>
+   * Setter method for the COM property "CVERSIONSNR"
+   * </p>
+   * @param cversionsnr Mandatory java.lang.Object parameter.
+   */
+
+  @DISPID(22) //= 0x16. The runtime will prefer the VTID if present
+  @VTID(30)
+  void cversionsnr(
+    @MarshalAs(NativeType.VARIANT) java.lang.Object cversionsnr);
+
+
+  /**
+   * @param cDatabas Mandatory java.lang.Object parameter.
+   * @return  Returns a value of type java.lang.Object
+   */
+
+  @DISPID(24) //= 0x18. The runtime will prefer the VTID if present
+  @VTID(31)
+  @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object do_open(
-    java.lang.Object cDatabase);
+    java.lang.Object cDatabas);
 
 
   /**
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(21) //= 0x15. The runtime will prefer the VTID if present
-  @VTID(28)
+  @DISPID(25) //= 0x19. The runtime will prefer the VTID if present
+  @VTID(32)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object do_close();
 
@@ -296,44 +348,44 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(22) //= 0x16. The runtime will prefer the VTID if present
-  @VTID(29)
+  @DISPID(26) //= 0x1a. The runtime will prefer the VTID if present
+  @VTID(33)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object do_getwglist();
 
 
   /**
-   * @param cWG Mandatory java.lang.Object parameter.
+   * @param cW Mandatory java.lang.Object parameter.
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(23) //= 0x17. The runtime will prefer the VTID if present
-  @VTID(30)
+  @DISPID(27) //= 0x1b. The runtime will prefer the VTID if present
+  @VTID(34)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object do_getwg(
-    java.lang.Object cWG);
+    java.lang.Object cW);
 
 
   /**
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(24) //= 0x18. The runtime will prefer the VTID if present
-  @VTID(31)
+  @DISPID(28) //= 0x1c. The runtime will prefer the VTID if present
+  @VTID(35)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object do_getchangedwglist();
 
 
   /**
-   * @param cWG Mandatory java.lang.Object parameter.
+   * @param cW Mandatory java.lang.Object parameter.
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(25) //= 0x19. The runtime will prefer the VTID if present
-  @VTID(32)
+  @DISPID(29) //= 0x1d. The runtime will prefer the VTID if present
+  @VTID(36)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object do_setbestaetigt(
-    java.lang.Object cWG);
+    java.lang.Object cW);
 
 
   /**
@@ -346,8 +398,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.String
    */
 
-  @DISPID(26) //= 0x1a. The runtime will prefer the VTID if present
-  @VTID(33)
+  @DISPID(30) //= 0x1e. The runtime will prefer the VTID if present
+  @VTID(37)
   java.lang.String name();
 
 
@@ -361,10 +413,27 @@ public interface Iwgserve extends Com4jObject {
    * @param name Mandatory java.lang.String parameter.
    */
 
-  @DISPID(26) //= 0x1a. The runtime will prefer the VTID if present
-  @VTID(34)
+  @DISPID(30) //= 0x1e. The runtime will prefer the VTID if present
+  @VTID(38)
   void name(
     java.lang.String name);
+
+
+  /**
+   * <p>
+   * Occurs when an object is created.
+   * </p>
+   * @param initParm1 Mandatory java.lang.Object parameter.
+   * @param initParm2 Mandatory java.lang.Object parameter.
+   * @return  Returns a value of type java.lang.Object
+   */
+
+  @DISPID(32) //= 0x20. The runtime will prefer the VTID if present
+  @VTID(39)
+  @ReturnValue(type=NativeType.VARIANT)
+  java.lang.Object init(
+    @MarshalAs(NativeType.VARIANT) java.lang.Object initParm1,
+    @MarshalAs(NativeType.VARIANT) java.lang.Object initParm2);
 
 
   /**
@@ -374,8 +443,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(28) //= 0x1c. The runtime will prefer the VTID if present
-  @VTID(35)
+  @DISPID(33) //= 0x21. The runtime will prefer the VTID if present
+  @VTID(40)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object destroy();
 
@@ -390,30 +459,13 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(29) //= 0x1d. The runtime will prefer the VTID if present
-  @VTID(36)
+  @DISPID(34) //= 0x22. The runtime will prefer the VTID if present
+  @VTID(41)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object error(
     int nError,
     java.lang.String cMethod,
     int nLine);
-
-
-  /**
-   * <p>
-   * Occurs when an object is created.
-   * </p>
-   * @param initParm1 Mandatory java.lang.Object parameter.
-   * @param initParm2 Mandatory java.lang.Object parameter.
-   * @return  Returns a value of type java.lang.Object
-   */
-
-  @DISPID(30) //= 0x1e. The runtime will prefer the VTID if present
-  @VTID(37)
-  @ReturnValue(type=NativeType.VARIANT)
-  java.lang.Object init(
-    @MarshalAs(NativeType.VARIANT) java.lang.Object initParm1,
-    @MarshalAs(NativeType.VARIANT) java.lang.Object initParm2);
 
 
   /**
@@ -424,8 +476,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(31) //= 0x1f. The runtime will prefer the VTID if present
-  @VTID(38)
+  @DISPID(35) //= 0x23. The runtime will prefer the VTID if present
+  @VTID(42)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object readExpression(
     java.lang.String cPropertyName);
@@ -439,8 +491,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(32) //= 0x20. The runtime will prefer the VTID if present
-  @VTID(39)
+  @DISPID(36) //= 0x24. The runtime will prefer the VTID if present
+  @VTID(43)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object readMethod(
     java.lang.String cMethod);
@@ -454,8 +506,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(33) //= 0x21. The runtime will prefer the VTID if present
-  @VTID(40)
+  @DISPID(37) //= 0x25. The runtime will prefer the VTID if present
+  @VTID(44)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object resetToDefault(
     int cProperty);
@@ -471,8 +523,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(34) //= 0x22. The runtime will prefer the VTID if present
-  @VTID(41)
+  @DISPID(38) //= 0x26. The runtime will prefer the VTID if present
+  @VTID(45)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object saveAsClass(
     java.lang.String cClassLibName,
@@ -489,8 +541,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(35) //= 0x23. The runtime will prefer the VTID if present
-  @VTID(42)
+  @DISPID(39) //= 0x27. The runtime will prefer the VTID if present
+  @VTID(46)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object writeExpression(
     java.lang.String cPropertyName,
@@ -504,16 +556,20 @@ public interface Iwgserve extends Com4jObject {
    * @param cMethodName Mandatory java.lang.String parameter.
    * @param cMethodText Mandatory java.lang.String parameter.
    * @param lCreateMethod Mandatory java.lang.String parameter.
+   * @param nVisibility Mandatory java.lang.String parameter.
+   * @param cDescription Mandatory java.lang.String parameter.
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(36) //= 0x24. The runtime will prefer the VTID if present
-  @VTID(43)
+  @DISPID(40) //= 0x28. The runtime will prefer the VTID if present
+  @VTID(47)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object writeMethod(
     java.lang.String cMethodName,
     java.lang.String cMethodText,
-    java.lang.String lCreateMethod);
+    java.lang.String lCreateMethod,
+    java.lang.String nVisibility,
+    java.lang.String cDescription);
 
 
   /**
@@ -522,15 +578,19 @@ public interface Iwgserve extends Com4jObject {
    * </p>
    * @param cPropertyName Mandatory java.lang.String parameter.
    * @param vNewValue Mandatory java.lang.Object parameter.
+   * @param nVisibility Mandatory java.lang.String parameter.
+   * @param cDescription Mandatory java.lang.String parameter.
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(37) //= 0x25. The runtime will prefer the VTID if present
-  @VTID(44)
+  @DISPID(41) //= 0x29. The runtime will prefer the VTID if present
+  @VTID(48)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object addProperty(
     java.lang.String cPropertyName,
-    @MarshalAs(NativeType.VARIANT) java.lang.Object vNewValue);
+    @MarshalAs(NativeType.VARIANT) java.lang.Object vNewValue,
+    java.lang.String nVisibility,
+    java.lang.String cDescription);
 
 
   /**
@@ -543,8 +603,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.String
    */
 
-  @DISPID(38) //= 0x26. The runtime will prefer the VTID if present
-  @VTID(45)
+  @DISPID(42) //= 0x2a. The runtime will prefer the VTID if present
+  @VTID(49)
   java.lang.String baseClass();
 
 
@@ -558,8 +618,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.String
    */
 
-  @DISPID(39) //= 0x27. The runtime will prefer the VTID if present
-  @VTID(46)
+  @DISPID(43) //= 0x2b. The runtime will prefer the VTID if present
+  @VTID(50)
   java.lang.String _class();
 
 
@@ -573,8 +633,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.String
    */
 
-  @DISPID(40) //= 0x28. The runtime will prefer the VTID if present
-  @VTID(47)
+  @DISPID(44) //= 0x2c. The runtime will prefer the VTID if present
+  @VTID(51)
   java.lang.String parentClass();
 
 
@@ -588,8 +648,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type int
    */
 
-  @DISPID(41) //= 0x29. The runtime will prefer the VTID if present
-  @VTID(48)
+  @DISPID(45) //= 0x2d. The runtime will prefer the VTID if present
+  @VTID(52)
   int parent();
 
 
@@ -603,8 +663,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.String
    */
 
-  @DISPID(42) //= 0x2a. The runtime will prefer the VTID if present
-  @VTID(49)
+  @DISPID(46) //= 0x2e. The runtime will prefer the VTID if present
+  @VTID(53)
   java.lang.String comment();
 
 
@@ -618,8 +678,8 @@ public interface Iwgserve extends Com4jObject {
    * @param comment Mandatory java.lang.String parameter.
    */
 
-  @DISPID(42) //= 0x2a. The runtime will prefer the VTID if present
-  @VTID(50)
+  @DISPID(46) //= 0x2e. The runtime will prefer the VTID if present
+  @VTID(54)
   void comment(
     java.lang.String comment);
 
@@ -634,8 +694,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.String
    */
 
-  @DISPID(44) //= 0x2c. The runtime will prefer the VTID if present
-  @VTID(51)
+  @DISPID(48) //= 0x30. The runtime will prefer the VTID if present
+  @VTID(55)
   java.lang.String tag();
 
 
@@ -649,8 +709,8 @@ public interface Iwgserve extends Com4jObject {
    * @param tag Mandatory java.lang.String parameter.
    */
 
-  @DISPID(44) //= 0x2c. The runtime will prefer the VTID if present
-  @VTID(52)
+  @DISPID(48) //= 0x30. The runtime will prefer the VTID if present
+  @VTID(56)
   void tag(
     java.lang.String tag);
 
@@ -665,8 +725,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type int
    */
 
-  @DISPID(46) //= 0x2e. The runtime will prefer the VTID if present
-  @VTID(53)
+  @DISPID(50) //= 0x32. The runtime will prefer the VTID if present
+  @VTID(57)
   int height();
 
 
@@ -680,8 +740,8 @@ public interface Iwgserve extends Com4jObject {
    * @param height Mandatory int parameter.
    */
 
-  @DISPID(46) //= 0x2e. The runtime will prefer the VTID if present
-  @VTID(54)
+  @DISPID(50) //= 0x32. The runtime will prefer the VTID if present
+  @VTID(58)
   void height(
     int height);
 
@@ -696,8 +756,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type int
    */
 
-  @DISPID(48) //= 0x30. The runtime will prefer the VTID if present
-  @VTID(55)
+  @DISPID(52) //= 0x34. The runtime will prefer the VTID if present
+  @VTID(59)
   int width();
 
 
@@ -711,8 +771,8 @@ public interface Iwgserve extends Com4jObject {
    * @param width Mandatory int parameter.
    */
 
-  @DISPID(48) //= 0x30. The runtime will prefer the VTID if present
-  @VTID(56)
+  @DISPID(52) //= 0x34. The runtime will prefer the VTID if present
+  @VTID(60)
   void width(
     int width);
 
@@ -728,8 +788,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(50) //= 0x32. The runtime will prefer the VTID if present
-  @VTID(57)
+  @DISPID(54) //= 0x36. The runtime will prefer the VTID if present
+  @VTID(61)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object addObject(
     java.lang.String cName,
@@ -751,8 +811,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(51) //= 0x33. The runtime will prefer the VTID if present
-  @VTID(58)
+  @DISPID(55) //= 0x37. The runtime will prefer the VTID if present
+  @VTID(62)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object newObject(
     java.lang.String cName,
@@ -771,8 +831,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(52) //= 0x34. The runtime will prefer the VTID if present
-  @VTID(59)
+  @DISPID(56) //= 0x38. The runtime will prefer the VTID if present
+  @VTID(63)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object removeObject(
     java.lang.String cObjectName);
@@ -788,8 +848,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type int
    */
 
-  @DISPID(53) //= 0x35. The runtime will prefer the VTID if present
-  @VTID(60)
+  @DISPID(57) //= 0x39. The runtime will prefer the VTID if present
+  @VTID(64)
   int helpContextID();
 
 
@@ -803,8 +863,8 @@ public interface Iwgserve extends Com4jObject {
    * @param helpContextID Mandatory int parameter.
    */
 
-  @DISPID(53) //= 0x35. The runtime will prefer the VTID if present
-  @VTID(61)
+  @DISPID(57) //= 0x39. The runtime will prefer the VTID if present
+  @VTID(65)
   void helpContextID(
     int helpContextID);
 
@@ -819,8 +879,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type int
    */
 
-  @DISPID(55) //= 0x37. The runtime will prefer the VTID if present
-  @VTID(62)
+  @DISPID(59) //= 0x3b. The runtime will prefer the VTID if present
+  @VTID(66)
   int whatsThisHelpID();
 
 
@@ -834,8 +894,8 @@ public interface Iwgserve extends Com4jObject {
    * @param whatsThisHelpID Mandatory int parameter.
    */
 
-  @DISPID(55) //= 0x37. The runtime will prefer the VTID if present
-  @VTID(63)
+  @DISPID(59) //= 0x3b. The runtime will prefer the VTID if present
+  @VTID(67)
   void whatsThisHelpID(
     int whatsThisHelpID);
 
@@ -847,8 +907,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type java.lang.Object
    */
 
-  @DISPID(57) //= 0x39. The runtime will prefer the VTID if present
-  @VTID(64)
+  @DISPID(61) //= 0x3d. The runtime will prefer the VTID if present
+  @VTID(68)
   @ReturnValue(type=NativeType.VARIANT)
   java.lang.Object showWhatsThis();
 
@@ -863,8 +923,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type int
    */
 
-  @DISPID(58) //= 0x3a. The runtime will prefer the VTID if present
-  @VTID(65)
+  @DISPID(62) //= 0x3e. The runtime will prefer the VTID if present
+  @VTID(69)
   int controls();
 
 
@@ -878,8 +938,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type int
    */
 
-  @DISPID(59) //= 0x3b. The runtime will prefer the VTID if present
-  @VTID(66)
+  @DISPID(63) //= 0x3f. The runtime will prefer the VTID if present
+  @VTID(70)
   int controlCount();
 
 
@@ -893,8 +953,8 @@ public interface Iwgserve extends Com4jObject {
    * @return  Returns a value of type int
    */
 
-  @DISPID(60) //= 0x3c. The runtime will prefer the VTID if present
-  @VTID(67)
+  @DISPID(64) //= 0x40. The runtime will prefer the VTID if present
+  @VTID(71)
   int objects();
 
 

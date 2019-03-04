@@ -61,7 +61,7 @@ public interface Igdserve extends Com4jObject {
 
   /**
    * <p>
-   * Getter method for the COM property "GEFUNDEN"
+   * Getter method for the COM property "gefunden"
    * </p>
    * @return  Returns a value of type java.lang.Object
    */
@@ -74,7 +74,7 @@ public interface Igdserve extends Com4jObject {
 
   /**
    * <p>
-   * Setter method for the COM property "GEFUNDEN"
+   * Setter method for the COM property "gefunden"
    * </p>
    * @param gefunden Mandatory java.lang.Object parameter.
    */
@@ -1871,6 +1871,16 @@ public interface Igdserve extends Com4jObject {
   @VTID(152)
   boolean do_BucheRechnung(
     int nRgNummer);
+
+
+  /**
+   * @return  Returns a value of type java.lang.Object
+   */
+
+  @DISPID(146) //= 0x92. The runtime will prefer the VTID if present
+  @VTID(153)
+  @ReturnValue(type=NativeType.VARIANT)
+  java.lang.Object setupextsuche();
 
 
   // Properties:
