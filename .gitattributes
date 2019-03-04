@@ -1080,6 +1080,18 @@ colibri_336/src/ch/eugster/pos/util/Serializer.java -text
 colibri_336/src/ch/eugster/pos/util/XMLLoader.java -text
 colibri_336/swt-win32-2136.dll -text
 colibri_336/swt-win32-3139.dll -text
+colibri_336/win32/Galileo/GalSvLog.TXT -text
+colibri_336/win32/Galileo/galserve.VBR -text
+colibri_336/win32/Galileo/galserve.dll -text
+colibri_336/win32/Galileo/galserve.ini -text svneol=unset#text/plain
+colibri_336/win32/Galileo/galserve.tlb -text
+colibri_336/win32/Galileo/kundenserver.VBR -text
+colibri_336/win32/Galileo/kundenserver.exe -text
+colibri_336/win32/Galileo/kundenserver.tlb -text
+colibri_336/win32/Galileo/wgserve.VBR -text
+colibri_336/win32/Galileo/wgserve.dll -text
+colibri_336/win32/Galileo/wgserve.tlb -text
+colibri_336/win32/Galileo/wgserver1.dll -text
 colibri_336/win32/com4j-x86.dll -text
 colibri_336/win32/galileo/FOXUSER.DBF -text
 colibri_336/win32/galileo/FOXUSER.FPT -text

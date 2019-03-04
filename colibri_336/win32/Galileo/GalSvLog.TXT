@@ -1,0 +1,40 @@
+
+26.02.19 16:08:46 Server-Init: WWSLIZ.DAT vorhanden
+26.02.19 16:08:46 Server-Init: SESAM nicht vorhanden
+
+26.02.19 16:08:46 Katalog- und APIPath-Eintrag werden verwendet
+
+26.02.19 16:30:37 Server-Init: WWSLIZ.DAT vorhanden
+26.02.19 16:30:37 Server-Init: SESAM nicht vorhanden
+
+26.02.19 16:30:37 Katalog- und APIPath-Eintrag werden verwendet
+
+01.03.19 10:03:45 Server-Init: WWSLIZ.DAT vorhanden
+01.03.19 10:03:45 Server-Init: SESAM nicht vorhanden
+
+01.03.19 10:03:45 Katalog- und APIPath-Eintrag werden verwendet
+
+01.03.19 10:41:22 Server-Init: WWSLIZ.DAT vorhanden
+01.03.19 10:41:22 Server-Init: SESAM nicht vorhanden
+
+01.03.19 10:41:22 Katalog- und APIPath-Eintrag werden verwendet
+
+01.03.19 14:12:11 Server-Init: WWSLIZ.DAT vorhanden
+01.03.19 14:12:11 Server-Init: SESAM nicht vorhanden
+
+01.03.19 14:12:11 Katalog- und APIPath-Eintrag werden verwendet
+
+01.03.19 14:16:56 Server-Init: WWSLIZ.DAT vorhanden
+01.03.19 14:16:56 Server-Init: SESAM nicht vorhanden
+
+01.03.19 14:16:56 Katalog- und APIPath-Eintrag werden verwendet
+
+01.03.19 16:11:37 Server-Init: WWSLIZ.DAT vorhanden
+01.03.19 16:11:37 Server-Init: SESAM nicht vorhanden
+
+01.03.19 16:11:37 Katalog- und APIPath-Eintrag werden verwendet
+
+01.03.19 16:15:36 Server-Init: WWSLIZ.DAT vorhanden
+01.03.19 16:15:36 Server-Init: SESAM nicht vorhanden
+
+01.03.19 16:15:36 Katalog- und APIPath-Eintrag werden verwendet
