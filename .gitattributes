@@ -1080,6 +1080,8 @@ colibri_336/src/ch/eugster/pos/util/Serializer.java -text
 colibri_336/src/ch/eugster/pos/util/XMLLoader.java -text
 colibri_336/swt-win32-2136.dll -text
 colibri_336/swt-win32-3139.dll -text
+colibri_336/templates/colibrits-setup.nsi -text
+colibri_336/templates/colibrits-update.nsi -text
 colibri_336/win32/Galileo/GalSvLog.TXT -text
 colibri_336/win32/Galileo/galserve.VBR -text
 colibri_336/win32/Galileo/galserve.dll -text
