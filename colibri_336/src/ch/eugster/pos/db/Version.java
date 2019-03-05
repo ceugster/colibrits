@@ -39,8 +39,8 @@ public class Version
 	private static int major = 1;
 	private static int minor = 6;
 	private static int service = 0;
-	private static int build = 383;
-	private static String date = "16.11.2015";
+	private static int build = 384;
+	private static String date = "05.03.2019";
 	
 	private String connectionId = ""; //$NON-NLS-1$
 	private static int runningProgram = -1;
