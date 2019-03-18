@@ -1083,13 +1083,20 @@ colibri_336/swt-win32-3139.dll -text
 colibri_336/templates/colibrits-setup.nsi -text
 colibri_336/templates/colibrits-update.nsi -text
 colibri_336/win32/Galileo/GalSvLog.TXT -text
+colibri_336/win32/Galileo/VFP9RENU.DLL -text
+colibri_336/win32/Galileo/foxhhelp9.exe -text
+colibri_336/win32/Galileo/foxhhelpps9.dll -text
 colibri_336/win32/Galileo/galserve.VBR -text
 colibri_336/win32/Galileo/galserve.dll -text
 colibri_336/win32/Galileo/galserve.ini -text svneol=unset#text/plain
 colibri_336/win32/Galileo/galserve.tlb -text
+colibri_336/win32/Galileo/gdiplus.dll -text
 colibri_336/win32/Galileo/kundenserver.VBR -text
 colibri_336/win32/Galileo/kundenserver.exe -text
 colibri_336/win32/Galileo/kundenserver.tlb -text
+colibri_336/win32/Galileo/vfp9r.dll -text
+colibri_336/win32/Galileo/vfp9rdeu.dll -text
+colibri_336/win32/Galileo/vfp9t.dll -text
 colibri_336/win32/Galileo/wgserve.VBR -text
 colibri_336/win32/Galileo/wgserve.dll -text
 colibri_336/win32/Galileo/wgserve.tlb -text

@@ -38,3 +38,81 @@
 01.03.19 16:15:36 Server-Init: SESAM nicht vorhanden
 
 01.03.19 16:15:36 Katalog- und APIPath-Eintrag werden verwendet
+
+05.03.19 14:46:10 Server-Init: WWSLIZ.DAT vorhanden
+05.03.19 14:46:10 Server-Init: SESAM nicht vorhanden
+
+05.03.19 14:46:10 Externe Suche wird nicht verwendet: 
+
+06.03.19 14:41:56 Server-Init: WWSLIZ.DAT vorhanden
+06.03.19 14:41:56 Server-Init: SESAM nicht vorhanden
+
+06.03.19 14:41:57 Externe Suche wird nicht verwendet: 
+
+06.03.19 15:14:13 Server-Init: WWSLIZ.DAT vorhanden
+06.03.19 15:14:13 Server-Init: SESAM nicht vorhanden
+
+06.03.19 15:14:13 Externe Suche wird nicht verwendet: 
+
+06.03.19 15:14:15 Neue Suche: 030918990000123000120009783741602481
+06.03.19 15:14:15 Errechnete Nummer 030918990000123000120009783741602481
+06.03.19 15:14:15 Nicht im Lagerstamm gefunden
+
+06.03.19 15:20:05 Server-Init: WWSLIZ.DAT vorhanden
+06.03.19 15:20:05 Server-Init: SESAM nicht vorhanden
+
+06.03.19 15:20:05 Externe Suche wird nicht verwendet: 
+
+06.03.19 15:27:28 Server-Init: WWSLIZ.DAT vorhanden
+06.03.19 15:27:28 Server-Init: SESAM nicht vorhanden
+
+06.03.19 15:27:28 Externe Suche wird nicht verwendet: 
+
+06.03.19 15:28:09 Server-Init: WWSLIZ.DAT vorhanden
+06.03.19 15:28:09 Server-Init: SESAM nicht vorhanden
+
+06.03.19 15:28:09 Externe Suche wird nicht verwendet: 
+
+06.03.19 15:28:16 Neue Suche: 0007416024811
+06.03.19 15:28:16 Errechnete Nummer 0007416024811
+06.03.19 15:28:16 Nicht im Lagerstamm gefunden
+
+06.03.19 15:29:41 Server-Init: WWSLIZ.DAT vorhanden
+06.03.19 15:29:41 Server-Init: SESAM nicht vorhanden
+
+06.03.19 15:29:41 Externe Suche wird nicht verwendet: 
+
+06.03.19 15:29:42 Neue Suche: 0007416024811
+06.03.19 15:29:42 Errechnete Nummer 0007416024811
+06.03.19 15:29:42 Nicht im Lagerstamm gefunden
+
+06.03.19 15:30:10 Server-Init: WWSLIZ.DAT vorhanden
+06.03.19 15:30:10 Server-Init: SESAM nicht vorhanden
+
+06.03.19 15:30:10 Externe Suche wird nicht verwendet: 
+
+06.03.19 15:30:31 Neue Suche: 030918990000123000120009783741602481
+06.03.19 15:30:31 Errechnete Nummer 030918990000123000120009783741602481
+06.03.19 15:30:31 Nicht im Lagerstamm gefunden
+
+06.03.19 15:32:58 Server-Init: WWSLIZ.DAT vorhanden
+06.03.19 15:32:58 Server-Init: SESAM nicht vorhanden
+
+06.03.19 15:32:58 Externe Suche wird nicht verwendet: 
+
+06.03.19 15:33:04 Neue Suche: 9783741602481
+06.03.19 15:33:04 Errechnete Nummer 9783741602481
+06.03.19 15:33:04 Im Lagerstamm gefunden
+06.03.19 15:33:04 WG aus Lagerstamm: 101
+06.03.19 15:33:05 Preis aus Lagerstamm: 23.70
+
+06.03.19 15:34:28 Server-Init: WWSLIZ.DAT vorhanden
+06.03.19 15:34:28 Server-Init: SESAM nicht vorhanden
+
+06.03.19 15:34:28 Externe Suche wird nicht verwendet: 
+
+06.03.19 15:34:35 Neue Suche: 9783741602481
+06.03.19 15:34:35 Errechnete Nummer 9783741602481
+06.03.19 15:34:35 Im Lagerstamm gefunden
+06.03.19 15:34:35 WG aus Lagerstamm: 101
+06.03.19 15:34:35 Preis aus Lagerstamm: 23.70
