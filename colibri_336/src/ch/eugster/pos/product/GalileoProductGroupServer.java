@@ -57,6 +57,7 @@ public class GalileoProductGroupServer
 		else
 		{
 		}
+		productGroup.deleted = false;
 		productGroup.name = name;
 		productGroup.shortname = name;
 		productGroup.account = account;
@@ -83,7 +84,7 @@ public class GalileoProductGroupServer
 				result = ((Boolean) srv.do_getwglist()).booleanValue();
 				if (result)
 				{
-					Object obj2 = srv.do_getwglist();
+					Object obj2 = srv.wglist();
 					
 					String[] codes = GalileoProductGroupServer.convertCodeStringToArray((String) obj2);
 					for (String code : codes)

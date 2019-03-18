@@ -187,6 +187,7 @@ public abstract class Page extends DialogPage implements IPage, IPropertyChangeL
 	 * <code>GridLayout</code>) it is expected to set the margins of this
 	 * <code>Layout</code> to 0 pixels.
 	 */
+	@Override
 	public void createControl(Composite parent)
 	{
 		if (this.store != null) this.store.addPropertyChangeListener(this);
@@ -344,6 +345,7 @@ public abstract class Page extends DialogPage implements IPage, IPropertyChangeL
 	 * The <code>DataPage</code> implementation of this method declared on
 	 * <code>DialogPage</code> updates the container.
 	 */
+	@Override
 	public void setErrorMessage(String newMessage)
 	{
 		super.setErrorMessage(newMessage);
@@ -357,6 +359,7 @@ public abstract class Page extends DialogPage implements IPage, IPropertyChangeL
 	 * The <code>DataPage</code> implementation of this method declared on
 	 * <code>DialogPage</code> updates the container.
 	 */
+	@Override
 	public void setMessage(String newMessage, int newType)
 	{
 		super.setMessage(newMessage, newType);
@@ -400,6 +403,7 @@ public abstract class Page extends DialogPage implements IPage, IPropertyChangeL
 	 * method extends the <code>DialogPage</code> implementation to update the
 	 * data page container title. Subclasses may extend.
 	 */
+	@Override
 	public void setTitle(String title)
 	{
 		super.setTitle(title);
@@ -423,6 +427,7 @@ public abstract class Page extends DialogPage implements IPage, IPropertyChangeL
 	/**
 	 * Returns a string suitable for debugging purpose only.
 	 */
+	@Override
 	public String toString()
 	{
 		return this.getTitle();
@@ -488,6 +493,7 @@ public abstract class Page extends DialogPage implements IPage, IPropertyChangeL
 	 * 
 	 * @see org.eclipse.jface.dialogs.IDialogPage#performHelp()
 	 */
+	@Override
 	public void performHelp()
 	{
 		this.getControl().notifyListeners(SWT.Help, new Event());
@@ -534,7 +540,7 @@ public abstract class Page extends DialogPage implements IPage, IPropertyChangeL
 			}
 		}
 		this.performDefaults();
-		this.getStore().setDirty(this.isDirty());
+		// this.getStore().setDirty(this.isDirty());
 		this.getContainer().updateButtons();
 	}
 	

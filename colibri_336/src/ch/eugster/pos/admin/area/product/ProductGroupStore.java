@@ -26,11 +26,13 @@ import ch.eugster.pos.swt.PersistentDBStore;
 public class ProductGroupStore extends PersistentDBStore
 {
 	
+	@Override
 	public void initialize()
 	{
 		this.setElement(ProductGroup.getEmptyInstance());
 	}
 	
+	@Override
 	public void initialize(IStructuredSelection selection)
 	{
 		this.setElement(ProductGroup.getEmptyInstance());
@@ -41,6 +43,7 @@ public class ProductGroupStore extends PersistentDBStore
 	 * 
 	 * @see ch.eugster.pos.admin.framework.Store#load()
 	 */
+	@Override
 	protected void load()
 	{
 		ProductGroup productGroup = (ProductGroup) this.element;
@@ -86,10 +89,10 @@ public class ProductGroupStore extends PersistentDBStore
 		this.putToDefault(ProductGroupFieldEditorPage.KEY_PAID_INVOICE);
 		// 10215
 		// setToDefault(ProductGroupFieldEditorPage.KEY_IS_EXPENSE);
-		this.setToDefault(ProductGroupFieldEditorPage.KEY_TYPE);
-		this.setToDefault(ProductGroupFieldEditorPage.KEY_MODIFIED);
-		this.setToDefault(ProductGroupFieldEditorPage.KEY_DEFAULT_TAX);
-		this.setToDefault(ProductGroupFieldEditorPage.KEY_EXPORT_ID);
+		this.putToDefault(ProductGroupFieldEditorPage.KEY_TYPE);
+		this.putToDefault(ProductGroupFieldEditorPage.KEY_MODIFIED);
+		this.putToDefault(ProductGroupFieldEditorPage.KEY_DEFAULT_TAX);
+		this.putToDefault(ProductGroupFieldEditorPage.KEY_EXPORT_ID);
 		this.setDirty(false);
 	}
 	
@@ -98,6 +101,7 @@ public class ProductGroupStore extends PersistentDBStore
 	 * 
 	 * @see ch.eugster.pos.admin.framework.Store#load()
 	 */
+	@Override
 	protected void store()
 	{
 		System.out.println();
@@ -109,15 +113,15 @@ public class ProductGroupStore extends PersistentDBStore
 		productGroup.name = this.getString(ProductGroupFieldEditorPage.KEY_NAME);
 		productGroup.shortname = this.getString(ProductGroupFieldEditorPage.KEY_SHORT_NAME);
 		productGroup.isDefault = this.getBoolean(ProductGroupFieldEditorPage.KEY_DEFAULT_GROUP).booleanValue();
-		productGroup.setForeignCurrency(this.getForeignCurrency(ProductGroupFieldEditorPage.KEY_CURRENCY));
-		// 10215
-		productGroup.paidInvoice = this.getBoolean(ProductGroupFieldEditorPage.KEY_PAID_INVOICE).booleanValue();
-		// 10215
 		productGroup.galileoId = this.getString(ProductGroupFieldEditorPage.KEY_GALILEO_ID);
 		productGroup.quantityProposal = this.getInt(ProductGroupFieldEditorPage.KEY_QUANTITY).intValue();
 		productGroup.priceProposal = this.getDouble(ProductGroupFieldEditorPage.KEY_PRICE).doubleValue();
 		productGroup.optCodeProposal = this.getString(ProductGroupFieldEditorPage.KEY_OPT_CODE);
 		productGroup.account = this.getString(ProductGroupFieldEditorPage.KEY_ACCOUNT);
+		productGroup.setForeignCurrency(this.getForeignCurrency(ProductGroupFieldEditorPage.KEY_CURRENCY));
+		// 10215
+		productGroup.paidInvoice = this.getBoolean(ProductGroupFieldEditorPage.KEY_PAID_INVOICE).booleanValue();
+		// 10215
 		productGroup.type = this.getInt(ProductGroupFieldEditorPage.KEY_TYPE).intValue();
 		productGroup.modified = false;
 		productGroup.setDefaultTax(this.getTax(ProductGroupFieldEditorPage.KEY_DEFAULT_TAX));
@@ -125,6 +129,7 @@ public class ProductGroupStore extends PersistentDBStore
 		this.setDirty(false);
 	}
 	
+	@Override
 	protected String getErrorMessage(DBResult dbResult)
 	{
 		String result = ""; //$NON-NLS-1$
@@ -133,6 +138,7 @@ public class ProductGroupStore extends PersistentDBStore
 		return result;
 	}
 	
+	@Override
 	public DBResult save()
 	{
 		DBResult result = new DBResult(0, "");
@@ -241,11 +247,13 @@ public class ProductGroupStore extends PersistentDBStore
 		return result;
 	}
 	
+	@Override
 	public boolean isDeletable()
 	{
 		return !((ProductGroup) this.getElement()).isDefault;
 	}
 	
+	@Override
 	public String getErrorMessage()
 	{
 		return "Die gewählte Warengruppe darf nicht gelöscht werden.";

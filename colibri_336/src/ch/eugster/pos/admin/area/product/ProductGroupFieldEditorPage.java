@@ -66,6 +66,7 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 	 * 
 	 * @see ch.eugster.pos.admin.framework.FieldEditorPage#createFieldEditors()
 	 */
+	@Override
 	protected void createFieldEditors()
 	{
 		if (!ProductGroup.isIdFieldAutoincrement(ProductGroup.class))
@@ -181,17 +182,20 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 		
 	}
 	
+	@Override
 	public boolean isInstance(Object element)
 	{
 		return element instanceof ProductGroup;
 	}
 	
+	@Override
 	public boolean isDirty()
 	{
 		ProductGroup productGroup = (ProductGroup) this.getStore().getElement();
 		return productGroup.modified;
 	}
 	
+	@Override
 	public String getElementName()
 	{
 		ProductGroup productGroup = (ProductGroup) this.getStore().getElement();
@@ -204,6 +208,7 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 	 * method intercepts <code>IS_VALID</code> events but passes other events on
 	 * to its superclass.
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event)
 	{
 		/**
@@ -338,6 +343,7 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 		}
 	}
 	
+	@Override
 	public void refresh()
 	{
 		// 10051
