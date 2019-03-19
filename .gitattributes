@@ -1,4 +1,5 @@
 * text=auto !eol
+colibri_336/.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 colibri_336/build.properties -text
 colibri_336/build.xml -text
 colibri_336/db/colibri.sql -text
