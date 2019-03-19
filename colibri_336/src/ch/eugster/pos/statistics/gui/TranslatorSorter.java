@@ -11,7 +11,7 @@ import java.text.Collator;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
-import ch.eugster.pos.statistics.data.Translator;
+import ch.eugster.pos.statistics.core.Translator;
 
 /**
  * @author ceugster

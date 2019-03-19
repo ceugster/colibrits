@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Text;
 import ch.eugster.pos.Messages;
 import ch.eugster.pos.db.PaymentType;
 import ch.eugster.pos.db.ProductGroup;
-import ch.eugster.pos.statistics.data.Translator;
+import ch.eugster.pos.statistics.core.Translator;
 
 /**
  * @author ceugster

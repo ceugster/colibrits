@@ -10,7 +10,7 @@ import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.TableItem;
 
-import ch.eugster.pos.statistics.data.Translator;
+import ch.eugster.pos.statistics.core.Translator;
 
 /**
  * @author ceugster

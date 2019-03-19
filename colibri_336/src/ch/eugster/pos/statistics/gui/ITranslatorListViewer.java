@@ -6,7 +6,7 @@
  */
 package ch.eugster.pos.statistics.gui;
 
-import ch.eugster.pos.statistics.data.Translator;
+import ch.eugster.pos.statistics.core.Translator;
 
 /**
  * @author ceugster

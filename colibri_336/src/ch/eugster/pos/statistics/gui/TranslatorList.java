@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ch.eugster.pos.Messages;
-import ch.eugster.pos.statistics.data.Translator;
+import ch.eugster.pos.statistics.core.Translator;
 import ch.eugster.pos.util.Path;
 
 /**
