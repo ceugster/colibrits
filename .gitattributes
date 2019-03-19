@@ -1082,10 +1082,13 @@ colibri_336/swt-win32-2136.dll -text
 colibri_336/swt-win32-3139.dll -text
 colibri_336/templates/colibrits-setup.nsi -text
 colibri_336/templates/colibrits-update.nsi -text
+colibri_336/win32/Galileo/FOXUSER.DBF -text
+colibri_336/win32/Galileo/FOXUSER.FPT -text
 colibri_336/win32/Galileo/GalSvLog.TXT -text
 colibri_336/win32/Galileo/VFP9RENU.DLL -text
 colibri_336/win32/Galileo/foxhhelp9.exe -text
 colibri_336/win32/Galileo/foxhhelpps9.dll -text
+colibri_336/win32/Galileo/galileo.cmd -text
 colibri_336/win32/Galileo/galserve.VBR -text
 colibri_336/win32/Galileo/galserve.dll -text
 colibri_336/win32/Galileo/galserve.ini -text svneol=unset#text/plain
@@ -1094,6 +1097,9 @@ colibri_336/win32/Galileo/gdiplus.dll -text
 colibri_336/win32/Galileo/kundenserver.VBR -text
 colibri_336/win32/Galileo/kundenserver.exe -text
 colibri_336/win32/Galileo/kundenserver.tlb -text
+colibri_336/win32/Galileo/msvcr70.dll -text
+colibri_336/win32/Galileo/register.cmd -text
+colibri_336/win32/Galileo/unregister.cmd -text
 colibri_336/win32/Galileo/vfp9r.dll -text
 colibri_336/win32/Galileo/vfp9rdeu.dll -text
 colibri_336/win32/Galileo/vfp9t.dll -text
@@ -1101,6 +1107,7 @@ colibri_336/win32/Galileo/wgserve.VBR -text
 colibri_336/win32/Galileo/wgserve.dll -text
 colibri_336/win32/Galileo/wgserve.tlb -text
 colibri_336/win32/Galileo/wgserver1.dll -text
+colibri_336/win32/Galileo/wwsliz.dat -text
 colibri_336/win32/com4j-x86.dll -text
 colibri_336/win32/galileo/FOXUSER.DBF -text
 colibri_336/win32/galileo/FOXUSER.FPT -text
