@@ -28,7 +28,7 @@ import ch.eugster.pos.InvalidValueException;
 import ch.eugster.pos.Messages;
 import ch.eugster.pos.product.EAN13;
 import ch.eugster.pos.product.ProductServer;
-import ch.eugster.pos.statistics.data.Translator;
+import ch.eugster.pos.statistics.core.Translator;
 import ch.eugster.pos.util.Config;
 import ch.eugster.pos.util.NumberUtility;
 import ch.eugster.pos.util.XMLLoader;

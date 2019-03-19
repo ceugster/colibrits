@@ -22,7 +22,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.AttributesImpl;
 
 import ch.eugster.pos.InvalidValueException;
-import ch.eugster.pos.statistics.data.Translator;
+import ch.eugster.pos.statistics.core.Translator;
 import ch.eugster.pos.util.NumberUtility;
 import ch.eugster.pos.util.XMLLoader;
 
