@@ -27,7 +27,7 @@
 ; Finish page
 !insertmacro MUI_PAGE_FINISH
 !define MUI_FINISHPAGE_RUN '"$INSTDIR\rt\jre6\bin\javaw.exe"'
-!define MUI_FINISHPAGE_RUN_PARAMETERS '-Duser.timezone="rt\jre6\lib\zi\Europe\Berlin" -jar "$INSTDIR\admin.jar"'
+!define MUI_FINISHPAGE_RUN_PARAMETERS '-Duser.timezone="$INSTDIR\rt\jre6\lib\zi\Europe\Berlin" -jar "$INSTDIR\admin.jar"'
 
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_INSTFILES
@@ -70,22 +70,19 @@ Section "Hauptgruppe" SEC01
   SetOutPath $INSTDIR\reports
   File /r /x .* ..\reports\*.*
   ; java runtime (currently jre6
-  SetOutPath $INSTDIR\rt\jre6
-  File /r /x .* ..\rt\jre6\*.*
-  SetOutPath $INSTDIR\rt\jre6\bin
-  File /r /x .* ..\rt\jre6\bin\*.*
-  SetOutPath $INSTDIR\rt\jre6\lib
-  File /r /x .* ..\rt\jre6\lib\*.*
-  SetOutPath $INSTDIR\rt\jre6\lib\ext
-  File /r /x .* ..\rt\jre6\lib\ext\*.*
+  SetOutPath $INSTDIR\rt
+  File /r /x .* ..\rt\*.*
+  ; libraries
+  SetOutPath $INSTDIR\lib
   File /x .* ..\lib\*.*
+  ; dlls (galileo)
   SetOutPath $INSTDIR\rt\jre6\bin
   File ..\javac.exe
   File ..\swt-win32-2136.dll
   File ..\swt-win32-3139.dll
   File ..\win32com.dll
   SetOutPath $INSTDIR\win32
-  File /r /x .* ..\win32\com4j-x86.dll
+  File /r /x .* ..\win32\*.*
 
   CreateDirectory "$INSTDIR\export"
   CreateDirectory "$INSTDIR\import"
@@ -95,25 +92,13 @@ Section "Hauptgruppe" SEC01
 
   SetOutPath "$INSTDIR"
 
-  CreateShortCut "$STARTMENU.lnk" '"$INSTDIR\*"'
+  CreateShortCut "$DESKTOP\ColibriTS Kassenprogramm.lnk" "$INSTDIR\rt\jre6\bin\javaw.exe" '-Dswing.metalTheme=DefaultMetal -Duser.timezone="$INSTDIR\rt\jre6\lib\zi\Europe\Berlin" -jar "$INSTDIR\colibri.jar"' "$INSTDIR\icons\colibri.ico" ""
+  CreateShortCut "$DESKTOP\ColibriTS Auswertungen.lnk" "$INSTDIR\rt\jre6\bin\javaw.exe" '-Duser.timezone="$INSTDIR\rt\jre6\lib\zi\Europe\Berlin" -jar "$INSTDIR\statistics.jar"' "$INSTDIR\icons\colibri.ico" ""
+  CreateShortCut "$DESKTOP\ColibriTS Administrator.lnk" "$INSTDIR\rt\jre6\bin\javaw.exe" '-Duser.timezone="$INSTDIR\rt\jre6\lib\zi\Europe\Berlin" -jar "$INSTDIR\admin.jar"' "$INSTDIR\icons\colibri.ico" ""
 
-  CreateShortCut "$INSTDIR\ColibriTS Kassenprogramm.lnk" '"$INSTDIR\rt\jre6\bin\javaw.exe" -Dswing.metalTheme=DefaultMetal -Duser.timezone="rt/jre6/lib/zi/Europe/Berlin" -jar "$INSTDIR\colibri.jar"'
-  CreateShortCut "$INSTDIR\ColibriTS Auswertungen.lnk" '"$INSTDIR\rt\jre6\bin\javaw.exe" -Duser.timezone="Europe/Berlin" -jar "$INSTDIR\statistics.jar"'
-  CreateShortCut "$INSTDIR\ColibriTS Administrator.lnk" '"$INSTDIR\rt\jre6\bin\javaw.exe" -Duser.timezone="Europe/Berlin" -jar "$INSTDIR\admin.jar"'
-
-  WriteUninstaller '"$INSTDIR\uninst.exe"'
+  WriteUninstaller "$INSTDIR\uninst.exe"
 
 SectionEnd
-
-Section -AdditionalIcons
-  SetShellVarContext "all"
-  CreateDirectory "$SMPROGRAMS\ColibriTS"
-  CreateShortCut "$SMPROGRAMS\ColibriTS\ColibriTS Kassenprogramm.lnk" '"$INSTDIR\rt\jre6\bin\javaw.exe" -Dswing.metalTheme=DefaultMetal -Duser.timezone="Europe/Berlin" -jar "$INSTDIR\colibri.jar"'
-  CreateShortCut "$SMPROGRAMS\ColibriTS\ColibriTS Auswertungen.lnk" '"$INSTDIR\rt\jre6\bin\javaw.exe" -Duser.timezone="Europe/Berlin" -jar "$INSTDIR\statistics.jar"'
-  CreateShortCut "$SMPROGRAMS\ColibriTS\ColibriTS Administrator.lnk" '"$INSTDIR\rt\jre6\bin\javaw.exe" -Duser.timezone="Europe/Berlin" -jar "$INSTDIR\admin.jar"'
-  CreateShortCut "$SMPROGRAMS\ColibriTS\Uninstall.lnk" '"$INSTDIR\uninst.exe"'
-SectionEnd
-
 Section -Post
   Exec 'regsvr32.exe /s "$INSTDIR\win32\com4j-x86.dll"'
 
@@ -121,7 +106,6 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
 SectionEnd
-
 
 Function un.onUninstSuccess
   HideWindow
@@ -139,6 +123,10 @@ Section Uninstall
 
   Delete "$SMPROGRAMS\ColibriTS\Uninstall.lnk"
   Delete "$STARTMENU.lnk"
+
+  Delete "$DESKTOP\ColibriTS Kassenprogramm.lnk"
+  Delete "$DESKTOP\ColibriTS Auswertungen.lnk"
+  Delete "$DESKTOP\ColibriTS Administrator.lnk"
 
   RMDir "$SMPROGRAMS\ColibriTS"
   RMDir /r "$INSTDIR"
