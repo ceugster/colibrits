@@ -71,8 +71,8 @@ public abstract class SashForm extends org.eclipse.swt.custom.SashForm implement
 	static
 	{
 		ImageRegistry reg = JFaceResources.getImageRegistry();
-		reg.put(SashForm.DLG_TITLE_IMG, ImageDescriptor.createFromFile(PreferenceDialog.class,
-						"images/pref_dialog_title.gif")); //$NON-NLS-1$
+		reg.put(SashForm.DLG_TITLE_IMG,
+						ImageDescriptor.createFromFile(PreferenceDialog.class, "images/pref_dialog_title.gif")); //$NON-NLS-1$
 	}
 	
 	/**
@@ -349,7 +349,7 @@ public abstract class SashForm extends org.eclipse.swt.custom.SashForm implement
 			// which would result in a recursive infinite loop
 			if (this.message == null)
 			// this should probably never happen since setMessage does this
-				// conversion....
+			// conversion....
 				this.message = ""; //$NON-NLS-1$
 			this.messageLabel.setText(this.message);
 			this.messageLabel.setImage(this.messageImage);
@@ -616,8 +616,7 @@ public abstract class SashForm extends org.eclipse.swt.custom.SashForm implement
 							this.getShell(),
 							Messages.getString("SashForm._u00C4nderungen_speichern_1"), //$NON-NLS-1$
 							MessageDialog.getImage(MessageDialog.DLG_IMG_QUESTION),
-							Messages
-											.getString("SashForm.Sollen_die__u00C4nderungen_am_aktuellen_Datensatz_gespeichert_werden__2"), //$NON-NLS-1$
+							Messages.getString("SashForm.Sollen_die__u00C4nderungen_am_aktuellen_Datensatz_gespeichert_werden__2"), //$NON-NLS-1$
 							MessageDialog.QUESTION, SashForm.yesNoCancelButtonLabels, 0);
 			result = dialog.open();
 			if (result == 0)
@@ -734,8 +733,8 @@ public abstract class SashForm extends org.eclipse.swt.custom.SashForm implement
 			text = Messages.getString("SashForm.Sollen_die_gew_u00E4hlten_Eintr_u00E4ge_gel_u00F6scht_werden__11"); //$NON-NLS-1$
 		}
 		
-		MessageDialog dialog = new MessageDialog(this.getShell(), title, MessageDialog
-						.getImage(MessageDialog.DLG_IMG_QUESTION), text, MessageDialog.QUESTION,
+		MessageDialog dialog = new MessageDialog(this.getShell(), title,
+						MessageDialog.getImage(MessageDialog.DLG_IMG_QUESTION), text, MessageDialog.QUESTION,
 						SashForm.yesNoButtonLabels, 0);
 		return dialog.open();
 	}
@@ -750,8 +749,8 @@ public abstract class SashForm extends org.eclipse.swt.custom.SashForm implement
 		{
 			String title = Messages.getString("SashForm._u00C4nderungen_speichern_12"); //$NON-NLS-1$
 			String text = Messages.getString("SashForm.Sie_haben__u00C4nderungen_am_Eintrag__13") + this.currentPage.getElementName() + Messages.getString("SashForm._vorgenommen._Sollen_die__u00C4nderungen_gespeichert_werden__14"); //$NON-NLS-1$ //$NON-NLS-2$
-			MessageDialog dialog = new MessageDialog(this.getShell(), title, MessageDialog
-							.getImage(MessageDialog.DLG_IMG_QUESTION), text, MessageDialog.QUESTION,
+			MessageDialog dialog = new MessageDialog(this.getShell(), title,
+							MessageDialog.getImage(MessageDialog.DLG_IMG_QUESTION), text, MessageDialog.QUESTION,
 							SashForm.yesNoButtonLabels, 0);
 			return dialog.open();
 		}

@@ -540,7 +540,7 @@ public abstract class Page extends DialogPage implements IPage, IPropertyChangeL
 			}
 		}
 		this.performDefaults();
-		// this.getStore().setDirty(this.isDirty());
+		this.getStore().setDirty(false);
 		this.getContainer().updateButtons();
 	}
 	

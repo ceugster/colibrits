@@ -229,75 +229,69 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 		}
 		this.setValid(this.defaultTaxEditor.getContentProvider().doCheckState());
 		
-		if (event.getSource() instanceof ProductGroupStore)
+		// if (event.getSource() instanceof ProductGroupStore)
+		// {
+		if (event.getProperty().equals("type"))
 		{
-			if (event.getProperty().equals("type"))
+			this.defaultGroupEditor.setDefaultValue(false);
+			this.defaultGroupEditor.setEnabled(false, this.getFieldEditorParent());
+			Integer type = (Integer) this.typeEditor.getRadioBoxControl(this.getFieldEditorParent()).getData();
+			if (this.quantityEditor.getIntValue() == 0)
 			{
-				this.defaultGroupEditor.setDefaultValue(false);
-				this.defaultGroupEditor.setEnabled(false, this.getFieldEditorParent());
-				Integer type = (Integer) this.typeEditor.getRadioBoxControl(this.getFieldEditorParent()).getData();
-				if (this.quantityEditor.getIntValue() == 0)
-				{
-					this.quantityEditor.setStringValue("1");
-					this.quantityEditor.setDefaultValue(new Integer(1));
-				}
-				
-				if (type.equals(new Integer(ProductGroup.TYPE_EXPENSE)))
-				{
-					this.quantityEditor.setStringValue(new Integer(-Math.abs(this.quantityEditor.getIntValue()))
-									.toString());
-					this.quantityEditor.setDefaultValue(new Integer(-Math.abs(1)));
-					this.quantityEditor.setEnabled(false, this.getFieldEditorParent());
-					// this.defaultTaxEditor.setInput(new
-					// Integer(ProductGroup.TYPE_EXPENSE));
-					this.defaultTaxEditor.setEnabled(true, this.getFieldEditorParent());
-					this.defaultTaxEditor.getCombo().setEnabled(true);
-				}
-				else if (type.equals(new Integer(ProductGroup.TYPE_INPUT)))
-				{
-					this.paidInvoiceEditor.setDefaultValue(false);
-					this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
-					this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
-					this.quantityEditor.setStringValue(new Integer(Math.abs(this.quantityEditor.getIntValue()))
-									.toString());
-					this.quantityEditor.setDefaultValue(new Integer(Math.abs(1)).toString());
-					this.quantityEditor.setEnabled(false, this.getFieldEditorParent());
-					// this.defaultTaxEditor.setInput(new
-					// Integer(ProductGroup.TYPE_INPUT));
-					this.defaultTaxEditor.setEnabled(false, this.getFieldEditorParent());
-					this.defaultTaxEditor.getCombo().setEnabled(false);
-					this.defaultTaxEditor.getStore().setValue(ProductGroupFieldEditorPage.KEY_DEFAULT_TAX,
-									Tax.selectByCode("UF", true));
-				}
-				else if (type.equals(new Integer(ProductGroup.TYPE_WITHDRAW)))
-				{
-					this.paidInvoiceEditor.setDefaultValue(false);
-					this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
-					this.quantityEditor.setStringValue(new Integer(-Math.abs(this.quantityEditor.getIntValue()))
-									.toString());
-					this.quantityEditor.setDefaultValue(new Integer(-Math.abs(1)).toString());
-					this.quantityEditor.setEnabled(false, this.getFieldEditorParent());
-					// this.defaultTaxEditor.setInput(new
-					// Integer(ProductGroup.TYPE_WITHDRAW));
-					this.defaultTaxEditor.setEnabled(false, this.getFieldEditorParent());
-					this.defaultTaxEditor.getCombo().setEnabled(false);
-					this.defaultTaxEditor.getStore().setValue(ProductGroupFieldEditorPage.KEY_DEFAULT_TAX,
-									Tax.selectByCode("UF", true));
-				}
-				else
-				{
-					this.quantityEditor.setDefaultValue(new Integer(Math.abs(this.quantityEditor.getIntValue()))
-									.toString());
-					this.quantityEditor.setStringValue(new Integer(Math.abs(this.quantityEditor.getIntValue()))
-									.toString());
-					this.quantityEditor.setEnabled(true, this.getFieldEditorParent());
-					// this.defaultTaxEditor.setInput(new
-					// Integer(ProductGroup.TYPE_INCOME));
-					this.defaultTaxEditor.setEnabled(true, this.getFieldEditorParent());
-					this.defaultTaxEditor.getCombo().setEnabled(true);
-				}
+				this.quantityEditor.setStringValue("1");
+				this.quantityEditor.setDefaultValue(new Integer(1));
+			}
+			
+			if (type.equals(new Integer(ProductGroup.TYPE_EXPENSE)))
+			{
+				this.quantityEditor
+								.setStringValue(new Integer(-Math.abs(this.quantityEditor.getIntValue())).toString());
+				this.quantityEditor.setDefaultValue(new Integer(-Math.abs(1)));
+				this.quantityEditor.setEnabled(false, this.getFieldEditorParent());
+				this.defaultTaxEditor.setInput(new Integer(ProductGroup.TYPE_EXPENSE));
+				this.defaultTaxEditor.setEnabled(true, this.getFieldEditorParent());
+				this.defaultTaxEditor.getCombo().setEnabled(true);
+			}
+			else if (type.equals(new Integer(ProductGroup.TYPE_INPUT)))
+			{
+				this.paidInvoiceEditor.setDefaultValue(false);
+				this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
+				this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
+				this.quantityEditor.setStringValue(new Integer(Math.abs(this.quantityEditor.getIntValue())).toString());
+				this.quantityEditor.setDefaultValue(new Integer(Math.abs(1)).toString());
+				this.quantityEditor.setEnabled(false, this.getFieldEditorParent());
+				this.defaultTaxEditor.setInput(new Integer(ProductGroup.TYPE_INPUT));
+				this.defaultTaxEditor.setEnabled(false, this.getFieldEditorParent());
+				this.defaultTaxEditor.getCombo().setEnabled(false);
+				this.defaultTaxEditor.getStore().setValue(ProductGroupFieldEditorPage.KEY_DEFAULT_TAX,
+								Tax.selectByCode("UF", true));
+			}
+			else if (type.equals(new Integer(ProductGroup.TYPE_WITHDRAW)))
+			{
+				this.paidInvoiceEditor.setDefaultValue(false);
+				this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
+				this.quantityEditor
+								.setStringValue(new Integer(-Math.abs(this.quantityEditor.getIntValue())).toString());
+				this.quantityEditor.setDefaultValue(new Integer(-Math.abs(1)).toString());
+				this.quantityEditor.setEnabled(false, this.getFieldEditorParent());
+				this.defaultTaxEditor.setInput(new Integer(ProductGroup.TYPE_WITHDRAW));
+				this.defaultTaxEditor.setEnabled(false, this.getFieldEditorParent());
+				this.defaultTaxEditor.getCombo().setEnabled(false);
+				this.defaultTaxEditor.getStore().setValue(ProductGroupFieldEditorPage.KEY_DEFAULT_TAX,
+								Tax.selectByCode("UF", true));
+			}
+			else
+			{
+				this.quantityEditor
+								.setDefaultValue(new Integer(Math.abs(this.quantityEditor.getIntValue())).toString());
+				this.quantityEditor.setStringValue(new Integer(Math.abs(this.quantityEditor.getIntValue())).toString());
+				this.quantityEditor.setEnabled(true, this.getFieldEditorParent());
+				this.defaultTaxEditor.setInput(new Integer(ProductGroup.TYPE_INCOME));
+				this.defaultTaxEditor.setEnabled(true, this.getFieldEditorParent());
+				this.defaultTaxEditor.getCombo().setEnabled(true);
 			}
 		}
+		// }
 		super.propertyChange(event);
 	}
 	

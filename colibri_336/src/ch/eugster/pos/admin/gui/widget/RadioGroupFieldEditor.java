@@ -154,6 +154,7 @@ public class RadioGroupFieldEditor extends FieldEditor
 	/*
 	 * (non-Javadoc) Method declared on FieldEditor.
 	 */
+	@Override
 	protected void adjustForNumColumns(int numColumns)
 	{
 		Control control = this.getLabelControl();
@@ -173,9 +174,8 @@ public class RadioGroupFieldEditor extends FieldEditor
 	private boolean checkArray(String[][] table)
 	{
 		if (table == null) return false;
-		for (int i = 0; i < table.length; i++)
+		for (String[] array : table)
 		{
-			String[] array = table[i];
 			if (array == null || array.length != 2) return false;
 		}
 		return true;
@@ -184,6 +184,7 @@ public class RadioGroupFieldEditor extends FieldEditor
 	/*
 	 * (non-Javadoc) Method declared on FieldEditor.
 	 */
+	@Override
 	protected void doFillIntoGrid(Composite parent, int numColumns)
 	{
 		if (this.useGroup)
@@ -210,6 +211,7 @@ public class RadioGroupFieldEditor extends FieldEditor
 	/*
 	 * (non-Javadoc) Method declared on FieldEditor.
 	 */
+	@Override
 	protected void doLoad()
 	{
 		if (this.radioBox != null && this.getStore() != null)
@@ -228,6 +230,7 @@ public class RadioGroupFieldEditor extends FieldEditor
 	/*
 	 * (non-Javadoc) Method declared on FieldEditor.
 	 */
+	@Override
 	protected void doLoadDefault()
 	{
 		if (this.radioBox != null && this.getStore() != null)
@@ -246,6 +249,7 @@ public class RadioGroupFieldEditor extends FieldEditor
 	/*
 	 * (non-Javadoc) Method declared on FieldEditor.
 	 */
+	@Override
 	protected void doStore()
 	{
 		if (this.value == null)
@@ -260,6 +264,7 @@ public class RadioGroupFieldEditor extends FieldEditor
 	/*
 	 * (non-Javadoc) Method declared on FieldEditor.
 	 */
+	@Override
 	public int getNumberOfControls()
 	{
 		return 1;
@@ -312,6 +317,7 @@ public class RadioGroupFieldEditor extends FieldEditor
 				radio.setFont(font);
 				radio.addSelectionListener(new SelectionAdapter()
 				{
+					@Override
 					public void widgetSelected(SelectionEvent event)
 					{
 						RadioGroupFieldEditor.this.radioBox.setData(((Button) event.getSource()).getData());
@@ -347,12 +353,12 @@ public class RadioGroupFieldEditor extends FieldEditor
 		Integer oldValue = this.value;
 		this.value = (Integer) this.radioBox.getData();
 		
-		if (!this.value.equals(oldValue))
-		{
-			this.doStore();
-			oldValue = this.value;
-			this.fireValueChanged(this.getName(), oldValue, this.value);
-		}
+		// if (!this.value.equals(oldValue))
+		// {
+		this.doStore();
+		oldValue = this.value;
+		this.fireValueChanged(this.getName(), oldValue, this.value);
+		// }
 	}
 	
 	/**
@@ -408,12 +414,13 @@ public class RadioGroupFieldEditor extends FieldEditor
 	/*
 	 * @see FieldEditor.setEnabled(boolean,Composite).
 	 */
+	@Override
 	public void setEnabled(boolean enabled, Composite parent)
 	{
 		super.setEnabled(enabled, parent);
-		for (int i = 0; i < this.radioButtons.length; i++)
+		for (Button radioButton : this.radioButtons)
 		{
-			this.radioButtons[i].setEnabled(enabled);
+			radioButton.setEnabled(enabled);
 		}
 	}
 	
@@ -424,11 +431,13 @@ public class RadioGroupFieldEditor extends FieldEditor
 	 * 
 	 * @see #isValid
 	 */
+	@Override
 	protected void refreshValidState()
 	{
 		this.setValid(true);
 	}
 	
+	@Override
 	protected boolean doCheckState()
 	{
 		return this.isValid();
