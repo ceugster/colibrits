@@ -394,9 +394,9 @@ public abstract class FieldEditor
 		}
 		IPropertyChangeListener[] l = (IPropertyChangeListener[]) this.propertyChangeListeners
 						.toArray(new IPropertyChangeListener[0]);
-		for (int i = 0; i < l.length; i++)
+		for (IPropertyChangeListener element : l)
 		{
-			l[i].propertyChange(new PropertyChangeEvent(this, property, oldValue, newValue));
+			element.propertyChange(new PropertyChangeEvent(this, property, oldValue, newValue));
 		}
 	}
 	
