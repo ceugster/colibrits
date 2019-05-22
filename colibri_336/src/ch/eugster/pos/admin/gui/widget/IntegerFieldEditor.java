@@ -87,6 +87,7 @@ public class IntegerFieldEditor extends StringFieldEditor
 		this.maxValidValue = max;
 	}
 	
+	@Override
 	protected boolean doCheckState()
 	{
 		if (super.doCheckState() == false)
@@ -128,6 +129,7 @@ public class IntegerFieldEditor extends StringFieldEditor
 	/*
 	 * (non-Javadoc) Method declared on FieldEditor.
 	 */
+	@Override
 	protected void doLoad()
 	{
 		this.oldValue = this.newValue;
@@ -138,6 +140,7 @@ public class IntegerFieldEditor extends StringFieldEditor
 	/*
 	 * (non-Javadoc) Method declared on FieldEditor.
 	 */
+	@Override
 	protected void doLoadDefault()
 	{
 		if (this.textField != null && this.getStore() != null)
@@ -152,6 +155,7 @@ public class IntegerFieldEditor extends StringFieldEditor
 	/*
 	 * (non-Javadoc) Method declared on FieldEditor.
 	 */
+	@Override
 	protected void doStore()
 	{
 		Text text = this.getTextControl();
@@ -170,6 +174,7 @@ public class IntegerFieldEditor extends StringFieldEditor
 		}
 	}
 	
+	@Override
 	public void formatOutput()
 	{
 		if (this.textField != null)
@@ -188,6 +193,11 @@ public class IntegerFieldEditor extends StringFieldEditor
 	 */
 	public int getIntValue() throws NumberFormatException
 	{
-		return new Integer(this.getStringValue()).intValue();
+		String val = this.getStringValue();
+		if (val == null || val.isEmpty())
+		{
+			return this.defaultValue.intValue();
+		}
+		return new Integer(val).intValue();
 	}
 }
