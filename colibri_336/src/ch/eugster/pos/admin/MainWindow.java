@@ -236,6 +236,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		User.addUserChangeListener(this);
 	}
 	
+	@Override
 	protected Control createContents(Composite parent)
 	{
 		this.loadProperties();
@@ -267,7 +268,6 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		
 		TabItem item = new TabItem(this.mainFolder, SWT.NONE);
 		item.setControl(this.createProductGroupControl());
-		item.setControl(this.productGroupTableSash);
 		item.setText(Messages.getString("MainWindow.Warengruppen_2")); //$NON-NLS-1$
 		
 		item = new TabItem(this.mainFolder, SWT.NONE);
@@ -868,13 +868,13 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 						return file.isFile();
 					}
 				});
-				for (int i = 0; i < files.length; i++)
+				for (File file : files)
 				{
 					Properties p = new Properties();
 					try
 					{
-						p.load(new FileInputStream(files[i]));
-						page = new Code128DataFieldEditorPreferencePage(p.getProperty("name"), 1, files[i]); //$NON-NLS-1$
+						p.load(new FileInputStream(file));
+						page = new Code128DataFieldEditorPreferencePage(p.getProperty("name"), 1, file); //$NON-NLS-1$
 						page.setPreferenceStore(store);
 						dialog.getPreferenceManager()
 										.addTo(Messages.getString("MainWindow.Code_128"), new PreferenceNode(Messages.getString("MainWindow.Positionen_60"), page)); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1144,6 +1144,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 	 * 
 	 * @return the initial size of the shell
 	 */
+	@Override
 	protected Point getInitialSize()
 	{
 		return this.getShell().computeSize(MainWindow.dimension.x, MainWindow.dimension.y, true);
@@ -1427,6 +1428,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		button.setData(new Integer(id));
 		button.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent event)
 			{
 				MainWindow.this.buttonPressed(((Integer) event.widget.getData()).intValue());
@@ -1590,6 +1592,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		}
 	}
 	
+	@Override
 	public boolean close()
 	{
 		//		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info(Messages.getString("MainWindow.Hauptfenster_schliessen..._16")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1598,9 +1601,9 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		{
 			SashForm sash = (SashForm) items[i].getControl();
 			Page[] pages = sash.getPages();
-			for (int j = 0; j < pages.length; j++)
+			for (Page page : pages)
 			{
-				if (pages[j].getStore().needsSaving())
+				if (page.getStore().needsSaving())
 				{
 					if (MessageDialog
 									.openQuestion(this.getShell(),
@@ -1720,6 +1723,7 @@ public class MainWindow extends ApplicationWindow implements IPageContainer, Sel
 		}
 	}
 	
+	@Override
 	public void finalize()
 	{
 		this.saveProperties();
