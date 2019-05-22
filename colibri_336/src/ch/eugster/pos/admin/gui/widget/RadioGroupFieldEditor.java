@@ -396,6 +396,7 @@ public class RadioGroupFieldEditor extends FieldEditor
 				if (val.intValue() == i)
 				{
 					found = true;
+					break;
 				}
 			}
 			if (found) return;
