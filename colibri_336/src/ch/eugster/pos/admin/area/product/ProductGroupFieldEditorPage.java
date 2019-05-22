@@ -127,19 +127,24 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 		this.defaultTaxEditor.setInput(new Integer(ProductGroup.TYPE_INCOME));
 		this.addField(this.defaultTaxEditor);
 		
-		// 10215
-		this.paidInvoiceEditor = new BooleanFieldEditor(ProductGroupFieldEditorPage.KEY_PAID_INVOICE,
-						"Bezahlte Rechnungen", this.getFieldEditorParent()); //$NON-NLS-1$
-		this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
-		this.addField(this.paidInvoiceEditor);
-		// 10215
-		
 		this.addField(new SpacerFieldEditor(this.getFieldEditorParent()));
 		
 		this.defaultGroupEditor = new BooleanFieldEditor(ProductGroupFieldEditorPage.KEY_DEFAULT_GROUP,
 						"Defaultgruppe", this.getFieldEditorParent()); //$NON-NLS-1$
 		this.defaultGroupEditor.setEnabled(true, this.getFieldEditorParent());
 		this.addField(this.defaultGroupEditor);
+		
+		this.ebookEditor = new BooleanFieldEditor(ProductGroupFieldEditorPage.KEY_EBOOK,
+						"eBook", this.getFieldEditorParent()); //$NON-NLS-1$
+		this.ebookEditor.setEnabled(true, this.getFieldEditorParent());
+		this.addField(this.ebookEditor);
+		
+		// 10215
+		this.paidInvoiceEditor = new BooleanFieldEditor(ProductGroupFieldEditorPage.KEY_PAID_INVOICE,
+						"Bezahlte Rechnungen", this.getFieldEditorParent()); //$NON-NLS-1$
+		this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
+		this.addField(this.paidInvoiceEditor);
+		// 10215
 		
 		this.addField(new SpacerFieldEditor(this.getFieldEditorParent()));
 		
@@ -235,10 +240,12 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 		{
 			this.defaultGroupEditor.setDefaultValue(false);
 			this.defaultGroupEditor.setEnabled(false, this.getFieldEditorParent());
+			this.ebookEditor.setDefaultValue(false);
+			this.ebookEditor.setEnabled(false, this.getFieldEditorParent());
 			Integer type = (Integer) this.typeEditor.getRadioBoxControl(this.getFieldEditorParent()).getData();
 			if (this.quantityEditor.getIntValue() == 0)
 			{
-				this.quantityEditor.setStringValue("1");
+				// this.quantityEditor.setStringValue("1");
 				this.quantityEditor.setDefaultValue(new Integer(1));
 			}
 			
@@ -256,8 +263,8 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 			{
 				this.paidInvoiceEditor.setDefaultValue(false);
 				this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
-				this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
-				this.quantityEditor.setStringValue(new Integer(Math.abs(this.quantityEditor.getIntValue())).toString());
+				// this.quantityEditor.setStringValue(new
+				// Integer(Math.abs(this.quantityEditor.getIntValue())).toString());
 				this.quantityEditor.setDefaultValue(new Integer(Math.abs(1)).toString());
 				this.quantityEditor.setEnabled(false, this.getFieldEditorParent());
 				this.defaultTaxEditor.setInput(new Integer(ProductGroup.TYPE_INPUT));
@@ -284,7 +291,8 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 			{
 				this.quantityEditor
 								.setDefaultValue(new Integer(Math.abs(this.quantityEditor.getIntValue())).toString());
-				this.quantityEditor.setStringValue(new Integer(Math.abs(this.quantityEditor.getIntValue())).toString());
+				// this.quantityEditor.setStringValue(new
+				// Integer(Math.abs(this.quantityEditor.getIntValue())).toString());
 				this.quantityEditor.setEnabled(true, this.getFieldEditorParent());
 				this.defaultTaxEditor.setInput(new Integer(ProductGroup.TYPE_INCOME));
 				this.defaultTaxEditor.setEnabled(true, this.getFieldEditorParent());
@@ -307,12 +315,17 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 				this.typeEditor.setEnabled(false, this.getFieldEditorParent());
 				this.paidInvoiceEditor.setDefaultValue(false);
 				this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
+				this.ebookEditor.setDefaultValue(false);
+				this.ebookEditor.setEnabled(!group.ebook, this.getFieldEditorParent());
 			}
 			else
 			{
 				this.defaultGroupEditor.setEnabled(type.equals(new Integer(ProductGroup.TYPE_INCOME)),
 								this.getFieldEditorParent());
-				this.paidInvoiceEditor.setEnabled(true, this.getFieldEditorParent());
+				this.paidInvoiceEditor.setEnabled(type.equals(new Integer(ProductGroup.TYPE_NOT_INCOME)),
+								this.getFieldEditorParent());
+				this.ebookEditor.setEnabled(type.equals(new Integer(ProductGroup.TYPE_INCOME)),
+								this.getFieldEditorParent());
 				this.typeEditor.setEnabled(!this.paidInvoiceEditor.getBooleanValue(), this.getFieldEditorParent());
 				this.quantityEditor.setEnabled(
 								!type.equals(new Integer(ProductGroup.TYPE_INPUT))
@@ -321,15 +334,17 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 				if (type.equals(new Integer(ProductGroup.TYPE_INPUT))
 								|| type.equals(new Integer(ProductGroup.TYPE_WITHDRAW)))
 				{
-					this.paidInvoiceEditor.setDefaultValue(false);
-					this.paidInvoiceEditor.setEnabled(false, this.getFieldEditorParent());
+					// this.paidInvoiceEditor.setDefaultValue(false);
+					// this.paidInvoiceEditor.setEnabled(false,
+					// this.getFieldEditorParent());
 					this.defaultTaxEditor.setEnabled(false, this.getFieldEditorParent());
 					this.defaultTaxEditor.getCombo().setEnabled(false);
 				}
 				else
 				{
-					this.paidInvoiceEditor.setDefaultValue(true);
-					this.paidInvoiceEditor.setEnabled(true, this.getFieldEditorParent());
+					// this.paidInvoiceEditor.setDefaultValue(true);
+					// this.paidInvoiceEditor.setEnabled(true,
+					// this.getFieldEditorParent());
 					this.defaultTaxEditor.setEnabled(true, this.getFieldEditorParent());
 					this.defaultTaxEditor.getCombo().setEnabled(true);
 				}
@@ -373,6 +388,8 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 	private ComboFieldEditor currencyEditor;
 	// 10236
 	private BooleanFieldEditor defaultGroupEditor;
+	private BooleanFieldEditor ebookEditor;
+	
 	private RadioGroupFieldEditor typeEditor;
 	private ComboFieldEditor defaultTaxEditor;
 	private StringFieldEditor exportIdEditor;
@@ -393,6 +410,7 @@ public class ProductGroupFieldEditorPage extends FieldEditorPage
 	public static final String KEY_PAID_INVOICE = "paidInvoice"; //$NON-NLS-1$
 	// 10215
 	public static final String KEY_DEFAULT_GROUP = "defaultGroup"; //$NON-NLS-1$
+	public static final String KEY_EBOOK = "ebook"; //$NON-NLS-1$
 	public static final String KEY_MODIFIED = "modified"; //$NON-NLS-1$
 	public static final String KEY_EXPORT_ID = "export-id"; //$NON-NLS-1$
 	
