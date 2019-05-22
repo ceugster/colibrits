@@ -93,6 +93,7 @@ public class ProductGroupStore extends PersistentDBStore
 		this.putToDefault(ProductGroupFieldEditorPage.KEY_MODIFIED);
 		this.putToDefault(ProductGroupFieldEditorPage.KEY_DEFAULT_TAX);
 		this.putToDefault(ProductGroupFieldEditorPage.KEY_EXPORT_ID);
+		this.putDefault(ProductGroupFieldEditorPage.KEY_EBOOK, productGroup.isEbook());
 		this.setDirty(false);
 	}
 	
@@ -126,6 +127,7 @@ public class ProductGroupStore extends PersistentDBStore
 		productGroup.modified = false;
 		productGroup.setDefaultTax(this.getTax(ProductGroupFieldEditorPage.KEY_DEFAULT_TAX));
 		productGroup.exportId = this.getString(ProductGroupFieldEditorPage.KEY_EXPORT_ID);
+		productGroup.ebook = this.getBoolean(ProductGroupFieldEditorPage.KEY_EBOOK);
 		this.setDirty(false);
 	}
 	
@@ -213,6 +215,31 @@ public class ProductGroupStore extends PersistentDBStore
 					}
 				}
 				// 10215
+			}
+			
+			if (this.getBoolean(ProductGroupFieldEditorPage.KEY_EBOOK).booleanValue())
+			{
+				if (this.getString(ProductGroupFieldEditorPage.KEY_GALILEO_ID).equals(""))
+				{
+					result.setErrorCode(-1);
+					result.log();
+					result.setErrorText("Die eBook-Warengruppe muss eine gültige, dreistellige Galileo-Id haben.");
+					result.showMessage();
+				}
+				if (!this.getInt(ProductGroupFieldEditorPage.KEY_TYPE).equals(new Integer(0)))
+				{
+					this.setValue(ProductGroupFieldEditorPage.KEY_TYPE, new Integer(0));
+					
+				}
+				if (result.getErrorCode() == 0)
+				{
+					ProductGroup isEbook = ProductGroup.selectEbookGroup();
+					if (isEbook != null && isEbook.getId() != null && !isEbook.getId().equals(ProductGroup.ZERO_VALUE))
+					{
+						isEbook.ebook = false;
+						result = isEbook.store();
+					}
+				}
 			}
 		}
 		
