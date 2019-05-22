@@ -39,15 +39,15 @@ public class Version
 	private static int major = 1;
 	private static int minor = 6;
 	private static int service = 0;
-	private static int build = 384;
-	private static String date = "05.03.2019";
+	private static int build = 386;
+	private static String date = "22.05.2019";
 	
 	private String connectionId = ""; //$NON-NLS-1$
 	private static int runningProgram = -1;
 	public static boolean isFrameVisible = false;
 	
 	// Version 16 ab Build 177
-	private static int dataVersion = 35; // Datenversion Programm
+	private static int dataVersion = 36; // Datenversion Programm
 	
 	/*
 	 * Die folgenden Variablen sind in der Datenbank
