@@ -87,6 +87,8 @@ public class ProductGroup extends Table
 	
 	public String exportId = "";
 	
+	public boolean ebook = false;
+	
 	private Tax defaultTax;
 	private Long defaultTaxId;
 	
@@ -123,6 +125,16 @@ public class ProductGroup extends Table
 		return this.defaultTax;
 	}
 	
+	public void setEbook(boolean ebook)
+	{
+		this.ebook = ebook;
+	}
+	
+	public boolean isEbook()
+	{
+		return this.ebook;
+	}
+	
 	public void setForeignCurrency(ForeignCurrency currency)
 	{
 		this.foreignCurrency = currency;
@@ -152,11 +164,13 @@ public class ProductGroup extends Table
 		return positions.size() > 0;
 	}
 	
+	@Override
 	public boolean isRemovable()
 	{
 		return !Position.exist("productGroupId", this.getId()); //$NON-NLS-1$
 	}
 	
+	@Override
 	public DBResult delete()
 	{
 		PersistenceBroker broker = Database.getCurrent().getBroker();
@@ -290,6 +304,26 @@ public class ProductGroup extends Table
 		return pg;
 	}
 	
+	public static ProductGroup selectEbookGroup()
+	{
+		ProductGroup pg = new ProductGroup();
+		Criteria criteria = new Criteria();
+		criteria.addEqualTo("ebook", new Boolean(true)); //$NON-NLS-1$
+		Query query = QueryFactory.newQuery(ProductGroup.class, criteria);
+		Collection productGroups = Table.select(query);
+		Iterator i = productGroups.iterator();
+		if (i.hasNext())
+		{
+			pg = (ProductGroup) i.next();
+			if (pg.type != ProductGroup.TYPE_INCOME)
+			{
+				pg.type = ProductGroup.TYPE_INCOME;
+				pg.store();
+			}
+		}
+		return pg;
+	}
+	
 	public static ProductGroup selectPaidInvoiceGroup()
 	{
 		ProductGroup pg = new ProductGroup();
@@ -337,9 +371,9 @@ public class ProductGroup extends Table
 	public static void readDBRecords()
 	{
 		ProductGroup[] groups = ProductGroup.selectAll(true);
-		for (int i = 0; i < groups.length; i++)
+		for (ProductGroup group : groups)
 		{
-			ProductGroup.put(groups[i]);
+			ProductGroup.put(group);
 		}
 	}
 	
@@ -549,6 +583,7 @@ public class ProductGroup extends Table
 		return root;
 	}
 	
+	@Override
 	protected Element getJDOMRecordAttributes()
 	{
 		Element record = super.getJDOMRecordAttributes();
@@ -637,6 +672,10 @@ public class ProductGroup extends Table
 			fc.setAttribute("value", this.getForeignCurrency().getId().toString()); //$NON-NLS-1$
 			
 		record.addContent(fc);
+		Element eb = new Element("field"); //$NON-NLS-1$
+		eb.setAttribute("name", "ebook"); //$NON-NLS-1$ //$NON-NLS-2$
+		eb.setAttribute("value", new Boolean(this.ebook).toString()); //$NON-NLS-1$
+		record.addContent(eb);
 		
 		return record;
 	}
@@ -708,6 +747,9 @@ public class ProductGroup extends Table
 					this.setForeignCurrency(ForeignCurrency.getDefaultCurrency());
 				}
 			}
+			else if (field.getAttributeValue("name").equals("ebook")) { //$NON-NLS-1$ //$NON-NLS-2$
+				this.ebook = new Boolean(field.getAttributeValue("value")).booleanValue(); //$NON-NLS-1$
+			}
 		}
 	}
 	
@@ -715,10 +757,10 @@ public class ProductGroup extends Table
 	{
 		ProductGroup.clearData();
 		Element[] elements = Database.getTemporary().getRecords("product-group"); //$NON-NLS-1$
-		for (int i = 0; i < elements.length; i++)
+		for (Element element : elements)
 		{
 			ProductGroup productGroup = new ProductGroup();
-			productGroup.setData(elements[i]);
+			productGroup.setData(element);
 			ProductGroup.put(productGroup);
 		}
 	}
