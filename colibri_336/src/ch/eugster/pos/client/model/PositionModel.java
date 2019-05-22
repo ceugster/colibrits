@@ -597,6 +597,7 @@ public class PositionModel extends ReceiptChildModel
 		{ true, false };
 		// Vorhandene Bindestriche entfernen und String ggf. konvertieren
 		String v = PositionModel.convert(ISBN.removeHyphen(value));
+		position.setEbook(v.startsWith(EAN13.PRE_EBOOK));
 		if (v.startsWith(EAN13.PRE_EBOOK))
 		{
 			position.productId = v.substring(1);
@@ -607,8 +608,9 @@ public class PositionModel extends ReceiptChildModel
 			position.galileoBooked = false;
 			position.optCode = "L";
 			position.ordered = false;
-			position.setProductGroup(ProductGroup.getDefaultGroup());
-			position.setCurrentTax(Tax.getByCode("UN").getCurrentTax());
+			ProductGroup pg = ProductGroup.selectEbookGroup();
+			position.setProductGroup(pg);
+			position.setCurrentTax(pg == null ? null : pg.getDefaultTax().getCurrentTax());
 			return result;
 		}
 		
