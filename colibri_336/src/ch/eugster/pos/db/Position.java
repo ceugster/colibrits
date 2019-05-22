@@ -57,6 +57,7 @@ public class Position extends ReceiptChild
 	public String productNumber = ""; //$NON-NLS-1$
 	public boolean ordered = Table.BOOLEAN_DEFAULT_FALSE;
 	public String orderId = ""; //$NON-NLS-1$
+	public boolean ebook = false;
 	// 10221
 	private boolean payedInvoice = Table.BOOLEAN_DEFAULT_FALSE;
 	private Integer invoice = new Integer(0);
@@ -255,6 +256,7 @@ public class Position extends ReceiptChild
 							.getDefaultFractionDigits());
 		}
 		this.calculateAmount();
+		this.ebook = pg.isEbook();
 	}
 	
 	// 10221
@@ -301,6 +303,16 @@ public class Position extends ReceiptChild
 	public Date getInvoiceDate()
 	{
 		return this.invoiceDate;
+	}
+	
+	public void setEbook(boolean ebook)
+	{
+		this.ebook = ebook;
+	}
+	
+	public boolean isEbook()
+	{
+		return this.ebook;
 	}
 	
 	// 10221
@@ -473,6 +485,7 @@ public class Position extends ReceiptChild
 	 * 
 	 * Gibt den Betrag (quantity price (1d - discount) zurück
 	 */
+	@Override
 	public double getAmount()
 	{
 		return this.amount;
@@ -525,6 +538,7 @@ public class Position extends ReceiptChild
 						.getDefaultFractionDigits());
 	}
 	
+	@Override
 	public boolean isRemovable()
 	{
 		return true;
@@ -1355,6 +1369,7 @@ public class Position extends ReceiptChild
 		return new Double(amount);
 	}
 	
+	@Override
 	public boolean isComplete()
 	{
 		boolean complete = true;
@@ -1486,8 +1501,8 @@ public class Position extends ReceiptChild
 		attributes.addAttribute("", "product-id", "", "", this.productId);
 		attributes.addAttribute("", "product-group-id", "", "", this.productGroup.exportId);
 		attributes.addAttribute("", "tax-id", "", "", this.currentTax.getTax().getId().toString());
-		attributes.addAttribute("", "current-tax-id", "", "", new Long(this.currentTax.validationDate.getTime())
-						.toString());
+		attributes.addAttribute("", "current-tax-id", "", "",
+						new Long(this.currentTax.validationDate.getTime()).toString());
 		attributes.addAttribute("", "quantity", "", "", Integer.toString(this.quantity));
 		attributes.addAttribute("", "price", "", "", Double.toString(this.price));
 		attributes.addAttribute("", "discount", "", "", Double.toString(this.discount));
@@ -1506,12 +1521,13 @@ public class Position extends ReceiptChild
 		attributes.addAttribute("", "update-customer-account", "", "", Boolean.toString(this.updateCustomerAccount));
 		attributes.addAttribute("", "payed-invoice", "", "", Boolean.toString(this.payedInvoice));
 		attributes.addAttribute("", "invoice", "", "", this.invoice.toString());
-		attributes.addAttribute("", "invoice-date", "", "", this.invoiceDate == null ? "" : new Long(this.invoiceDate
-						.getTime()).toString());
+		attributes.addAttribute("", "invoice-date", "", "",
+						this.invoiceDate == null ? "" : new Long(this.invoiceDate.getTime()).toString());
 		attributes.addAttribute("", "tax", "", "", Double.toString(this.tax));
 		attributes.addAttribute("", "type", "", "", new Integer(this.type).toString());
 		attributes.addAttribute("", "amount-fc", "", "", new Double(this.amountFC).toString());
 		attributes.addAttribute("", "amount", "", "", new Double(this.amount).toString());
+		attributes.addAttribute("", "ebook", "", "", new Boolean(this.ebook).toString());
 		return attributes;
 	}
 	
@@ -1556,12 +1572,13 @@ public class Position extends ReceiptChild
 		position.setAttribute("update-customer-account", Boolean.toString(this.updateCustomerAccount)); //$NON-NLS-1$
 		position.setAttribute("payed-invoice", Boolean.toString(this.payedInvoice)); //$NON-NLS-1$
 		position.setAttribute("invoice", this.invoice.toString()); //$NON-NLS-1$
-		position.setAttribute("invoice-date", this.invoiceDate == null ? "" : new Long(this.invoiceDate.getTime())
-						.toString());
+		position.setAttribute("invoice-date",
+						this.invoiceDate == null ? "" : new Long(this.invoiceDate.getTime()).toString());
 		position.setAttribute("tax", Double.toString(this.tax));
 		position.setAttribute("type", new Integer(this.type).toString());
 		position.setAttribute("amount-fc", new Double(this.amountFC).toString());
 		position.setAttribute("amount", new Double(this.amount).toString());
+		position.setAttribute("ebook", new Boolean(this.ebook).toString());
 		return position;
 	}
 	
@@ -1571,14 +1588,15 @@ public class Position extends ReceiptChild
 		if (setIds)
 			this.setId(new Long(position.getAttributeValue("id")));
 		else
-			this.setId(null); //$NON-NLS-1$
-			
+			this.setId(null);
+		
 		this.setReceipt(r);
 		this.productId = position.getAttributeValue("product-id"); //$NON-NLS-1$
 		long time = 0l;
+		ProductGroup pg = null;
 		if (useExportId)
 		{
-			this.setProductGroup(ProductGroup.selectByExportId(position.getAttributeValue("product-group-id"))); //$NON-NLS-1$
+			pg = ProductGroup.selectByExportId(position.getAttributeValue("product-group-id"));
 			Tax tax = Tax.selectByCode(position.getAttributeValue("tax-id"), true);
 			Calendar gc = GregorianCalendar.getInstance();
 			gc.setTimeInMillis(new Long(position.getAttributeValue("current-tax-id")).longValue());
@@ -1586,9 +1604,10 @@ public class Position extends ReceiptChild
 		}
 		else
 		{
-			this.setProductGroup(ProductGroup.selectById(new Long(position.getAttributeValue("product-group-id")))); //$NON-NLS-1$
+			pg = ProductGroup.selectById(new Long(position.getAttributeValue("product-group-id")));
 			this.setCurrentTax(CurrentTax.selectById(new Long(position.getAttributeValue("current-tax-id"))));
 		}
+		this.setProductGroup(pg);
 		this.quantity = XMLLoader.getInt(position.getAttributeValue("quantity")); //$NON-NLS-1$
 		this.price = XMLLoader.getDouble(position.getAttributeValue("price")); //$NON-NLS-1$
 		this.discount = XMLLoader.getDouble(position.getAttributeValue("discount")); //$NON-NLS-1$
@@ -1629,6 +1648,7 @@ public class Position extends ReceiptChild
 			throw new InvalidValueException("Mehrwertsteuersatz zur Mehrwertsteuer \""
 							+ position.getAttributeValue("tax-id") + "\" und mit dem Datum \"" + new Date(time)
 							+ "\" ungültig.");
+		this.setEbook(pg == null ? false : pg.isEbook());
 	}
 	
 	public void setRecordAttributes(Receipt r, Element position, boolean useExportId) throws InvalidValueException
@@ -1648,9 +1668,8 @@ public class Position extends ReceiptChild
 		detail.setAttribute("current-tax-id", currentTax.getId().toString()); //$NON-NLS-1$
 		detail.setAttribute("quantity", fields[8]); //$NON-NLS-1$
 		detail.setAttribute("price", fields[9]); //$NON-NLS-1$
-		detail
-						.setAttribute(
-										"discount", new Double(NumberUtility.round(		new Double(fields[7]).doubleValue() / 100, 2)).toString()); //$NON-NLS-1$
+		detail.setAttribute(
+						"discount", new Double(NumberUtility.round(new Double(fields[7]).doubleValue() / 100, 2)).toString()); //$NON-NLS-1$
 		detail.setAttribute("galileo-book", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		detail.setAttribute("galileo-booked", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		detail.setAttribute("opt-code", fields[6]); //$NON-NLS-1$
@@ -1682,6 +1701,7 @@ public class Position extends ReceiptChild
 		Double amount = new Double(qty * price * (1 - discount));
 		detail.setAttribute("amount-fc", amount.toString()); //$NON-NLS-1$
 		detail.setAttribute("amount", amount.toString()); //$NON-NLS-1$
+		detail.setAttribute("ebook", productGroup.isEbook() ? "true" : "false");
 		return detail;
 	}
 	
