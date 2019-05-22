@@ -32,6 +32,7 @@ public class ProductGroupTableLabelProvider extends TableLabelProvider
 	 * org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang
 	 * .Object, int)
 	 */
+	@Override
 	public Image getColumnImage(Object element, int columnIndex)
 	{
 		if (columnIndex == 0 && element instanceof ProductGroup)
@@ -53,6 +54,7 @@ public class ProductGroupTableLabelProvider extends TableLabelProvider
 	 * org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang
 	 * .Object, int)
 	 */
+	@Override
 	public String getColumnText(Object element, int columnIndex)
 	{
 		if (element == null)
@@ -74,12 +76,17 @@ public class ProductGroupTableLabelProvider extends TableLabelProvider
 				case 4:
 					return ((ProductGroup) element).isDefault ? "Ja" : "";
 				case 5:
+					return ((ProductGroup) element).ebook ? "Ja" : "";
+				case 6:
+					return ((ProductGroup) element).paidInvoice ? "Ja" : "";
+				case 7:
 					return ((ProductGroup) element).exportId;
 			}
 		}
 		return ""; //$NON-NLS-1$
 	}
 	
+	@Override
 	public String[] getColumnNames()
 	{
 		return this.columnNames;
@@ -92,6 +99,7 @@ public class ProductGroupTableLabelProvider extends TableLabelProvider
 	 * org.eclipse.jface.viewers.IBaseLabelProvider#addListener(org.eclipse.
 	 * jface.viewers.ILabelProviderListener)
 	 */
+	@Override
 	public void addListener(ILabelProviderListener listener)
 	{
 		this.productGroupTableLabelProviderListeners.add(listener);
@@ -102,6 +110,7 @@ public class ProductGroupTableLabelProvider extends TableLabelProvider
 	 * 
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
 	 */
+	@Override
 	public void dispose()
 	{
 	}
@@ -113,6 +122,7 @@ public class ProductGroupTableLabelProvider extends TableLabelProvider
 	 * org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang
 	 * .Object, java.lang.String)
 	 */
+	@Override
 	public boolean isLabelProperty(Object element, String property)
 	{
 		return false;
@@ -125,6 +135,7 @@ public class ProductGroupTableLabelProvider extends TableLabelProvider
 	 * org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(org.eclipse
 	 * .jface.viewers.ILabelProviderListener)
 	 */
+	@Override
 	public void removeListener(ILabelProviderListener listener)
 	{
 		this.productGroupTableLabelProviderListeners.remove(listener);
@@ -137,5 +148,5 @@ public class ProductGroupTableLabelProvider extends TableLabelProvider
 	
 	private ArrayList productGroupTableLabelProviderListeners = new ArrayList();
 	private String[] columnNames =
-	{ "Bezeichnung", "Kurzbezeichnung", "Galileo", "Id", "Default", "Export" };
+	{ "Bezeichnung", "Kurzbezeichnung", "Galileo", "Id", "Default", "eBook", "bez.Rg", "Export" };
 }
