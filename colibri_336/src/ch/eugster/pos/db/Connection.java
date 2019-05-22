@@ -1370,34 +1370,33 @@ public abstract class Connection
 					
 				}
 				// Datenversion 35: Build 340: 10429
+				// Datenversion 36: Build 385: 10430
+				if (v == 36 && dataVersion < v)
+				{
+					this.logger.info("Updating to Version " + v);
+					if (!this.columnExists(con, "pos_product_group", "ebook"))
+					{
+						done = done
+										&& this.executeSQLStatement(con,
+														"ALTER TABLE pos_product_group ADD COLUMN ebook TINYINT DEFAULT '0';");
+					}
+					if (!this.columnExists(con, "pos_position", "ebook"))
+					{
+						done = done
+										&& this.executeSQLStatement(con,
+														"ALTER TABLE pos_position ADD COLUMN ebook TINYINT DEFAULT 0");
+					}
+					if (done)
+					{
+						dataVersion = v;
+						rst.updateInt("data_version", dataVersion);
+						rst.updateRow();
+						this.logger.info("Update to Version " + v + " successfully.");
+					}
+					
+				}
+				// Datenversion 36: Build 385: 10430
 			}
-			// if (v == 36 && dataVersion < v)
-			// {
-			// // Datenversion 36: Build 368: 10442
-			// this.logger.info("Updating to Version " + v);
-			//
-			// if (!this.columnExists(con, "pos_position", "ebook"))
-			// {
-			// done = done
-			// && this.executeSQLStatement(con,
-			// "ALTER TABLE pos_position ADD COLUMN ebook SMALLINT DEFAULT 0");
-			// // done = done
-			// // && this.executeSQLStatement(
-			// // con,
-			// //
-			// "UPDATE pos_position SET ebook = ROUND(-amount / 107.6 * 7.6, 2) WHERE discount <> 0 AND current_tax_id > 6 AND current_tax_id < 10;");
-			// }
-			// if (done)
-			// {
-			// dataVersion = v;
-			// rst.updateInt("data_version", dataVersion);
-			// rst.updateRow();
-			// this.logger.info("Update to Version " + v + " successfully.");
-			// }
-			//
-			// }
-			// // Datenversion 36: Build 368: 10442
-			
 			/*
 			 * Immer testen: Ist eine Bargruppe und eine BAR Zahlungsart
 			 * vorhanden UND deleted = false!!!
