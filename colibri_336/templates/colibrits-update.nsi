@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ColibriTS"
-!define PRODUCT_VERSION "1.6.0_385"
+!define PRODUCT_VERSION "1.6.0_387"
 !define PRODUCT_PUBLISHER "Christian Eugster"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
@@ -61,13 +61,8 @@ Section "Hauptgruppe" SEC01
   SetOutPath $INSTDIR\icons
   File /r /x .* ..\icons\*.*
   ; configuration
-;  SetOutPath $INSTDIR\properties
   SetOutPath $INSTDIR\properties
-  File ..\properties\*.dtd
-  SetOutPath $INSTDIR\properties\code128
-  File /r /x .* ..\properties\code128\*.*
-  SetOutPath $INSTDIR\properties\ojb
-  File /r /x .* ..\properties\ojb\*.*
+  File /r /x .* ..\properties\*.*
   ; readme
   SetOutPath $INSTDIR\readme
   File /r /x .* ..\readme\*.*

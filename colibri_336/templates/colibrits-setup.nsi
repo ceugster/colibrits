@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "ColibriTS"
-!define PRODUCT_VERSION "1.6.0_385"
+!define PRODUCT_VERSION "1.6.0_387"
 !define PRODUCT_PUBLISHER "Christian Eugster"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
