@@ -7,6 +7,7 @@
 package ch.eugster.pos.client.model;
 
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -525,6 +526,7 @@ public class PositionModel extends ReceiptChildModel
 					boolean[] ret = PositionModel.setGalileoData(this.getPosition(), value);
 					if (!ret[0])
 					{
+						if (value.toUpperCase().startsWith("E")) return false;
 						if (!ret[1])
 						{
 							// 10055
@@ -609,8 +611,19 @@ public class PositionModel extends ReceiptChildModel
 			position.optCode = "L";
 			position.ordered = false;
 			ProductGroup pg = ProductGroup.selectEbookGroup();
-			position.setProductGroup(pg);
-			position.setCurrentTax(pg == null ? null : pg.getDefaultTax().getCurrentTax());
+			if (pg == null)
+			{
+				Toolkit.getDefaultToolkit().beep();
+				MessageDialog.showInformation(Frame.getMainFrame(), "Konfigurationsfehler", //$NON-NLS-1$
+								"Es wurde keine EBook Warengruppe definiert.", //$NON-NLS-1$
+								0);
+				result[0] = false;
+			}
+			else
+			{
+				position.setProductGroup(pg);
+				position.setCurrentTax(pg == null ? null : pg.getDefaultTax().getCurrentTax());
+			}
 			return result;
 		}
 		

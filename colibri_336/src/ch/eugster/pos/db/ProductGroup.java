@@ -306,7 +306,7 @@ public class ProductGroup extends Table
 	
 	public static ProductGroup selectEbookGroup()
 	{
-		ProductGroup pg = new ProductGroup();
+		ProductGroup pg = null;
 		Criteria criteria = new Criteria();
 		criteria.addEqualTo("ebook", new Boolean(true)); //$NON-NLS-1$
 		Query query = QueryFactory.newQuery(ProductGroup.class, criteria);

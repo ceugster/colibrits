@@ -74,6 +74,7 @@ public class EnterAction extends ModeChangeAction implements ReceiptChildChangeL
 	/**
 	 * @param actionEvent
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Enter pressed...");
@@ -110,20 +111,6 @@ public class EnterAction extends ModeChangeAction implements ReceiptChildChangeL
 							.setValues(this.context.getReceiptModel().getPositionModel());
 			this.context.getChildrenBlock().getPositionBlock()
 							.display(this.context.getReceiptModel().getPositionModel());
-			// }
-			// else
-			// {
-			// if
-			// (this.context.getReceiptModel().getCurrentPositionField().equals(PositionModel.FIELD_QUANTITY))
-			// {
-			//					this.context.getChildrenBlock().getPositionBlock().getButton("quantity").doClick(); //$NON-NLS-1$
-			// }
-			// else if
-			// (this.context.getReceiptModel().getCurrentPositionField().equals(PositionModel.FIELD_PRICE))
-			// {
-			//					this.context.getChildrenBlock().getPositionBlock().getButton("price").doClick(); //$NON-NLS-1$
-			// }
-			// }
 		}
 	}
 	
@@ -192,6 +179,7 @@ public class EnterAction extends ModeChangeAction implements ReceiptChildChangeL
 		}
 	}
 	
+	@Override
 	public void modeChangePerformed(ModeChangeEvent e)
 	{
 		if (e.getSource(ModeChangeEvent.KEY_NUMERIC_BLOCK).equals(ModeChangeEvent.KEY_NUMERIC_BLOCK))
