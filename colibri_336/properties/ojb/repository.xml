@@ -528,6 +528,7 @@ at runtime,  using the MetadataManager.
       <field-descriptor name="tax" column="tax" jdbc-type="DOUBLE" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
       <field-descriptor name="amountFC" column="amount_fc" jdbc-type="DOUBLE" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
       <field-descriptor name="amount" column="amount" jdbc-type="DOUBLE" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
+      <field-descriptor name="ebook" column="ebook" jdbc-type="BIT" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
       <reference-descriptor name="receipt" class-ref="ch.eugster.pos.db.Receipt" proxy="false" refresh="false" auto-retrieve="true" auto-update="false" auto-delete="false" otm-dependent="false">
          <foreignkey field-ref="receiptId" />
       </reference-descriptor>
@@ -543,6 +544,7 @@ at runtime,  using the MetadataManager.
       <field-descriptor name="timestamp" column="timestamp" jdbc-type="TIMESTAMP" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
       <field-descriptor name="deleted" column="deleted" jdbc-type="BIT" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
       <field-descriptor name="isDefault" column="is_default" jdbc-type="BIT" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
+      <field-descriptor name="ebook" column="ebook" jdbc-type="BIT" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
       <field-descriptor name="galileoId" column="galileo_id" jdbc-type="VARCHAR" length="3" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
       <field-descriptor name="defaultTaxId" column="default_tax_id" jdbc-type="BIGINT" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
       <field-descriptor name="shortname" column="shortname" jdbc-type="VARCHAR" length="50" primarykey="false" nullable="true" indexed="false" autoincrement="false" locking="false" update-lock="true" default-fetch="false" access="readwrite" />
