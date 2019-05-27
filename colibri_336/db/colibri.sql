@@ -757,6 +757,7 @@ CREATE TABLE `pos_position` (
   `type` int(11) DEFAULT '0',
   `amount_fc` double DEFAULT '0',
   `amount` double DEFAULT '0',
+  `ebook` tinyint DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `current_tax_id` (`current_tax_id`),
   KEY `product_group_id` (`product_group_id`),
@@ -821,6 +822,7 @@ CREATE TABLE `pos_product_group` (
   `paid_invoice` tinyint(1) DEFAULT '0',
   `is_default` tinyint(1) DEFAULT '0',
   `foreign_currency_id` bigint(20) DEFAULT NULL,
+  `ebook` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `default_tax_id` (`default_tax_id`),
   KEY `galileo_id` (`galileo_id`)
