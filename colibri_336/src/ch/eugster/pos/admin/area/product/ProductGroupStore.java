@@ -219,13 +219,6 @@ public class ProductGroupStore extends PersistentDBStore
 			
 			if (this.getBoolean(ProductGroupFieldEditorPage.KEY_EBOOK).booleanValue())
 			{
-				if (this.getString(ProductGroupFieldEditorPage.KEY_GALILEO_ID).equals(""))
-				{
-					result.setErrorCode(-1);
-					result.log();
-					result.setErrorText("Die eBook-Warengruppe muss eine gültige, dreistellige Galileo-Id haben.");
-					result.showMessage();
-				}
 				if (!this.getInt(ProductGroupFieldEditorPage.KEY_TYPE).equals(new Integer(0)))
 				{
 					this.setValue(ProductGroupFieldEditorPage.KEY_TYPE, new Integer(0));
